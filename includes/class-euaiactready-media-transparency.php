@@ -671,8 +671,9 @@ class EUAIACTREADY_Media_Transparency {
 			$exif_fields_to_check = array( 'credit', 'copyright', 'artist', 'author', 'comment', 'keywords' );
 			foreach ( $exif_fields_to_check as $field ) {
 				if ( ! empty( $exif[ $field ] ) ) {
+					$field_value = is_array( $exif[ $field ] ) ? implode( ' ', $exif[ $field ] ) : (string) $exif[ $field ];
 					foreach ( $this->ai_tools as $tool ) {
-						if ( false !== stripos( $exif[ $field ], $tool ) ) {
+						if ( false !== stripos( $field_value, $tool ) ) {
 							$confidence        += 0.35;
 							$detected_methods[] = "exif_{$field}";
 							if ( empty( $ai_tool ) ) {
