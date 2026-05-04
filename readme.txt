@@ -4,7 +4,7 @@ Tags: eu ai act, article 50, ai transparency, ai compliance, ai disclosure
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,9 @@ Yes. You can manually mark or unmark any post, page, or media item as AI-generat
 All plugin settings and AI content markers remain stored in the database. Reactivating the plugin restores all functionality. To remove all data, uninstall the plugin.
 
 == Changelog ==
+
+= 1.0.1 =
+* Fixed: stripos() error when processing array values in media EXIF data (props @archandha)
 
 = 1.0.0 =
 * Initial release
