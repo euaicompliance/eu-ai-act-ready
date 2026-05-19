@@ -4,7 +4,7 @@ Tags: eu ai act, article 50, ai transparency, ai compliance, ai disclosure
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,12 +100,12 @@ To recover:
 
 That is all. All previously saved settings, AI content markers, and media scan results are restored immediately.
 
-The translation bug is fixed in version 1.0.2 (corrected). After updating to the fixed release the plugin name will always display as "EU AI Act Ready" regardless of the site language.
+The translation bug is fixed in version 1.0.3. After updating to the fixed release the plugin name will always display as "EU AI Act Ready" regardless of the site language.
 
 == Changelog ==
 
-pending
-* Fixed: German translation incorrectly translated the plugin name, causing it to appear as "EU-KI-Act-konform" on German-language sites and preventing WordPress from recognising the previously active plugin after a manual update
+= 1.0.3 =
+* Fixed: German translation incorrectly translated the plugin name, causing it to appear as "EU-KI-Act-konform" on German-language sites and preventing WordPress from recognising the previously active plugin after a manual update.  (props @archandha)
 
 = 1.0.2 =
 * Added: German (de_DE) translation (props @archandha)
