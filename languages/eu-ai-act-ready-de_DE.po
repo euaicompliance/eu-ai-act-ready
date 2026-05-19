@@ -9,7 +9,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Language: de\n"
+"Language: de_DE\n"
 
 #: includes/class-euaiactready-media-transparency.php:1571
 msgid "No AI"
@@ -1363,7 +1363,7 @@ msgstr "Dashboard"
 #: admin/class-euaiactready-admin.php:114
 #: admin/class-euaiactready-admin.php:115
 msgid "EU AI Act Ready"
-msgstr "EU-KI-Act-konform"
+msgstr ""
 
 #: admin/class-euaiactready-admin.php:104
 msgid "Previous scan results cleared."
