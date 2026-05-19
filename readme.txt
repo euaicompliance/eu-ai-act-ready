@@ -87,7 +87,25 @@ Yes. You can manually mark or unmark any post, page, or media item as AI-generat
 = What happens if I deactivate the plugin? =
 All plugin settings and AI content markers remain stored in the database. Reactivating the plugin restores all functionality. To remove all data, uninstall the plugin.
 
+= After updating to version 1.0.2 on a German-language site, the plugin seems to have disappeared. How do I fix this? =
+Version 1.0.2 shipped with a translation bug: the plugin's own name "EU AI Act Ready" was incorrectly translated to "EU-KI-Act-konform" in the German language file. On sites running WordPress in German (de_DE), this caused the plugin to appear under the translated name in the Plugins list, and — if you replaced the plugin files manually — WordPress may have auto-deactivated it while the directory was momentarily empty.
+
+**Your settings and data are safe.** No database content is deleted when a plugin is deactivated.
+
+To recover:
+
+1. Go to **Plugins → Installed Plugins** in your WordPress admin.
+2. Look for either **"EU AI Act Ready"** or **"EU-KI-Act-konform"** in the list (depending on your WordPress version, it may appear under either name).
+3. Click **Activate**.
+
+That is all. All previously saved settings, AI content markers, and media scan results are restored immediately.
+
+The translation bug is fixed in version 1.0.2 (corrected). After updating to the fixed release the plugin name will always display as "EU AI Act Ready" regardless of the site language.
+
 == Changelog ==
+
+pending
+* Fixed: German translation incorrectly translated the plugin name, causing it to appear as "EU-KI-Act-konform" on German-language sites and preventing WordPress from recognising the previously active plugin after a manual update
 
 = 1.0.2 =
 * Added: German (de_DE) translation (props @archandha)
