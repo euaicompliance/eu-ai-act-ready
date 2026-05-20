@@ -49,22 +49,9 @@ class EUAIACTREADY {
 		$this->plugin_slug = EUAIACTREADY_PLUGIN_SLUG;
 		$this->version     = EUAIACTREADY_VERSION;
 
-		add_action( 'plugins_loaded', array( $this, 'euaiactready_load_textdomain' ) );
-
 		$this->euaiactready_load_dependencies();
 		$this->euaiactready_define_admin_hooks();
 		$this->euaiactready_define_public_hooks();
-	}
-
-	/**
-	 * Load the plugin text domain for translations.
-	 */
-	public function euaiactready_load_textdomain() {
-		load_plugin_textdomain(
-			'eu-ai-act-ready',
-			false,
-			dirname( plugin_basename( EUAIACTREADY_PLUGIN_DIR . 'eu-ai-act-ready.php' ) ) . '/languages/'
-		);
 	}
 
 	/**
