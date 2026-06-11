@@ -713,7 +713,7 @@ import 'datatables.net-dt/css/dataTables.dataTables.css';
 						const $select = $editRow.find(
 							'select[name="euaiactready_content"]'
 						);
-						$select.val( aiContent === '1' ? '1' : '0' );
+						$select.val( aiContent );
 					}, 100 );
 				}
 			};

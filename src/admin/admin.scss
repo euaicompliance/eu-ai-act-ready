@@ -1090,12 +1090,16 @@ table.dataTable.no-footer {
 .ai_recheck_button {
     margin-top: 10px;
     width: 100%;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 4px;
 }
 
 .ai-media-recheck-button .dashicons,
 .ai-popup-recheck-button .dashicons,
 .ai_recheck_button .dashicons {
-    margin-top: 3px;
+    flex-shrink: 0;
+    line-height: 1;
 }
 
 /* Recheck Messages */

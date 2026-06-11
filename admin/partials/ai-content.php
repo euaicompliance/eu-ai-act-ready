@@ -10,8 +10,9 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Query for all enabled post types with any AI disclosure level (new values + legacy '1').
 $euaiactready_manually_marked_args = array(
-	'post_type'      => array( 'post', 'page' ),
+	'post_type'      => EUAIACTREADY_Post_Meta_Box::euaiactready_get_all_enabled_post_types(),
 	'post_status'    => 'any',
 	'posts_per_page' => -1,
 	'orderby'        => 'modified',
@@ -42,9 +43,9 @@ wp_reset_postdata();
 		<?php if ( empty( $euaiactready_manually_marked_content ) ) : ?>
 			<div class="euaiactready-empty-state">
 				<span class="dashicons dashicons-media-text"></span>
-				<p><?php esc_html_e( 'No content has been manually marked as AI-generated yet.', 'eu-ai-act-ready' ); ?></p>
+				<p><?php esc_html_e( 'No content has been marked with an AI disclosure level yet.', 'eu-ai-act-ready' ); ?></p>
 				<p class="hint">
-					<?php esc_html_e( 'You can mark posts and pages in the editor.', 'eu-ai-act-ready' ); ?>
+					<?php esc_html_e( 'You can set the disclosure level in the editor sidebar when editing any content.', 'eu-ai-act-ready' ); ?>
 				</p>
 			</div>
 		<?php else : ?>
@@ -65,6 +66,7 @@ wp_reset_postdata();
 						<th class="column-type"><?php esc_html_e( 'Type', 'eu-ai-act-ready' ); ?></th>
 						<th class="column-status"><?php esc_html_e( 'Status', 'eu-ai-act-ready' ); ?></th>
 						<th class="column-author"><?php esc_html_e( 'Author', 'eu-ai-act-ready' ); ?></th>
+						<th class="column-disclosure"><?php esc_html_e( 'Disclosure Level', 'eu-ai-act-ready' ); ?></th>
 						<th class="column-date"><?php esc_html_e( 'Marked Date', 'eu-ai-act-ready' ); ?></th>
 					</tr>
 				</thead>
@@ -76,6 +78,11 @@ wp_reset_postdata();
 						$euaiactready_status_obj   = get_post_status_object( $euaiactready_content->post_status );
 						$euaiactready_status_label = $euaiactready_status_obj ? $euaiactready_status_obj->label : $euaiactready_content->post_status;
 						$euaiactready_marked_date  = (int) get_post_meta( $euaiactready_content->ID, '_euaiactready_ai_content_marked_date', true );
+						$euaiactready_raw_value    = get_post_meta( $euaiactready_content->ID, '_euaiactready_ai_content', true );
+						$euaiactready_disclosure   = EUAIACTREADY_Post_Meta_Box::euaiactready_normalize_disclosure_value( $euaiactready_raw_value );
+						$euaiactready_disc_label   = isset( $euaiactready_disclosure_levels[ $euaiactready_disclosure ] )
+							? $euaiactready_disclosure_levels[ $euaiactready_disclosure ]
+							: $euaiactready_disclosure;
 						?>
 						<tr id="post-<?php echo esc_attr( $euaiactready_content->ID ); ?>">
 							<td class="check-column">
@@ -90,7 +97,7 @@ wp_reset_postdata();
 									<span class="separator">|</span>
 									<a href="<?php echo esc_url( get_edit_post_link( $euaiactready_content->ID ) ); ?>"><?php esc_html_e( 'Edit', 'eu-ai-act-ready' ); ?></a>
 									<span class="separator">|</span>
-								<button type="button" class="euaiactready-unmark-content action-danger" data-post-id="<?php echo esc_attr( $euaiactready_content->ID ); ?>">
+									<button type="button" class="euaiactready-unmark-content action-danger" data-post-id="<?php echo esc_attr( $euaiactready_content->ID ); ?>">
 										<?php esc_html_e( 'Unmark as AI content', 'eu-ai-act-ready' ); ?>
 									</button>
 								</div>
@@ -107,6 +114,9 @@ wp_reset_postdata();
 							</td>
 							<td class="column-author">
 								<?php echo esc_html( get_the_author_meta( 'display_name', $euaiactready_content->post_author ) ); ?>
+							</td>
+							<td class="column-disclosure">
+								<?php echo esc_html( $euaiactready_disc_label ); ?>
 							</td>
 							<td class="column-date" data-order="<?php echo esc_attr( $euaiactready_marked_date ); ?>">
 								<?php
