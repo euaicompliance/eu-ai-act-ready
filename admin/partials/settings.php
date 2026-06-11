@@ -195,7 +195,7 @@ $euaiactready_tab_definitions = array(
 
 			<?php
 			$euaiactready_public_post_types = get_post_types( array( 'public' => true ), 'objects' );
-			// Exclude attachment — it is handled by the Media/Image Labels section.
+			// Exclude attachment - it is handled by the Media/Image Labels section.
 			unset( $euaiactready_public_post_types['attachment'] );
 			?>
 

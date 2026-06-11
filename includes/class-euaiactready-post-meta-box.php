@@ -283,7 +283,7 @@ class EUAIACTREADY_Post_Meta_Box {
 				break;
 		}
 
-		// Hidden data attribute for Quick Edit — stores the normalized disclosure level.
+		// Hidden data attribute for Quick Edit - stores the normalized disclosure level.
 		echo '<div class="hidden ai-content-value" data-ai-content="' . esc_attr( $disclosure ) . '"></div>';
 	}
 
