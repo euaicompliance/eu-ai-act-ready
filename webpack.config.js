@@ -7,6 +7,19 @@
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 const path          = require( 'path' );
 
+// Use the modern Sass API to suppress legacy JS API deprecation warnings.
+const sassRule = defaultConfig.module.rules.find(
+	( rule ) => rule.test && rule.test.toString().includes( 'scss' )
+);
+if ( sassRule ) {
+	sassRule.use = sassRule.use.map( ( loader ) => {
+		if ( loader.loader && loader.loader.includes( 'sass-loader' ) ) {
+			return { ...loader, options: { ...loader.options, api: 'modern' } };
+		}
+		return loader;
+	} );
+}
+
 module.exports = {
 	...defaultConfig,
 	entry: {

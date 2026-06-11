@@ -88,5 +88,8 @@ class EUAIACTREADY_Activator {
 		add_option( 'euaiactready_chatbot_transparency', 0 );
 		add_option( 'euaiactready_media_transparency', 0 );
 		add_option( 'euaiactready_show_in_excerpts', 0 );
+
+		// Posts and pages are enabled by default for AI disclosure meta box.
+		add_option( 'euaiactready_enabled_post_types', array( 'post', 'page' ) );
 	}
 }

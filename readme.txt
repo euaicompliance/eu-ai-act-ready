@@ -4,7 +4,7 @@ Tags: eu ai act, article 50, ai transparency, ai compliance, ai disclosure
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.0.4
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ AI transparency and Article 50 compliance plugin for WordPress. Disclose AI-gene
 
 EU AI Act Ready is a WordPress AI transparency and AI disclosure plugin designed to support Article 50 obligations under the EU AI Act. It helps site owners clearly disclose AI-generated content, media, and AI-powered chatbots through configurable visitor notices.
 
-The plugin enables identification, labeling, and disclosure of AI-generated text, images, and AI-powered chatbots across posts, pages, and media uploads. It provides practical tools to support AI transparency expectations without collecting personal data or sending information to external services.
+The plugin enables identification, labeling, and disclosure of AI-generated text, images, and AI-powered chatbots across posts, pages, custom post types, and media uploads. It provides practical tools to support AI transparency expectations without collecting personal data or sending information to external services.
 
 The plugin is designed to help website owners implement practical AI transparency and AI disclosure measures aligned with Article 50 of the EU AI Act.
 
@@ -32,13 +32,15 @@ EU AI Act Ready is suitable for websites that publish AI-generated content, use 
 
 = Key Features =
 
-* **Manual AI Content Disclosure** - Simple checkbox in the post and page editor to manually declare AI-generated content
-* **Frontend Transparency Notices** - Automatically display clear visitor notices when content is marked as AI-generated
-* **Chatbot Transparency** - Adds disclosure notices for popular AI-powered chatbots including Formilla, Intercom, Drift, Tidio, Tawk.to, Zendesk Chat, LiveChat, Crisp, Freshchat, and custom chatbot integrations
+* **Four Disclosure Levels** - Choose from No AI used, AI-assisted, AI-generated, or AI-generated & human-reviewed - each level shows a distinct, accurate notice to visitors
+* **Frontend Transparency Notices** - Automatically display clear visitor notices when content is marked as AI-generated, in four configurable styles: Banner, Inline, Badge, or Modal
+* **Quick Edit & Bulk Support** - Set the AI disclosure level directly from the Posts list via Quick Edit or bulk actions, without opening the post editor
+* **Chatbot Transparency** - Adds disclosure notices for popular AI-powered chatbots including Formilla, Intercom, Drift, Tidio, Tawk.to, Zendesk Chat, LiveChat, Crisp, Freshchat, and custom chatbot integrations, in five styles: Banner, Badge, Inline, Modal, or Tooltip
+* **AI Content Admin Page** - Dedicated admin page listing all AI-marked content items (posts, pages, and custom post types) with their disclosure level, with one-click unmark and bulk actions
 * **Media & Image Analysis** - Flags potentially AI-generated images using heuristic metadata signals and filename patterns
 * **Bulk Scanning Tools** - Scan multiple media items simultaneously from the admin dashboard
 * **Manual Override Controls** - Mark or unmark content and media as AI-generated at any time
-* **Customizable Disclosure Messages** - Configure wording, style, and placement of transparency notices
+* **Customizable Disclosure Messages** - Configure wording, style, and placement of transparency notices; each disclosure level shows its own default message or a shared custom message
 * **Lightweight & Performance-Friendly** - Detection runs asynchronously or on demand without slowing down your site
 
 = Minimum Requirements =
@@ -76,19 +78,22 @@ For chatbots, the plugin supports disclosure notices for platforms including For
 Yes. The plugin does not collect, store, or transmit personal data and does not process user data for AI detection or AI transparency features. All processing happens locally on your server, and no data is sent to third-party services.
 
 = Does it work with Gutenberg, Elementor, and the Classic Editor? =
-Yes. EU AI Act Ready works with the Gutenberg block editor, Elementor and the Classic Editor. The AI disclosure controls appear in the post sidebar for easy access.
+Yes. EU AI Act Ready works with the Gutenberg block editor, Elementor, and the Classic Editor. The AI Content Disclosure meta box appears in the editor and lets you choose from four disclosure levels. You can also set the disclosure level from the Posts list using Quick Edit, without opening the post editor.
 
 = How do I bulk scan existing images? =
 Go to **EU AI Act Ready → Dashboard** and use the bulk scanning tools to process media library items in batches.
 
+= Can I use this with custom post types? =
+Yes. From **Settings → Content Transparency → Content Types**, you can enable the AI disclosure meta box, list column, and bulk actions for any public post type registered by installed themes and plugins. Posts and pages are enabled by default; all other public post types can be toggled on or off.
+
 = Can I manually mark content as AI-generated? =
-Yes. You can manually mark or unmark any post, page, or media item as AI-generated using editor controls or bulk actions.
+Yes. You can manually mark or unmark any post, page, custom post type, or media item as AI-generated using editor controls or bulk actions.
 
 = What happens if I deactivate the plugin? =
 All plugin settings and AI content markers remain stored in the database. Reactivating the plugin restores all functionality. To remove all data, uninstall the plugin.
 
 = After updating to version 1.0.2 on a German-language site, the plugin seems to have disappeared. How do I fix this? =
-Version 1.0.2 shipped with a translation bug: the plugin's own name "EU AI Act Ready" was incorrectly translated to "EU-KI-Act-konform" in the German language file. On sites running WordPress in German (de_DE), this caused the plugin to appear under the translated name in the Plugins list, and — if you replaced the plugin files manually — WordPress may have auto-deactivated it while the directory was momentarily empty.
+Version 1.0.2 shipped with a translation bug: the plugin's own name "EU AI Act Ready" was incorrectly translated to "EU-KI-Act-konform" in the German language file. On sites running WordPress in German (de_DE), this caused the plugin to appear under the translated name in the Plugins list, and - if you replaced the plugin files manually - WordPress may have auto-deactivated it while the directory was momentarily empty.
 
 **Your settings and data are safe.** No database content is deleted when a plugin is deactivated.
 
@@ -103,6 +108,18 @@ That is all. All previously saved settings, AI content markers, and media scan r
 The translation bug is fixed in version 1.0.3. After updating to the fixed release the plugin name will always display as "EU AI Act Ready" regardless of the site language.
 
 == Changelog ==
+
+= 1.1.0 =
+* Added: Four AI disclosure levels - No AI used, AI-assisted, AI-generated, and AI-generated & human-reviewed - replacing the previous single checkbox.
+* Added: Each disclosure level shows its own default notice text on the frontend; a shared custom message can override all levels from Settings.
+* Added: Quick Edit support - set the AI disclosure level directly from the Posts list without opening the post editor.
+* Added: Dedicated AI Content admin page listing all AI-marked posts with their disclosure level, one-click unmark, and bulk unmark action.
+* Added: Four content notice display styles - Banner, Inline, Badge, and Modal.
+* Added: Five chatbot transparency notice styles - Banner, Badge, Inline, Modal, and Tooltip.
+* Added: Custom post type support - any public post type registered by a theme or plugin can now be enabled for AI content disclosure from Settings → Content Transparency → Content Types.
+* Added: Posts and pages remain enabled by default and can be individually deactivated from the same settings section.
+* Improved: Posts list filter includes all four disclosure levels for precise filtering.
+* Improved: The AI Content management page now lists AI-marked items from all enabled post types, not only posts and pages.
 
 = 1.0.4 =
 * Compatibility: Tested up to WordPress 7.0

@@ -21,47 +21,97 @@ class EUAIACTREADY_Post_Meta_Box {
 		add_action( 'add_meta_boxes', array( $this, 'euaiactready_add_ai_disclosure_meta_box' ) );
 		add_action( 'save_post', array( $this, 'euaiactready_save_ai_disclosure_meta_box' ) );
 
-		// Add custom column to posts and pages list.
-		add_filter( 'manage_post_posts_columns', array( $this, 'euaiactready_add_ai_column' ) );
-		add_filter( 'manage_page_posts_columns', array( $this, 'euaiactready_add_ai_column' ) );
-		add_action( 'manage_post_posts_custom_column', array( $this, 'euaiactready_render_ai_column' ), 10, 2 );
-		add_action( 'manage_page_posts_custom_column', array( $this, 'euaiactready_render_ai_column' ), 10, 2 );
-
-		// Make the column sortable.
-		add_filter( 'manage_edit-post_sortable_columns', array( $this, 'euaiactready_make_ai_column_sortable' ) );
-		add_filter( 'manage_edit-page_sortable_columns', array( $this, 'euaiactready_make_ai_column_sortable' ) );
+		// Register post-type-specific hooks on admin_init so CPTs declared on init are available.
+		add_action( 'admin_init', array( $this, 'euaiactready_register_post_type_hooks' ) );
 
 		// Filter posts_clauses for proper sorting.
 		add_filter( 'posts_clauses', array( $this, 'euaiactready_ai_column_clauses' ), 10, 2 );
 
-		// Add filter dropdown.
+		// Filter dropdown and query filter are universal; they check $typenow dynamically.
 		add_action( 'restrict_manage_posts', array( $this, 'euaiactready_add_ai_content_filter' ) );
 		add_filter( 'parse_query', array( $this, 'euaiactready_filter_by_ai_content' ) );
 
-		// Add bulk actions.
-		add_filter( 'bulk_actions-edit-post', array( $this, 'euaiactready_add_bulk_actions' ) );
-		add_filter( 'bulk_actions-edit-page', array( $this, 'euaiactready_add_bulk_actions' ) );
-		add_filter( 'handle_bulk_actions-edit-post', array( $this, 'euaiactready_handle_bulk_actions' ), 10, 3 );
-		add_filter( 'handle_bulk_actions-edit-page', array( $this, 'euaiactready_handle_bulk_actions' ), 10, 3 );
 		add_action( 'admin_notices', array( $this, 'euaiactready_bulk_action_notices' ) );
 
-		// Add Quick Edit support.
+		// Quick Edit field is universal; it checks $post_type dynamically.
 		add_action( 'quick_edit_custom_box', array( $this, 'euaiactready_add_quick_edit_field' ), 10, 2 );
 		add_action( 'save_post', array( $this, 'euaiactready_save_quick_edit_data' ) );
-
-		// Add row actions.
-		add_filter( 'post_row_actions', array( $this, 'euaiactready_add_row_actions' ), 10, 2 );
-		add_filter( 'page_row_actions', array( $this, 'euaiactready_add_row_actions' ), 10, 2 );
 
 		// Handle AJAX for row actions.
 		add_action( 'wp_ajax_euaiactready_toggle_ai_status', array( $this, 'euaiactready_ajax_toggle_ai_status' ) );
 	}
 
 	/**
-	 * Add meta box to posts and pages.
+	 * Return the post type slugs that have the AI disclosure meta box enabled.
+	 *
+	 * Falls back to ['post', 'page'] when the option is missing or invalid.
+	 *
+	 * @return string[]
+	 */
+	public static function euaiactready_get_all_enabled_post_types(): array {
+		$saved = get_option( 'euaiactready_enabled_post_types', array( 'post', 'page' ) );
+		if ( ! is_array( $saved ) || empty( $saved ) ) {
+			return array( 'post', 'page' );
+		}
+		return array_values( array_filter( array_map( 'sanitize_key', $saved ) ) );
+	}
+
+	/**
+	 * Register column, sortable, bulk-action, and row-action hooks for every enabled post type.
+	 *
+	 * Runs on admin_init so that CPTs registered on the init hook are already available.
+	 */
+	public function euaiactready_register_post_type_hooks(): void {
+		$post_types = self::euaiactready_get_all_enabled_post_types();
+
+		foreach ( $post_types as $post_type ) {
+			add_filter( "manage_{$post_type}_posts_columns", array( $this, 'euaiactready_add_ai_column' ) );
+			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'euaiactready_render_ai_column' ), 10, 2 );
+			add_filter( "manage_edit-{$post_type}_sortable_columns", array( $this, 'euaiactready_make_ai_column_sortable' ) );
+			add_filter( "bulk_actions-edit-{$post_type}", array( $this, 'euaiactready_add_bulk_actions' ) );
+			add_filter( "handle_bulk_actions-edit-{$post_type}", array( $this, 'euaiactready_handle_bulk_actions' ), 10, 3 );
+			add_filter( "{$post_type}_row_actions", array( $this, 'euaiactready_add_row_actions' ), 10, 2 );
+		}
+	}
+
+	/**
+	 * Return the four disclosure levels with their labels.
+	 *
+	 * @return array<string,string> Keyed by value, value is translated label.
+	 */
+	public static function euaiactready_get_disclosure_levels() {
+		return array(
+			'none'               => __( 'No AI used', 'eu-ai-act-ready' ),
+			'assisted'           => __( 'AI-assisted content', 'eu-ai-act-ready' ),
+			'generated'          => __( 'AI-generated content', 'eu-ai-act-ready' ),
+			'generated_reviewed' => __( 'AI-generated, human reviewed (exempt from labeling under Article 50(4))', 'eu-ai-act-ready' ),
+		);
+	}
+
+	/**
+	 * Normalize a raw meta value to one of the four canonical disclosure levels.
+	 *
+	 * Handles legacy binary values ('1' → 'generated', '0'/'' → 'none').
+	 *
+	 * @param mixed $value Raw value from post meta.
+	 * @return string One of: 'none', 'assisted', 'generated', 'generated_reviewed'.
+	 */
+	public static function euaiactready_normalize_disclosure_value( $value ) {
+		if ( '1' === $value ) {
+			return 'generated';
+		}
+		$valid = array( 'none', 'assisted', 'generated', 'generated_reviewed' );
+		if ( in_array( $value, $valid, true ) ) {
+			return $value;
+		}
+		return 'none';
+	}
+
+	/**
+	 * Add meta box to all enabled post types.
 	 */
 	public function euaiactready_add_ai_disclosure_meta_box() {
-		$post_types = array( 'post', 'page' );
+		$post_types = self::euaiactready_get_all_enabled_post_types();
 
 		foreach ( $post_types as $post_type ) {
 			add_meta_box(
@@ -81,27 +131,33 @@ class EUAIACTREADY_Post_Meta_Box {
 	 * @param WP_Post $post The post object.
 	 */
 	public function euaiactready_render_ai_disclosure_meta_box( $post ) {
-		// Add nonce for security.
 		wp_nonce_field( 'euaiactready_disclosure_nonce', 'euaiactready_disclosure_nonce_field' );
 
-		// Get current value.
 		$ai_content = get_post_meta( $post->ID, '_euaiactready_ai_content', true );
+		$current    = self::euaiactready_normalize_disclosure_value( $ai_content );
+		$levels     = self::euaiactready_get_disclosure_levels();
 
 		?>
 		<div class="eu-ai-act-ready-meta-box">
-			<p>
-				<label for="euaiactready_content">
-					<input type="checkbox"
-							id="euaiactready_content"
-							name="euaiactready_content"
-							value="1"
-							<?php checked( $ai_content, '1' ); ?> />
-					<?php esc_html_e( 'Generated/modified by AI', 'eu-ai-act-ready' ); ?>
-				</label>
-			</p>
 			<p class="description">
-				<?php esc_html_e( 'Check this box if this content has been generated or modified using AI tools.', 'eu-ai-act-ready' ); ?>
+				<?php esc_html_e( 'Select the AI disclosure level for this content.', 'eu-ai-act-ready' ); ?>
 			</p>
+			<fieldset>
+				<legend class="screen-reader-text">
+					<?php esc_html_e( 'AI Content Disclosure', 'eu-ai-act-ready' ); ?>
+				</legend>
+				<?php foreach ( $levels as $value => $label ) : ?>
+				<p>
+					<label>
+						<input type="radio"
+							name="euaiactready_content"
+							value="<?php echo esc_attr( $value ); ?>"
+							<?php checked( $current, $value ); ?> />
+						<?php echo esc_html( $label ); ?>
+					</label>
+				</p>
+				<?php endforeach; ?>
+			</fieldset>
 		</div>
 		<?php
 	}
@@ -137,17 +193,37 @@ class EUAIACTREADY_Post_Meta_Box {
 			return;
 		}
 
-		// Save AI content checkbox.
-		if ( isset( $_POST['euaiactready_content'] ) ) {
-			$was_ai = get_post_meta( $post_id, '_euaiactready_ai_content', true );
-			update_post_meta( $post_id, '_euaiactready_ai_content', '1' );
-			// Add timestamp when first marked as AI or when re-marked.
-			if ( '1' !== $was_ai ) {
+		// Get and validate the submitted disclosure level.
+		$new_value = isset( $_POST['euaiactready_content'] )
+			? sanitize_key( wp_unslash( $_POST['euaiactready_content'] ) )
+			: 'none';
+
+		// Legacy value migration: '1' → 'generated', '0' → 'none'.
+		if ( '1' === $new_value ) {
+			$new_value = 'generated';
+		} elseif ( '0' === $new_value ) {
+			$new_value = 'none';
+		}
+
+		$allowed = array_keys( self::euaiactready_get_disclosure_levels() );
+		if ( ! in_array( $new_value, $allowed, true ) ) {
+			$new_value = 'none';
+		}
+
+		$was_ai = self::euaiactready_normalize_disclosure_value(
+			get_post_meta( $post_id, '_euaiactready_ai_content', true )
+		);
+
+		update_post_meta( $post_id, '_euaiactready_ai_content', $new_value );
+
+		// Set timestamp when content is AI and no date exists yet.
+		// This also backfills legacy posts that were marked before the date feature existed.
+		if ( 'none' !== $new_value ) {
+			$existing_date = get_post_meta( $post_id, '_euaiactready_ai_content_marked_date', true );
+			if ( empty( $existing_date ) ) {
 				$marked_datetime = current_datetime();
 				update_post_meta( $post_id, '_euaiactready_ai_content_marked_date', $marked_datetime->getTimestamp() );
 			}
-		} else {
-			update_post_meta( $post_id, '_euaiactready_ai_content', '0' );
 		}
 	}
 
@@ -179,21 +255,36 @@ class EUAIACTREADY_Post_Meta_Box {
 	 * @param int    $post_id Post ID.
 	 */
 	public function euaiactready_render_ai_column( $column_name, $post_id ) {
-		if ( 'ai_content' === $column_name ) {
-			$ai_content = get_post_meta( $post_id, '_euaiactready_ai_content', true );
-
-			if ( '1' === $ai_content ) {
-				echo '<span class="dashicons dashicons-yes-alt ai-column-yes-icon" title="' . esc_attr__( 'Marked as AI-generated/modified', 'eu-ai-act-ready' ) . '"></span>';
-				echo '<span class="ai-column-label"> ' . esc_html__( 'AI', 'eu-ai-act-ready' ) . '</span>';
-			} else {
-				echo '<span class="dashicons dashicons-minus ai-column-minus-icon" title="' . esc_attr__( 'Not marked as AI content', 'eu-ai-act-ready' ) . '"></span>';
-			}
-
-			// Add hidden field for Quick Edit to read current value.
-			// Ensure we always have either '1' or '0', not empty string.
-			$ai_value = ( '1' === $ai_content ) ? '1' : '0';
-			echo '<div class="hidden ai-content-value" data-ai-content="' . esc_attr( $ai_value ) . '"></div>';
+		if ( 'ai_content' !== $column_name ) {
+			return;
 		}
+
+		$ai_content = get_post_meta( $post_id, '_euaiactready_ai_content', true );
+		$disclosure = self::euaiactready_normalize_disclosure_value( $ai_content );
+
+		switch ( $disclosure ) {
+			case 'assisted':
+				echo '<span class="dashicons dashicons-edit ai-column-yes-icon" title="' . esc_attr__( 'AI-assisted content', 'eu-ai-act-ready' ) . '"></span>';
+				echo '<span class="ai-column-label"> ' . esc_html__( 'AI-assisted', 'eu-ai-act-ready' ) . '</span>';
+				break;
+
+			case 'generated':
+				echo '<span class="dashicons dashicons-yes-alt ai-column-yes-icon" title="' . esc_attr__( 'AI-generated content', 'eu-ai-act-ready' ) . '"></span>';
+				echo '<span class="ai-column-label"> ' . esc_html__( 'AI', 'eu-ai-act-ready' ) . '</span>';
+				break;
+
+			case 'generated_reviewed':
+				echo '<span class="dashicons dashicons-yes ai-column-yes-icon" title="' . esc_attr__( 'AI-generated, human reviewed', 'eu-ai-act-ready' ) . '"></span>';
+				echo '<span class="ai-column-label"> ' . esc_html__( 'AI (reviewed)', 'eu-ai-act-ready' ) . '</span>';
+				break;
+
+			default: // 'none'
+				echo '<span class="dashicons dashicons-minus ai-column-minus-icon" title="' . esc_attr__( 'No AI used', 'eu-ai-act-ready' ) . '"></span>';
+				break;
+		}
+
+		// Hidden data attribute for Quick Edit - stores the normalized disclosure level.
+		echo '<div class="hidden ai-content-value" data-ai-content="' . esc_attr( $disclosure ) . '"></div>';
 	}
 
 	/**
@@ -225,9 +316,9 @@ class EUAIACTREADY_Post_Meta_Box {
 			// Add LEFT JOIN for the meta table.
 			$clauses['join'] .= " LEFT JOIN {$wpdb->postmeta} AS ai_meta ON ({$wpdb->posts}.ID = ai_meta.post_id AND ai_meta.meta_key = '_euaiactready_ai_content')";
 
-			// Order by AI status with '1' first when ASC, treating NULL as '0'.
+			// Sort: any AI value (assisted/generated/generated_reviewed or legacy '1') before no-AI.
 			$order              = $query->get( 'order' ) ? strtoupper( $query->get( 'order' ) ) : 'ASC';
-			$clauses['orderby'] = "CASE WHEN COALESCE(ai_meta.meta_value, '0') = '1' THEN 0 ELSE 1 END " . $order;
+			$clauses['orderby'] = "CASE WHEN COALESCE(ai_meta.meta_value, 'none') IN ('assisted', 'generated', 'generated_reviewed', '1') THEN 0 ELSE 1 END " . $order;
 		}
 
 		return $clauses;
@@ -239,16 +330,20 @@ class EUAIACTREADY_Post_Meta_Box {
 	public function euaiactready_add_ai_content_filter() {
 		global $typenow;
 
-		if ( in_array( $typenow, array( 'post', 'page' ), true ) ) {
+		if ( in_array( $typenow, self::euaiactready_get_all_enabled_post_types(), true ) ) {
 			$selected    = isset( $_GET['euaiactready_ai_content_filter'] ) ? sanitize_text_field( wp_unslash( $_GET['euaiactready_ai_content_filter'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only admin filter.
 			$nonce_field = wp_nonce_field( 'euaiactready_content_filter', 'euaiactready_content_filter_nonce', true, false );
 			echo wp_kses_post( $nonce_field );
 
+			$levels = self::euaiactready_get_disclosure_levels();
 			?>
 			<select name="euaiactready_ai_content_filter">
 				<option value=""><?php esc_html_e( 'All AI Status', 'eu-ai-act-ready' ); ?></option>
-				<option value="1" <?php selected( $selected, '1' ); ?>><?php esc_html_e( 'AI Content', 'eu-ai-act-ready' ); ?></option>
-				<option value="0" <?php selected( $selected, '0' ); ?>><?php esc_html_e( 'Non-AI Content', 'eu-ai-act-ready' ); ?></option>
+				<?php foreach ( $levels as $value => $label ) : ?>
+				<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $selected, $value ); ?>>
+					<?php echo esc_html( $label ); ?>
+				</option>
+				<?php endforeach; ?>
 			</select>
 			<?php
 		}
@@ -262,7 +357,7 @@ class EUAIACTREADY_Post_Meta_Box {
 	public function euaiactready_filter_by_ai_content( $query ) {
 		global $pagenow, $typenow;
 
-		if ( ! is_admin() || 'edit.php' !== $pagenow || ! in_array( $typenow, array( 'post', 'page' ), true ) ) {
+		if ( ! is_admin() || 'edit.php' !== $pagenow || ! in_array( $typenow, self::euaiactready_get_all_enabled_post_types(), true ) ) {
 			return $query;
 		}
 
@@ -282,35 +377,56 @@ class EUAIACTREADY_Post_Meta_Box {
 
 		$filter_value = sanitize_text_field( wp_unslash( $_GET['euaiactready_ai_content_filter'] ) );
 
-		if ( '1' === $filter_value ) {
-			// Show only AI content.
-			$query->set(
-				'meta_query',
-				array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Intentional filter on post meta.
-					array(
-						'key'     => '_euaiactready_ai_content',
-						'value'   => '1',
-						'compare' => '=',
-					),
-				)
-			);
-		} elseif ( '0' === $filter_value ) {
-			// Show only non-AI content (posts without meta or with meta = 0).
-			$query->set(
-				'meta_query',
-				array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Intentional filter on post meta.
-					'relation' => 'OR',
-					array(
-						'key'     => '_euaiactready_ai_content',
-						'value'   => '0',
-						'compare' => '=',
-					),
-					array(
-						'key'     => '_euaiactready_ai_content',
-						'compare' => 'NOT EXISTS',
-					),
-				)
-			);
+		// Build meta queries per disclosure level; handle legacy '1'/'0' values for backward compat.
+		$meta_queries = array(
+			'none'               => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'relation' => 'OR',
+				array(
+					'key'     => '_euaiactready_ai_content',
+					'value'   => 'none',
+					'compare' => '=',
+				),
+				array(
+					'key'     => '_euaiactready_ai_content',
+					'value'   => '0',
+					'compare' => '=',
+				),
+				array(
+					'key'     => '_euaiactready_ai_content',
+					'compare' => 'NOT EXISTS',
+				),
+			),
+			'assisted'           => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				array(
+					'key'     => '_euaiactready_ai_content',
+					'value'   => 'assisted',
+					'compare' => '=',
+				),
+			),
+			'generated'          => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'relation' => 'OR',
+				array(
+					'key'     => '_euaiactready_ai_content',
+					'value'   => 'generated',
+					'compare' => '=',
+				),
+				array(
+					'key'     => '_euaiactready_ai_content',
+					'value'   => '1',
+					'compare' => '=',
+				),
+			),
+			'generated_reviewed' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				array(
+					'key'     => '_euaiactready_ai_content',
+					'value'   => 'generated_reviewed',
+					'compare' => '=',
+				),
+			),
+		);
+
+		if ( isset( $meta_queries[ $filter_value ] ) ) {
+			$query->set( 'meta_query', $meta_queries[ $filter_value ] );
 		}
 
 		return $query;
@@ -339,10 +455,10 @@ class EUAIACTREADY_Post_Meta_Box {
 	public function euaiactready_handle_bulk_actions( $redirect_to, $doaction, $post_ids ) {
 		if ( 'mark_as_ai' === $doaction ) {
 			foreach ( $post_ids as $post_id ) {
-				$was_ai = get_post_meta( $post_id, '_euaiactready_ai_content', true );
-				update_post_meta( $post_id, '_euaiactready_ai_content', '1' );
-				// Add timestamp when first marked as AI.
-				if ( '1' !== $was_ai ) {
+				update_post_meta( $post_id, '_euaiactready_ai_content', 'generated' );
+				// Set timestamp if not already set (also backfills legacy posts without a date).
+				$existing_date = get_post_meta( $post_id, '_euaiactready_ai_content_marked_date', true );
+				if ( empty( $existing_date ) ) {
 					$marked_datetime = current_datetime();
 					update_post_meta( $post_id, '_euaiactready_ai_content_marked_date', $marked_datetime->getTimestamp() );
 				}
@@ -352,7 +468,7 @@ class EUAIACTREADY_Post_Meta_Box {
 			$redirect_to = add_query_arg( 'euaiactready_bulk_ai_marked', count( $post_ids ), $redirect_to );
 		} elseif ( 'unmark_as_ai' === $doaction ) {
 			foreach ( $post_ids as $post_id ) {
-				update_post_meta( $post_id, '_euaiactready_ai_content', '0' );
+				update_post_meta( $post_id, '_euaiactready_ai_content', 'none' );
 			}
 			// Remove the opposite action parameter if it exists.
 			$redirect_to = remove_query_arg( 'euaiactready_bulk_ai_marked', $redirect_to );
@@ -400,17 +516,19 @@ class EUAIACTREADY_Post_Meta_Box {
 	 * @param string $post_type Post type.
 	 */
 	public function euaiactready_add_quick_edit_field( $column_name, $post_type ) {
-		if ( 'ai_content' !== $column_name || ! in_array( $post_type, array( 'post', 'page' ), true ) ) {
+		if ( 'ai_content' !== $column_name || ! in_array( $post_type, self::euaiactready_get_all_enabled_post_types(), true ) ) {
 			return;
 		}
+		$levels = self::euaiactready_get_disclosure_levels();
 		?>
 		<fieldset class="inline-edit-col-right">
 			<div class="inline-edit-col">
 				<label>
 					<span class="title"><?php esc_html_e( 'AI Content', 'eu-ai-act-ready' ); ?></span>
 					<select name="euaiactready_content">
-						<option value="1"><?php esc_html_e( 'Yes', 'eu-ai-act-ready' ); ?></option>
-						<option value="0"><?php esc_html_e( 'No', 'eu-ai-act-ready' ); ?></option>
+						<?php foreach ( $levels as $value => $label ) : ?>
+						<option value="<?php echo esc_attr( $value ); ?>"><?php echo esc_html( $label ); ?></option>
+						<?php endforeach; ?>
 					</select>
 				</label>
 			</div>
@@ -445,18 +563,33 @@ class EUAIACTREADY_Post_Meta_Box {
 			return;
 		}
 
-		$ai_content = sanitize_text_field( wp_unslash( $_POST['euaiactready_content'] ) );
+		$new_value = sanitize_key( wp_unslash( $_POST['euaiactready_content'] ) );
 
-		if ( '1' === $ai_content ) {
-			$was_ai = get_post_meta( $post_id, '_euaiactready_ai_content', true );
-			update_post_meta( $post_id, '_euaiactready_ai_content', '1' );
-			// Add timestamp when first marked as AI.
-			if ( '1' !== $was_ai ) {
+		// Legacy value migration: '1' → 'generated', '0' → 'none'.
+		if ( '1' === $new_value ) {
+			$new_value = 'generated';
+		} elseif ( '0' === $new_value ) {
+			$new_value = 'none';
+		}
+
+		$allowed = array_keys( self::euaiactready_get_disclosure_levels() );
+		if ( ! in_array( $new_value, $allowed, true ) ) {
+			$new_value = 'none';
+		}
+
+		$was_ai = self::euaiactready_normalize_disclosure_value(
+			get_post_meta( $post_id, '_euaiactready_ai_content', true )
+		);
+
+		update_post_meta( $post_id, '_euaiactready_ai_content', $new_value );
+
+		// Set timestamp when content is AI and no date exists yet (also backfills legacy posts).
+		if ( 'none' !== $new_value ) {
+			$existing_date = get_post_meta( $post_id, '_euaiactready_ai_content_marked_date', true );
+			if ( empty( $existing_date ) ) {
 				$marked_datetime = current_datetime();
 				update_post_meta( $post_id, '_euaiactready_ai_content_marked_date', $marked_datetime->getTimestamp() );
 			}
-		} else {
-			update_post_meta( $post_id, '_euaiactready_ai_content', '0' );
 		}
 	}
 
@@ -474,9 +607,10 @@ class EUAIACTREADY_Post_Meta_Box {
 		}
 
 		$ai_content = get_post_meta( $post->ID, '_euaiactready_ai_content', true );
+		$disclosure = self::euaiactready_normalize_disclosure_value( $ai_content );
 
-		if ( '1' === $ai_content ) {
-			// Already marked as AI; show unmark option.
+		if ( 'none' !== $disclosure ) {
+			// Currently marked as AI; show unmark option.
 			$actions['ai_unmark'] = sprintf(
 				'<a href="#" class="ai-toggle-status" data-post-id="%d" data-action="unmark" data-nonce="%s">%s</a>',
 				$post->ID,
@@ -484,7 +618,7 @@ class EUAIACTREADY_Post_Meta_Box {
 				esc_html__( 'Unmark as AI Content', 'eu-ai-act-ready' )
 			);
 		} else {
-			// Not marked as AI; show mark option.
+			// Not marked as AI; show mark option (defaults to 'generated').
 			$actions['ai_mark'] = sprintf(
 				'<a href="#" class="ai-toggle-status" data-post-id="%d" data-action="mark" data-nonce="%s">%s</a>',
 				$post->ID,
@@ -528,24 +662,25 @@ class EUAIACTREADY_Post_Meta_Box {
 		$action = isset( $_POST['action_type'] ) ? sanitize_text_field( wp_unslash( $_POST['action_type'] ) ) : '';
 
 		if ( 'mark' === $action ) {
-			$was_ai = get_post_meta( $post_id, '_euaiactready_ai_content', true );
-			update_post_meta( $post_id, '_euaiactready_ai_content', '1' );
-			if ( '1' !== $was_ai ) {
+			update_post_meta( $post_id, '_euaiactready_ai_content', 'generated' );
+			// Set timestamp if not already set (also backfills legacy posts without a date).
+			$existing_date = get_post_meta( $post_id, '_euaiactready_ai_content_marked_date', true );
+			if ( empty( $existing_date ) ) {
 				$marked_datetime = current_datetime();
 				update_post_meta( $post_id, '_euaiactready_ai_content_marked_date', $marked_datetime->getTimestamp() );
 			}
 			wp_send_json_success(
 				array(
 					'message'    => esc_html__( 'Marked as AI content.', 'eu-ai-act-ready' ),
-					'new_status' => '1',
+					'new_status' => 'generated',
 				)
 			);
 		} elseif ( 'unmark' === $action ) {
-			update_post_meta( $post_id, '_euaiactready_ai_content', '0' );
+			update_post_meta( $post_id, '_euaiactready_ai_content', 'none' );
 			wp_send_json_success(
 				array(
 					'message'    => esc_html__( 'Unmarked as AI content.', 'eu-ai-act-ready' ),
-					'new_status' => '0',
+					'new_status' => 'none',
 				)
 			);
 		} else {

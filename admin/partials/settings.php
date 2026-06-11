@@ -52,10 +52,22 @@ if ( isset( $_POST['save_settings'] ) && check_admin_referer( 'euaiactready_sett
 		update_option( 'euaiactready_media_confidence_threshold', floatval( $euaiactready_post_data['media_confidence_threshold'] ) );
 	}
 
+	// Enabled post types for AI content disclosure.
+	$euaiactready_raw_types    = isset( $euaiactready_post_data['enabled_post_types'] ) && is_array( $euaiactready_post_data['enabled_post_types'] )
+		? $euaiactready_post_data['enabled_post_types']
+		: array();
+	$euaiactready_saved_types  = array_values( array_filter( array_map( 'sanitize_key', $euaiactready_raw_types ) ) );
+	update_option( 'euaiactready_enabled_post_types', $euaiactready_saved_types );
+
 	$euaiactready_settings_saved = true;
 }
 
 // Get current settings.
+$euaiactready_enabled_post_types = get_option( 'euaiactready_enabled_post_types', array( 'post', 'page' ) );
+if ( ! is_array( $euaiactready_enabled_post_types ) ) {
+	$euaiactready_enabled_post_types = array( 'post', 'page' );
+}
+
 $euaiactready_transparency_enabled = get_option( 'euaiactready_transparency_enabled', true );
 $euaiactready_notice_style         = get_option( 'euaiactready_notice_style', EUAIACTREADY_DEFAULT_NOTICE_STYLE );
 $euaiactready_notice_message       = sanitize_text_field( get_option( 'euaiactready_notice_message', '' ) );
@@ -73,7 +85,7 @@ $euaiactready_media_label_style          = get_option( 'euaiactready_media_label
 $euaiactready_media_confidence_threshold = get_option( 'euaiactready_media_confidence_threshold', EUAIACTREADY_DEFAULT_MEDIA_CONFIDENCE_THRESHOLD );
 
 $euaiactready_tab_definitions = array(
-	'transparency' => __( 'Page/Post Transparency', 'eu-ai-act-ready' ),
+	'transparency' => __( 'Content Transparency', 'eu-ai-act-ready' ),
 	'media'        => __( 'Media/Image Labels', 'eu-ai-act-ready' ),
 	'chatbot'      => __( 'Chatbot Transparency', 'eu-ai-act-ready' ),
 );
@@ -113,17 +125,17 @@ $euaiactready_tab_definitions = array(
 
 		<!-- Transparency Settings Tab -->
 		<div id="transparency-tab" class="tab-content" style="<?php echo esc_attr( 'transparency' === $euaiactready_active_tab ? '' : 'display:none;' ); ?>">
-			<h3><?php esc_html_e( 'Page/Post Transparency', 'eu-ai-act-ready' ); ?></h3>
-			<p class="description"><?php esc_html_e( 'Display transparency notices on pages and posts that contain AI-generated content.', 'eu-ai-act-ready' ); ?></p>
+			<h3><?php esc_html_e( 'Content Transparency', 'eu-ai-act-ready' ); ?></h3>
+			<p class="description"><?php esc_html_e( 'Display transparency notices on any content marked as AI-generated.', 'eu-ai-act-ready' ); ?></p>
 
 			<!-- How It Works Section -->
 			<div class="how-it-works-section">
 				<h4><?php esc_html_e( 'How It Works', 'eu-ai-act-ready' ); ?></h4>
 				<p><?php esc_html_e( 'To display transparency notices, you must manually mark your content as AI-generated:', 'eu-ai-act-ready' ); ?></p>
 				<ol>
-					<li><strong><?php esc_html_e( 'Edit Content:', 'eu-ai-act-ready' ); ?></strong> <?php esc_html_e( 'Open the post or page you want to label in the WordPress editor.', 'eu-ai-act-ready' ); ?></li>
+					<li><strong><?php esc_html_e( 'Edit Content:', 'eu-ai-act-ready' ); ?></strong> <?php esc_html_e( 'Open the content item you want to label in the WordPress editor.', 'eu-ai-act-ready' ); ?></li>
 					<li><strong><?php esc_html_e( 'Mark as AI:', 'eu-ai-act-ready' ); ?></strong> <?php esc_html_e( 'Look for the "EU AI Act Ready" box in the sidebar (or use Quick Edit) and check "Mark as AI-Generated".', 'eu-ai-act-ready' ); ?></li>
-					<li><strong><?php esc_html_e( 'Frontend Display:', 'eu-ai-act-ready' ); ?></strong> <?php esc_html_e( 'The transparency notice/badge will now appear on that specific post or page.', 'eu-ai-act-ready' ); ?></li>
+					<li><strong><?php esc_html_e( 'Frontend Display:', 'eu-ai-act-ready' ); ?></strong> <?php esc_html_e( 'The transparency notice/badge will now appear on that specific content item.', 'eu-ai-act-ready' ); ?></li>
 				</ol>
 
 				<div class="warning-box">
@@ -174,6 +186,44 @@ $euaiactready_tab_definitions = array(
 					<td>
 					<input type="checkbox" id="show_in_excerpts" name="show_in_excerpts" value="1" <?php checked( $euaiactready_show_in_excerpts, true ); ?>>
 						<p class="description"><?php esc_html_e( 'Add AI badge to post excerpts (archives, search results).', 'eu-ai-act-ready' ); ?></p>
+					</td>
+				</tr>
+			</table>
+
+			<h3><?php esc_html_e( 'Content Types', 'eu-ai-act-ready' ); ?></h3>
+			<p class="description"><?php esc_html_e( 'Select which post types should have the AI Content Disclosure meta box, list column, and bulk actions.', 'eu-ai-act-ready' ); ?></p>
+
+			<?php
+			$euaiactready_public_post_types = get_post_types( array( 'public' => true ), 'objects' );
+			// Exclude attachment - it is handled by the Media/Image Labels section.
+			unset( $euaiactready_public_post_types['attachment'] );
+			?>
+
+			<table class="form-table">
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Enabled Post Types', 'eu-ai-act-ready' ); ?></th>
+					<td>
+						<?php if ( empty( $euaiactready_public_post_types ) ) : ?>
+							<p class="description"><?php esc_html_e( 'No public post types found.', 'eu-ai-act-ready' ); ?></p>
+						<?php else : ?>
+							<?php foreach ( $euaiactready_public_post_types as $euaiactready_pt_slug => $euaiactready_pt_obj ) : ?>
+								<?php
+								$euaiactready_pt_label   = $euaiactready_pt_obj->labels->singular_name;
+								$euaiactready_pt_checked = in_array( $euaiactready_pt_slug, $euaiactready_enabled_post_types, true );
+								?>
+								<label style="display:block; margin-bottom:6px;">
+									<input type="checkbox"
+										name="enabled_post_types[]"
+										value="<?php echo esc_attr( $euaiactready_pt_slug ); ?>"
+										<?php checked( $euaiactready_pt_checked ); ?>>
+									<strong><?php echo esc_html( $euaiactready_pt_label ); ?></strong>
+									<code style="font-size:11px; color:#666;"><?php echo esc_html( $euaiactready_pt_slug ); ?></code>
+								</label>
+							<?php endforeach; ?>
+							<p class="description" style="margin-top:8px;">
+								<?php esc_html_e( 'Posts and pages are enabled by default. Custom post types from installed themes and plugins appear here once activated.', 'eu-ai-act-ready' ); ?>
+							</p>
+						<?php endif; ?>
 					</td>
 				</tr>
 			</table>
