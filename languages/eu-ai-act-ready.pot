@@ -196,16 +196,16 @@ msgstr ""
 msgid "%d items processed successfully."
 msgstr ""
 
-#: admin/partials/ai-content.php:38
-msgid "Manage posts and pages that have been marked as AI-generated."
+#: admin/partials/ai-content.php:48
+msgid "Manage content that has been marked with an AI disclosure level."
 msgstr ""
 
 #: admin/partials/ai-content.php:45
 msgid "No content has been manually marked as AI-generated yet."
 msgstr ""
 
-#: admin/partials/ai-content.php:47
-msgid "You can mark posts and pages in the editor."
+#: admin/partials/ai-content.php:57
+msgid "You can set the disclosure level in the editor sidebar when editing any content."
 msgstr ""
 
 #: admin/partials/ai-content.php:54
@@ -429,7 +429,9 @@ msgid "Deactivated"
 msgstr ""
 
 #: admin/partials/dashboard.php:231
-msgid "Post/Page Transparency"
+#: admin/partials/settings.php:76
+#: admin/partials/settings.php:116
+msgid "Content Transparency"
 msgstr ""
 
 #: admin/partials/dashboard.php:245
@@ -526,17 +528,13 @@ msgstr ""
 msgid "Use Caption or Badge style for best visibility."
 msgstr ""
 
-#: admin/partials/settings.php:76
-#: admin/partials/settings.php:116
-msgid "Page/Post Transparency"
-msgstr ""
 
 #: admin/partials/settings.php:87
 msgid "Settings saved successfully!"
 msgstr ""
 
 #: admin/partials/settings.php:117
-msgid "Display transparency notices on pages and posts that contain AI-generated content."
+msgid "Display transparency notices on any content marked as AI-generated."
 msgstr ""
 
 #: admin/partials/settings.php:121
@@ -554,7 +552,7 @@ msgid "Edit Content:"
 msgstr ""
 
 #: admin/partials/settings.php:124
-msgid "Open the post or page you want to label in the WordPress editor."
+msgid "Open the content item you want to label in the WordPress editor."
 msgstr ""
 
 #: admin/partials/settings.php:125
@@ -571,7 +569,7 @@ msgid "Frontend Display:"
 msgstr ""
 
 #: admin/partials/settings.php:126
-msgid "The transparency notice/badge will now appear on that specific post or page."
+msgid "The transparency notice/badge will now appear on that specific content item."
 msgstr ""
 
 #: admin/partials/settings.php:130

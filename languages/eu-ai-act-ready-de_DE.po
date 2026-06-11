@@ -565,8 +565,8 @@ msgid "How AI Image Analysis Works"
 msgstr "Wie die KI-Bildanalyse funktioniert"
 
 #: admin/partials/dashboard.php:231
-msgid "Post/Page Transparency"
-msgstr "Beitrags-/Seiten-Transparenz"
+msgid "Content Transparency"
+msgstr "Inhalts-Transparenz"
 
 #: admin/partials/dashboard.php:216
 msgid "The plugin is installed and running, but no transparency notices will appear on your website's frontend until you enable at least one feature below. Visit Settings to activate the transparency features you need."
@@ -669,16 +669,16 @@ msgid "Title"
 msgstr "Titel"
 
 #: admin/partials/ai-content.php:47
-msgid "You can mark posts and pages in the editor."
-msgstr "Sie können Beiträge und Seiten im Editor markieren."
+msgid "You can set the disclosure level in the editor sidebar when editing any content."
+msgstr "Sie können die Offenlegungsstufe in der Editor-Seitenleiste beim Bearbeiten beliebiger Inhalte festlegen."
 
 #: admin/partials/ai-content.php:45
 msgid "No content has been manually marked as AI-generated yet."
 msgstr "Es wurden noch keine Inhalte manuell als KI-generiert markiert."
 
 #: admin/partials/ai-content.php:38
-msgid "Manage posts and pages that have been marked as AI-generated."
-msgstr "Verwalten Sie Beiträge und Seiten, die als KI-generiert markiert wurden."
+msgid "Manage content that has been marked with an AI disclosure level."
+msgstr "Verwalten Sie Inhalte, die mit einem KI-Offenlegungsgrad markiert wurden."
 
 #: admin/partials/ai-content.php:116
 msgid "Not set"
@@ -1066,8 +1066,8 @@ msgid "Important:"
 msgstr "Wichtig:"
 
 #: admin/partials/settings.php:126
-msgid "The transparency notice/badge will now appear on that specific post or page."
-msgstr "Der Transparenzhinweis/das Badge wird nun bei diesem spezifischen Beitrag oder dieser Seite angezeigt."
+msgid "The transparency notice/badge will now appear on that specific content item."
+msgstr "Der Transparenzhinweis/das Badge wird nun bei diesem spezifischen Inhalt angezeigt."
 
 #: admin/partials/settings.php:126
 #: admin/partials/settings.php:258
@@ -1083,8 +1083,8 @@ msgid "Mark as AI:"
 msgstr "Als KI markieren:"
 
 #: admin/partials/settings.php:124
-msgid "Open the post or page you want to label in the WordPress editor."
-msgstr "Öffnen Sie den Beitrag oder die Seite, die Sie im WordPress-Editor kennzeichnen möchten."
+msgid "Open the content item you want to label in the WordPress editor."
+msgstr "Öffnen Sie den Inhalt, den Sie im WordPress-Editor kennzeichnen möchten."
 
 #: admin/partials/settings.php:124
 msgid "Edit Content:"
@@ -1101,8 +1101,8 @@ msgid "How It Works"
 msgstr "So funktioniert’s"
 
 #: admin/partials/settings.php:117
-msgid "Display transparency notices on pages and posts that contain AI-generated content."
-msgstr "Zeigen Sie Transparenzhinweise auf Seiten und Beiträgen an, die KI-generierte Inhalte enthalten."
+msgid "Display transparency notices on any content marked as AI-generated."
+msgstr "Zeigen Sie Transparenzhinweise auf beliebigen als KI-generiert markierten Inhalten an."
 
 #: admin/partials/settings.php:87
 msgid "Settings saved successfully!"
@@ -1135,8 +1135,8 @@ msgstr "Medien-/Bildkennzeichnungen"
 
 #: admin/partials/settings.php:76
 #: admin/partials/settings.php:116
-msgid "Page/Post Transparency"
-msgstr "Seiten-/Beitrags-Transparenz"
+msgid "Content Transparency"
+msgstr "Inhalts-Transparenz"
 
 #: admin/partials/ai-images.php:224
 msgid "Actions"
