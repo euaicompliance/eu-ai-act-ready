@@ -31,13 +31,13 @@ class EUAIACTREADY_Content_Transparency {
 	}
 
 	/**
-	 * Add transparency notice to post/page content.
+	 * Add transparency notice to single content items (posts, pages, CPTs).
 	 *
 	 * @param string $content Post content.
 	 * @return string Modified content.
 	 */
 	public function euaiactready_add_content_notice( $content ) {
-		// Only show on single posts and pages.
+		// Only show on single content items (is_singular covers all enabled post types).
 		if ( ! is_singular() ) {
 			return $content;
 		}

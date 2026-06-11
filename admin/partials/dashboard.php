@@ -10,14 +10,21 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// Get manually marked AI content count (posts/pages).
+// Get manually marked AI content count (all enabled post types, all canonical + legacy values).
 $euaiactready_manually_marked_args = array(
-	'post_type'      => array( 'post', 'page' ),
+	'post_type'      => EUAIACTREADY_Post_Meta_Box::euaiactready_get_all_enabled_post_types(),
 	'post_status'    => 'any',
 	'posts_per_page' => -1,
 	'fields'         => 'ids', // Only get IDs for counting.
 	// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Meta query required to target manually flagged AI content.
 	'meta_query'     => array(
+		'relation' => 'OR',
+		array(
+			'key'     => '_euaiactready_ai_content',
+			'value'   => array( 'assisted', 'generated', 'generated_reviewed' ),
+			'compare' => 'IN',
+		),
+		// Backward compatibility: legacy posts stored '1' for AI content.
 		array(
 			'key'     => '_euaiactready_ai_content',
 			'value'   => '1',
@@ -26,17 +33,19 @@ $euaiactready_manually_marked_args = array(
 	),
 );
 $euaiactready_manually_marked_query = new WP_Query( $euaiactready_manually_marked_args );
-$euaiactready_total_count           = (int) $euaiactready_manually_marked_query->post_count;
 $euaiactready_manually_marked_posts = $euaiactready_manually_marked_query->posts; // IDs only.
 
-// Count posts and pages from the results.
-$euaiactready_posts_count = 0;
-$euaiactready_pages_count = 0;
+// Count posts and pages separately for the stat cards; CPTs add to the total.
+$euaiactready_posts_count   = 0;
+$euaiactready_pages_count   = 0;
+$euaiactready_content_count = 0;
 
 foreach ( $euaiactready_manually_marked_posts as $euaiactready_marked_post_id ) {
-	if ( 'post' === get_post_type( $euaiactready_marked_post_id ) ) {
+	++$euaiactready_content_count;
+	$euaiactready_marked_type = get_post_type( $euaiactready_marked_post_id );
+	if ( 'post' === $euaiactready_marked_type ) {
 		++$euaiactready_posts_count;
-	} else {
+	} elseif ( 'page' === $euaiactready_marked_type ) {
 		++$euaiactready_pages_count;
 	}
 }
@@ -60,8 +69,8 @@ $euaiactready_ai_images_args  = array(
 $euaiactready_ai_images_query = new WP_Query( $euaiactready_ai_images_args );
 $euaiactready_ai_images_count = (int) $euaiactready_ai_images_query->post_count;
 
-// Calculate total AI content count (posts + pages + images).
-$euaiactready_total_count = $euaiactready_posts_count + $euaiactready_pages_count + $euaiactready_ai_images_count;
+// Calculate total AI content count (all enabled post types + images).
+$euaiactready_total_count = $euaiactready_content_count + $euaiactready_ai_images_count;
 
 // Get manually unmarked images count.
 $euaiactready_manually_unmarked_args  = array(
@@ -228,7 +237,7 @@ wp_reset_postdata();
 						<h3 class="<?php echo esc_attr( $euaiactready_content_transparency_enabled ? 'activated' : 'deactivated' ); ?>">
 							<?php echo esc_html( $euaiactready_content_transparency_enabled ? __( 'Activated', 'eu-ai-act-ready' ) : __( 'Deactivated', 'eu-ai-act-ready' ) ); ?>
 						</h3>
-						<p><?php esc_html_e( 'Post/Page Transparency', 'eu-ai-act-ready' ); ?></p>
+						<p><?php esc_html_e( 'Content Transparency', 'eu-ai-act-ready' ); ?></p>
 					</div>
 				</a>
 			</div>

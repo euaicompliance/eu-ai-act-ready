@@ -19,6 +19,13 @@ $euaiactready_manually_marked_args = array(
 	'order'          => 'DESC',
 	// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Filtering flagged posts requires metadata lookup.
 	'meta_query'     => array(
+		'relation' => 'OR',
+		array(
+			'key'     => '_euaiactready_ai_content',
+			'value'   => array( 'assisted', 'generated', 'generated_reviewed' ),
+			'compare' => 'IN',
+		),
+		// Backward compatibility: old posts stored '1' for AI content.
 		array(
 			'key'     => '_euaiactready_ai_content',
 			'value'   => '1',
@@ -31,12 +38,14 @@ $euaiactready_manually_marked_query   = new WP_Query( $euaiactready_manually_mar
 $euaiactready_manually_marked_content = $euaiactready_manually_marked_query->posts;
 
 wp_reset_postdata();
+
+$euaiactready_disclosure_levels = EUAIACTREADY_Post_Meta_Box::euaiactready_get_disclosure_levels();
 ?>
 
 <div class="wrap euaiactready-dashboard">
 	<div class="euaiactready-header">
 		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
-		<p><?php esc_html_e( 'Manage posts and pages that have been marked as AI-generated.', 'eu-ai-act-ready' ); ?></p>
+		<p><?php esc_html_e( 'Manage content that has been marked with an AI disclosure level.', 'eu-ai-act-ready' ); ?></p>
 	</div>
 
 	<div class="euaiactready-detections euaiactready-section-content">
@@ -103,7 +112,18 @@ wp_reset_postdata();
 								</div>
 							</td>
 							<td class="column-type">
-								<?php $euaiactready_dashicon = ( 'page' === $euaiactready_content->post_type ) ? 'admin-page' : 'admin-post'; ?>
+								<?php
+								if ( 'page' === $euaiactready_content->post_type ) {
+									$euaiactready_dashicon = 'admin-page';
+								} elseif ( 'post' === $euaiactready_content->post_type ) {
+									$euaiactready_dashicon = 'admin-post';
+								} else {
+									$euaiactready_pt_obj_icon = get_post_type_object( $euaiactready_content->post_type );
+									$euaiactready_dashicon    = ( $euaiactready_pt_obj_icon && ! empty( $euaiactready_pt_obj_icon->menu_icon ) && str_starts_with( $euaiactready_pt_obj_icon->menu_icon, 'dashicons-' ) )
+										? ltrim( $euaiactready_pt_obj_icon->menu_icon, 'dashicons-' )
+										: 'admin-post';
+								}
+								?>
 								<span class="type-indicator">
 									<span class="dashicons dashicons-<?php echo esc_attr( $euaiactready_dashicon ); ?>"></span>
 									<?php echo esc_html( $euaiactready_type_label ); ?>
