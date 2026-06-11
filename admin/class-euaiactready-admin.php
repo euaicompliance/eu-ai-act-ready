@@ -486,8 +486,8 @@ class EUAIACTREADY_Admin {
 			return;
 		}
 
-		// Update the meta to unmark it.
-		$result = update_post_meta( $post_id, '_euaiactready_ai_content', '0' );
+		// Update the meta to unmark it (use canonical 'none', not legacy '0').
+		$result = update_post_meta( $post_id, '_euaiactready_ai_content', 'none' );
 
 		if ( false !== $result ) {
 			wp_send_json_success(
@@ -685,13 +685,13 @@ class EUAIACTREADY_Admin {
 				}
 
 				if ( 'mark_ai' === $action ) {
-					update_post_meta( $id, '_euaiactready_ai_content', '1' );
+					// Use canonical 'generated' (not legacy '1') for new marks from the dashboard.
+					update_post_meta( $id, '_euaiactready_ai_content', 'generated' );
 					update_post_meta( $id, '_euaiactready_ai_content_marked_date', current_datetime()->getTimestamp() );
 					++$count;
 				} elseif ( 'unmark_ai' === $action ) {
-					delete_post_meta( $id, '_euaiactready_ai_content' );
-					// Ensure manual meta is removed if present.
-					delete_post_meta( $id, '_euaiactready_ai_content_marked_date' );
+					// Use canonical 'none' (not legacy '0') and keep the date for audit trail.
+					update_post_meta( $id, '_euaiactready_ai_content', 'none' );
 					++$count;
 				}
 			} elseif ( 'image' === $item_type ) {

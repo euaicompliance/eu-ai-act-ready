@@ -47,19 +47,17 @@ class EUAIACTREADY_Content_Transparency {
 			return $content;
 		}
 
-		// Check if manually marked as AI content.
 		$ai_content = get_post_meta( $post->ID, '_euaiactready_ai_content', true );
-		if ( '1' !== $ai_content ) {
+		$disclosure = EUAIACTREADY_Post_Meta_Box::euaiactready_normalize_disclosure_value( $ai_content );
+
+		if ( 'none' === $disclosure ) {
 			return $content;
 		}
 
 		$notice_style   = get_option( 'euaiactready_notice_style', EUAIACTREADY_DEFAULT_NOTICE_STYLE );
 		$custom_message = sanitize_text_field( get_option( 'euaiactready_notice_message', '' ) );
 
-		// Generate notice markup for manually marked content.
-		// Note: $custom_message is sanitized above and escaped in generate_notice_html().
-		// $content is already sanitized by WordPress on save via wp_kses_post().
-		$notice_html = $this->euaiactready_generate_notice_html( $notice_style, $custom_message );
+		$notice_html = $this->euaiactready_generate_notice_html( $notice_style, $custom_message, $disclosure );
 
 		// Return notice HTML (already properly escaped) prepended to content.
 		return $notice_html . $content;
@@ -89,11 +87,13 @@ class EUAIACTREADY_Content_Transparency {
 		}
 
 		$ai_content = get_post_meta( $id, '_euaiactready_ai_content', true );
-		if ( '1' === $ai_content ) {
+		$disclosure = EUAIACTREADY_Post_Meta_Box::euaiactready_normalize_disclosure_value( $ai_content );
+
+		if ( 'none' !== $disclosure ) {
 			$icon  = wp_kses( EUAIACTREADY::euaiactready_get_ai_icon( 14, '#ffffff' ), EUAIACTREADY::euaiactready_get_svg_allowed_html() );
 			$badge = sprintf(
 				' <span class="eu-ai-act-ready-badge eu-ai-act-ready-badge-title" title="%1$s">%2$s %3$s</span>',
-				esc_attr__( 'This content includes AI-generated text.', 'eu-ai-act-ready' ),
+				esc_attr( $this->euaiactready_get_disclosure_badge_title( $disclosure ) ),
 				$icon,
 				esc_html__( 'AI', 'eu-ai-act-ready' )
 			);
@@ -104,14 +104,38 @@ class EUAIACTREADY_Content_Transparency {
 	}
 
 	/**
+	 * Return the badge tooltip title for each disclosure level.
+	 *
+	 * @param string $disclosure Disclosure level.
+	 * @return string Translated tooltip text.
+	 */
+	private function euaiactready_get_disclosure_badge_title( $disclosure ) {
+		$titles = array(
+			'assisted'           => __( 'This content was created with AI assistance.', 'eu-ai-act-ready' ),
+			'generated'          => __( 'This content includes AI-generated text.', 'eu-ai-act-ready' ),
+			'generated_reviewed' => __( 'This content was AI-generated and reviewed by a human editor.', 'eu-ai-act-ready' ),
+		);
+		return isset( $titles[ $disclosure ] ) ? $titles[ $disclosure ] : $titles['generated'];
+	}
+
+	/**
 	 * Generate notice HTML based on style.
 	 *
-	 * @param string $style          Notice style.
-	 * @param string $custom_message Custom message.
+	 * @param string $style           Notice style.
+	 * @param string $custom_message  Custom message (overrides per-type defaults when non-empty).
+	 * @param string $disclosure_type Disclosure level: 'assisted', 'generated', or 'generated_reviewed'.
 	 * @return string Notice HTML.
 	 */
-	private function euaiactready_generate_notice_html( $style, $custom_message = '' ) {
-		$default_message = __( 'This content includes AI-generated text.', 'eu-ai-act-ready' );
+	private function euaiactready_generate_notice_html( $style, $custom_message = '', $disclosure_type = 'generated' ) {
+		$default_messages = array(
+			'assisted'           => __( 'This content was created with AI assistance.', 'eu-ai-act-ready' ),
+			'generated'          => __( 'This content includes AI-generated text.', 'eu-ai-act-ready' ),
+			'generated_reviewed' => __( 'This content was AI-generated and reviewed by a human editor.', 'eu-ai-act-ready' ),
+		);
+
+		$default_message = isset( $default_messages[ $disclosure_type ] )
+			? $default_messages[ $disclosure_type ]
+			: $default_messages['generated'];
 
 		$message = ! empty( $custom_message ) ? $custom_message : $default_message;
 
@@ -239,15 +263,19 @@ class EUAIACTREADY_Content_Transparency {
 		if ( $screen && 'post' === $screen->base ) {
 			global $post;
 			if ( $post ) {
-				// Check if manually marked as AI content.
 				$ai_content = get_post_meta( $post->ID, '_euaiactready_ai_content', true );
-				if ( '1' === $ai_content ) {
+				$disclosure = EUAIACTREADY_Post_Meta_Box::euaiactready_normalize_disclosure_value( $ai_content );
+
+				if ( 'none' !== $disclosure ) {
+					$levels = EUAIACTREADY_Post_Meta_Box::euaiactready_get_disclosure_levels();
+					$label  = isset( $levels[ $disclosure ] ) ? $levels[ $disclosure ] : $disclosure;
 
 					printf(
-						'<div class="notice notice-info"><p><strong>%1$s %2$s</strong> %3$s</p></div>',
+						'<div class="notice notice-info"><p><strong>%1$s %2$s:</strong> %3$s %4$s</p></div>',
 						wp_kses( EUAIACTREADY::euaiactready_get_ai_icon( 16, '#0073aa' ), EUAIACTREADY::euaiactready_get_svg_allowed_html() ),
-						esc_html__( 'AI Content Marked:', 'eu-ai-act-ready' ),
-						esc_html__( 'This post is marked as AI-generated content. A transparency notice will be displayed to visitors.', 'eu-ai-act-ready' )
+						esc_html__( 'AI Content Marked', 'eu-ai-act-ready' ),
+						esc_html( $label ),
+						esc_html__( '- a transparency notice will be displayed to visitors.', 'eu-ai-act-ready' )
 					);
 				}
 			}
