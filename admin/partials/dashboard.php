@@ -38,6 +38,7 @@ $euaiactready_manually_marked_posts = $euaiactready_manually_marked_query->posts
 // Count posts and pages separately for the stat cards; CPTs add to the total.
 $euaiactready_posts_count   = 0;
 $euaiactready_pages_count   = 0;
+$euaiactready_cpts_count    = 0;
 $euaiactready_content_count = 0;
 
 foreach ( $euaiactready_manually_marked_posts as $euaiactready_marked_post_id ) {
@@ -47,8 +48,14 @@ foreach ( $euaiactready_manually_marked_posts as $euaiactready_marked_post_id ) 
 		++$euaiactready_posts_count;
 	} elseif ( 'page' === $euaiactready_marked_type ) {
 		++$euaiactready_pages_count;
+	} else {
+		++$euaiactready_cpts_count;
 	}
 }
+
+// Determine if any custom post types (beyond post/page) are enabled in settings.
+$euaiactready_enabled_types     = EUAIACTREADY_Post_Meta_Box::euaiactready_get_all_enabled_post_types();
+$euaiactready_has_enabled_cpts  = count( array_diff( $euaiactready_enabled_types, array( 'post', 'page' ) ) ) > 0;
 
 // Get AI images count.
 $euaiactready_ai_images_args  = array(
@@ -173,6 +180,20 @@ wp_reset_postdata();
 				</div>
 			</a>
 		</div>
+
+		<?php if ( $euaiactready_has_enabled_cpts ) : ?>
+		<div class="stat-card">
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=eu-ai-act-ready-content' ) ); ?>">
+				<div class="stat-icon">
+					<span class="dashicons dashicons-layout"></span>
+				</div>
+				<div class="stat-content">
+				<h3><?php echo esc_html( number_format_i18n( $euaiactready_cpts_count ) ); ?></h3>
+					<p><?php esc_html_e( 'AI Custom Post Types Detected', 'eu-ai-act-ready' ); ?></p>
+				</div>
+			</a>
+		</div>
+		<?php endif; ?>
 
 		<div class="stat-card">
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=eu-ai-act-ready-images&tab=detected' ) ); ?>">
