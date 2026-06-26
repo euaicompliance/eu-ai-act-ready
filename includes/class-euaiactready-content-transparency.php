@@ -16,9 +16,13 @@ class EUAIACTREADY_Content_Transparency {
 
 	/**
 	 * Initialize transparency notices.
+	 *
+	 * @param bool $register_hooks Pass false to create a render-only instance (used by the shortcode).
 	 */
-	public function __construct() {
-		$this->euaiactready_init_hooks();
+	public function __construct( $register_hooks = true ) {
+		if ( $register_hooks ) {
+			$this->euaiactready_init_hooks();
+		}
 	}
 
 	/**
@@ -28,6 +32,17 @@ class EUAIACTREADY_Content_Transparency {
 		add_filter( 'the_content', array( $this, 'euaiactready_add_content_notice' ), 999 );
 		add_filter( 'the_title', array( $this, 'euaiactready_append_ai_badge_to_title' ), 10, 2 );
 		add_action( 'admin_notices', array( $this, 'euaiactready_show_admin_notices' ) );
+		add_action( 'wp_head', array( $this, 'euaiactready_add_schema_org_markup' ) );
+
+		if ( get_option( 'euaiactready_rss_disclosure_enabled', 0 ) ) {
+			add_filter( 'the_content_feed', array( $this, 'euaiactready_add_rss_disclosure' ) );
+			add_filter( 'the_excerpt_rss', array( $this, 'euaiactready_add_rss_disclosure' ) );
+			add_action( 'rss2_item', array( $this, 'euaiactready_rss_add_dc_description' ) );
+		}
+
+		if ( get_option( 'euaiactready_rss_title_prefix', 0 ) ) {
+			add_filter( 'the_title_rss', array( $this, 'euaiactready_prefix_rss_title' ) );
+		}
 	}
 
 	/**
@@ -37,6 +52,10 @@ class EUAIACTREADY_Content_Transparency {
 	 * @return string Modified content.
 	 */
 	public function euaiactready_add_content_notice( $content ) {
+		if ( ! get_option( 'euaiactready_transparency_enabled', true ) ) {
+			return $content;
+		}
+
 		// Only show on single content items (is_singular covers all enabled post types).
 		if ( ! is_singular() ) {
 			return $content;
@@ -71,6 +90,10 @@ class EUAIACTREADY_Content_Transparency {
 	 * @return string Modified title.
 	 */
 	public function euaiactready_append_ai_badge_to_title( $title, $id = null ) {
+		if ( ! get_option( 'euaiactready_transparency_enabled', true ) ) {
+			return $title;
+		}
+
 		// Only show in loops (archives, search, etc.).
 		if ( is_admin() || ! in_the_loop() || is_singular() ) {
 			return $title;
@@ -104,12 +127,14 @@ class EUAIACTREADY_Content_Transparency {
 	}
 
 	/**
-	 * Return the badge tooltip title for each disclosure level.
+	 * Return the default disclosure message for a given disclosure level.
+	 *
+	 * Used by the badge tooltip, RSS disclosure, and shortcode fallback.
 	 *
 	 * @param string $disclosure Disclosure level.
-	 * @return string Translated tooltip text.
+	 * @return string Translated message text.
 	 */
-	private function euaiactready_get_disclosure_badge_title( $disclosure ) {
+	public function euaiactready_get_disclosure_badge_title( $disclosure ) {
 		$titles = array(
 			'assisted'           => __( 'This content was created with AI assistance.', 'eu-ai-act-ready' ),
 			'generated'          => __( 'This content includes AI-generated text.', 'eu-ai-act-ready' ),
@@ -119,14 +144,204 @@ class EUAIACTREADY_Content_Transparency {
 	}
 
 	/**
+	 * Append a plain-text AI disclosure to RSS feed content/excerpts for AI-marked posts.
+	 * Includes detected AI tool names when available.
+	 *
+	 * Fires on 'the_content_feed' and 'the_excerpt_rss'.
+	 *
+	 * @param string $content Feed content or excerpt.
+	 * @return string Modified content.
+	 */
+	public function euaiactready_add_rss_disclosure( $content ) {
+		$post_id = get_the_ID();
+		if ( ! $post_id ) {
+			return $content;
+		}
+
+		$raw        = get_post_meta( $post_id, '_euaiactready_ai_content', true );
+		$disclosure = EUAIACTREADY_Post_Meta_Box::euaiactready_normalize_disclosure_value( $raw );
+
+		if ( 'none' === $disclosure ) {
+			return $content;
+		}
+
+		$custom_message = sanitize_text_field( get_option( 'euaiactready_notice_message', '' ) );
+		$message        = ! empty( $custom_message ) ? $custom_message : $this->euaiactready_get_disclosure_badge_title( $disclosure );
+
+		$tool_names = $this->euaiactready_get_detected_tool_names();
+		if ( ! empty( $tool_names ) ) {
+			$message .= ' ' . sprintf(
+				/* translators: %s: comma-separated list of AI tool names. */
+				__( 'AI tools in use on this site: %s.', 'eu-ai-act-ready' ),
+				implode( ', ', $tool_names )
+			);
+		}
+
+		return $content . "\n\n" . sprintf(
+			/* translators: %s: AI disclosure message. */
+			__( '- AI Disclosure: %s', 'eu-ai-act-ready' ),
+			$message
+		);
+	}
+
+	/**
+	 * Output a <dc:description> element inside each RSS 2.0 <item> for AI-marked posts.
+	 *
+	 * WordPress already declares xmlns:dc in its RSS feed, so no namespace registration needed.
+	 * Fires on 'rss2_item'.
+	 */
+	public function euaiactready_rss_add_dc_description() {
+		$post_id = get_the_ID();
+		if ( ! $post_id ) {
+			return;
+		}
+
+		$raw        = get_post_meta( $post_id, '_euaiactready_ai_content', true );
+		$disclosure = EUAIACTREADY_Post_Meta_Box::euaiactready_normalize_disclosure_value( $raw );
+
+		if ( 'none' === $disclosure ) {
+			return;
+		}
+
+		$message    = $this->euaiactready_get_disclosure_badge_title( $disclosure );
+		$tool_names = $this->euaiactready_get_detected_tool_names();
+		if ( ! empty( $tool_names ) ) {
+			$message .= ' ' . sprintf(
+				/* translators: %s: comma-separated list of AI tool names. */
+				__( 'AI tools in use on this site: %s.', 'eu-ai-act-ready' ),
+				implode( ', ', $tool_names )
+			);
+		}
+
+		echo "\t\t<dc:description>" . esc_xml( $message ) . "</dc:description>\n";
+	}
+
+	/**
+	 * Output schema.org JSON-LD structured data on single AI-marked posts.
+	 *
+	 * Fires on 'wp_head'.
+	 */
+	public function euaiactready_add_schema_org_markup() {
+		if ( ! get_option( 'euaiactready_transparency_enabled', true ) ) {
+			return;
+		}
+
+		if ( ! is_singular() ) {
+			return;
+		}
+
+		$post_id = get_the_ID();
+		if ( ! $post_id ) {
+			return;
+		}
+
+		$raw        = get_post_meta( $post_id, '_euaiactready_ai_content', true );
+		$disclosure = EUAIACTREADY_Post_Meta_Box::euaiactready_normalize_disclosure_value( $raw );
+
+		if ( 'none' === $disclosure ) {
+			return;
+		}
+
+		$keywords = array( 'AI-generated content', 'EU AI Act Article 50' );
+
+		$disclosure_keywords = array(
+			'assisted'           => 'AI-assisted content',
+			'generated'          => 'AI-generated content',
+			'generated_reviewed' => 'AI-generated human-reviewed content',
+		);
+		if ( isset( $disclosure_keywords[ $disclosure ] ) ) {
+			$keywords[] = $disclosure_keywords[ $disclosure ];
+		}
+
+		$tool_names = $this->euaiactready_get_detected_tool_names();
+		foreach ( $tool_names as $name ) {
+			$keywords[] = $name;
+		}
+
+		$schema = array(
+			'@context'    => 'https://schema.org',
+			'@type'       => 'Article',
+			'name'        => get_the_title( $post_id ),
+			'url'         => get_permalink( $post_id ),
+			'description' => $this->euaiactready_get_disclosure_badge_title( $disclosure ),
+			'keywords'    => implode( ', ', $keywords ),
+		);
+
+		if ( ! empty( $tool_names ) ) {
+			$schema['creator'] = array_map(
+				static function ( $tool_name ) {
+					return array(
+						'@type' => 'SoftwareApplication',
+						'name'  => $tool_name,
+					);
+				},
+				$tool_names
+			);
+		}
+
+		$json = wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT );
+		if ( false === $json ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $json is produced by wp_json_encode(), which is safe for script content.
+		echo '<script type="application/ld+json">' . "\n" . $json . "\n" . '</script>' . "\n";
+	}
+
+	/**
+	 * Return names of all currently detected AI tools.
+	 *
+	 * @return string[]
+	 */
+	private function euaiactready_get_detected_tool_names() {
+		global $euaiactready_ai_tools_instance;
+		if ( ! ( $euaiactready_ai_tools_instance instanceof Euaiactready_AI_Tools ) ) {
+			return array();
+		}
+
+		$detected = $euaiactready_ai_tools_instance->get_detector()->get_detected();
+		$names    = array();
+		foreach ( $detected as $tool ) {
+			if ( ! empty( $tool['name'] ) ) {
+				$names[] = $tool['name'];
+			}
+		}
+		return $names;
+	}
+
+	/**
+	 * Prefix the RSS post title with "[AI Content]" for AI-marked posts.
+	 *
+	 * Fires on 'the_title_rss'.
+	 *
+	 * @param string $title Post title (already escaped for RSS by WordPress).
+	 * @return string Modified title.
+	 */
+	public function euaiactready_prefix_rss_title( $title ) {
+		$post_id = get_the_ID();
+		if ( ! $post_id ) {
+			return $title;
+		}
+
+		$raw        = get_post_meta( $post_id, '_euaiactready_ai_content', true );
+		$disclosure = EUAIACTREADY_Post_Meta_Box::euaiactready_normalize_disclosure_value( $raw );
+
+		if ( 'none' !== $disclosure ) {
+			$title = '[' . __( 'AI Content', 'eu-ai-act-ready' ) . '] ' . $title;
+		}
+
+		return $title;
+	}
+
+	/**
 	 * Generate notice HTML based on style.
 	 *
-	 * @param string $style           Notice style.
+	 * @param string $style           Notice style: 'banner', 'inline', 'badge', or 'modal'.
 	 * @param string $custom_message  Custom message (overrides per-type defaults when non-empty).
 	 * @param string $disclosure_type Disclosure level: 'assisted', 'generated', or 'generated_reviewed'.
 	 * @return string Notice HTML.
 	 */
-	private function euaiactready_generate_notice_html( $style, $custom_message = '', $disclosure_type = 'generated' ) {
+	public function euaiactready_generate_notice_html( $style, $custom_message = '', $disclosure_type = 'generated' ) {
 		$default_messages = array(
 			'assisted'           => __( 'This content was created with AI assistance.', 'eu-ai-act-ready' ),
 			'generated'          => __( 'This content includes AI-generated text.', 'eu-ai-act-ready' ),

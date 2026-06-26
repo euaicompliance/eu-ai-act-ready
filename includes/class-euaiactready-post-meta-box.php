@@ -91,7 +91,7 @@ class EUAIACTREADY_Post_Meta_Box {
 	/**
 	 * Normalize a raw meta value to one of the four canonical disclosure levels.
 	 *
-	 * Handles legacy binary values ('1' → 'generated', '0'/'' → 'none').
+	 * Handles legacy binary values ('1' --> 'generated', '0'/'' --> 'none').
 	 *
 	 * @param mixed $value Raw value from post meta.
 	 * @return string One of: 'none', 'assisted', 'generated', 'generated_reviewed'.
@@ -198,7 +198,7 @@ class EUAIACTREADY_Post_Meta_Box {
 			? sanitize_key( wp_unslash( $_POST['euaiactready_content'] ) )
 			: 'none';
 
-		// Legacy value migration: '1' → 'generated', '0' → 'none'.
+		// Legacy value migration: '1' --> 'generated', '0' --> 'none'.
 		if ( '1' === $new_value ) {
 			$new_value = 'generated';
 		} elseif ( '0' === $new_value ) {
@@ -565,7 +565,7 @@ class EUAIACTREADY_Post_Meta_Box {
 
 		$new_value = sanitize_key( wp_unslash( $_POST['euaiactready_content'] ) );
 
-		// Legacy value migration: '1' → 'generated', '0' → 'none'.
+		// Legacy value migration: '1' --> 'generated', '0' --> 'none'.
 		if ( '1' === $new_value ) {
 			$new_value = 'generated';
 		} elseif ( '0' === $new_value ) {

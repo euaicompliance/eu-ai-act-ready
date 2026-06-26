@@ -47,112 +47,78 @@
 		},
 
 		/**
-		 * Detect if chatbot is loaded
+		 * All known platform detection signatures.
 		 */
-		detectChatbot() {
-			switch ( this.platform ) {
-				case 'formilla':
-					// Check for Formilla object.
-					if ( typeof Formilla !== 'undefined' ) {
-						return true;
-					}
-					// Check for Formilla chat elements.
-					const formillaSelectors = [
-						'#formilla-chat-button',
-						'#formilla-chat-iframe',
-						'iframe[src*="formilla"]',
-						'[class*="formilla"]',
-						'[id*="formilla"]',
-					];
-					for ( const selector of formillaSelectors ) {
-						const element = document.querySelector( selector );
-						if ( element ) {
-							return true;
-						}
-					}
-					return false;
-
-				case 'intercom':
-					return (
-						typeof Intercom !== 'undefined' ||
-						document.querySelector( '#intercom-container' )
-					);
-
-				case 'drift':
-					return (
-						typeof drift !== 'undefined' ||
-						document.querySelector( '#drift-widget' )
-					);
-
-				case 'tidio':
-					return (
-						typeof tidioChatApi !== 'undefined' ||
-						document.querySelector( '#tidio-chat' )
-					);
-
-				case 'tawk':
-					return (
-						typeof Tawk_API !== 'undefined' ||
-						document.querySelector( '#tawkchat-container' )
-					);
-
-				case 'zendesk':
-					return (
-						typeof zE !== 'undefined' ||
-						document.querySelector( '#launcher' )
-					);
-
-				case 'livechat':
-					return (
-						typeof LiveChatWidget !== 'undefined' ||
-						document.querySelector( '#chat-widget-container' )
-					);
-
-				case 'crisp':
-					return (
-						typeof $crisp !== 'undefined' ||
-						document.querySelector( '[data-crisp-website-id]' )
-					);
-
-				case 'freshchat':
-					return (
-						typeof fcWidget !== 'undefined' ||
-						document.querySelector( '#fc_frame' )
-					);
-
-				case 'custom':
-					// For custom chatbots, check for common selectors.
-					return (
-						document.querySelector( '.chatbot-widget' ) ||
-						document.querySelector( '#chat-widget' ) ||
-						document.querySelector( '[data-chatbot]' )
-					);
-
-				default:
-					return false;
-			}
+		PLATFORM_SIGNATURES: {
+			formilla:  { globals: [ 'Formilla' ],               selectors: [ '#formilla-chat-button', '#formilla-chat-iframe', 'iframe[src*="formilla"]', '[class*="formilla"]' ], widget: '#formilla-chat-button, #formilla-chat-iframe, [class*="formilla"], [id*="formilla"]' },
+			intercom:  { globals: [ 'Intercom' ],               selectors: [ '#intercom-container' ],                widget: '#intercom-container' },
+			drift:     { globals: [ 'drift' ],                  selectors: [ '#drift-widget', '#drift-widget-container' ], widget: '#drift-widget, #drift-widget-container' },
+			tidio:     { globals: [ 'tidioChatApi' ],           selectors: [ '#tidio-chat' ],                         widget: '#tidio-chat' },
+			tawk:      { globals: [ 'Tawk_API' ],               selectors: [ '#tawkchat-container', '.tawk-button' ], widget: '#tawkchat-container, .tawk-button' },
+			zendesk:   { globals: [ 'zE' ],                     selectors: [ '#launcher', '.zEWidget-launcher' ],     widget: '#launcher, .zEWidget-launcher' },
+			livechat:  { globals: [ 'LiveChatWidget' ],         selectors: [ '#chat-widget-container' ],              widget: '#chat-widget-container' },
+			crisp:     { globals: [ '$crisp' ],                 selectors: [ '.crisp-client', '[data-crisp-website-id]' ], widget: '.crisp-client' },
+			freshchat: { globals: [ 'fcWidget' ],               selectors: [ '#fc_frame' ],                           widget: '#fc_frame' },
+			smartsupp: { globals: [ 'smartsupp', 'Smartsupp' ], selectors: [ '#smartsupp-widget-container', '#chat-application' ], widget: '#smartsupp-widget-container, #chat-application' },
+			hubspot:   { globals: [ 'HubSpotConversations' ],   selectors: [ '#hubspot-messages-iframe-container' ],  widget: '#hubspot-messages-iframe-container' },
+			chaport:   { globals: [ 'chaport' ],                selectors: [ '#chaport-container', '.chaport-container' ], widget: '#chaport-container, .chaport-container' },
+			userlike:  { globals: [ 'userlike' ],               selectors: [ '#userlike-sbc', '.ul-widget' ],         widget: '#userlike-sbc, .ul-widget' },
+			olark:     { globals: [ 'olark' ],                  selectors: [ '.olark-launch-button-chat', '#olark-container' ], widget: '.olark-launch-button-chat, #olark-container' },
+			chatra:    { globals: [ 'Chatra' ],                 selectors: [ '#chatra', '.chatra--side-button' ],     widget: '#chatra, .chatra--side-button' },
+			custom:    { globals: [],                           selectors: [ '.chatbot-widget', '#chat-widget', '[data-chatbot]' ], widget: '.chatbot-widget, #chat-widget, [data-chatbot]' },
 		},
 
 		/**
-		 * Get chatbot widget element
+		 * Check if a single platform's signals are present in the page.
+		 *
+		 * @param {string} platformKey
+		 * @return {boolean}
+		 */
+		detectPlatform( platformKey ) {
+			const sig = this.PLATFORM_SIGNATURES[ platformKey ];
+			if ( ! sig ) {
+				return false;
+			}
+			for ( let i = 0; i < sig.globals.length; i++ ) {
+				if ( typeof window[ sig.globals[ i ] ] !== 'undefined' ) {
+					return true;
+				}
+			}
+			for ( let i = 0; i < sig.selectors.length; i++ ) {
+				if ( document.querySelector( sig.selectors[ i ] ) ) {
+					return true;
+				}
+			}
+			return false;
+		},
+
+		/**
+		 * Detect if the active chatbot platform is loaded.
+		 * When platform is 'auto', probes all known platforms and locks onto the first match.
+		 */
+		detectChatbot() {
+			if ( 'auto' === this.platform ) {
+				const keys = Object.keys( this.PLATFORM_SIGNATURES );
+				for ( let i = 0; i < keys.length; i++ ) {
+					if ( 'custom' === keys[ i ] ) {
+						continue;
+					}
+					if ( this.detectPlatform( keys[ i ] ) ) {
+						this.platform = keys[ i ];
+						return true;
+					}
+				}
+				return false;
+			}
+			return this.detectPlatform( this.platform );
+		},
+
+		/**
+		 * Get the chatbot widget DOM element for the active platform.
 		 */
 		getChatbotWidget() {
-			const selectors = {
-				formilla:
-					'#formilla-chat-button, #formilla-chat-iframe, iframe[src*="formilla"], [class*="formilla"], [id*="formilla"]',
-				intercom: '#intercom-container',
-				drift: '#drift-widget, #drift-widget-container',
-				tidio: '#tidio-chat',
-				tawk: '#tawkchat-container, .tawk-button',
-				zendesk: '#launcher, .zEWidget-launcher',
-				livechat: '#chat-widget-container',
-				crisp: '.crisp-client',
-				freshchat: '#fc_frame',
-				custom: '.chatbot-widget, #chat-widget, [data-chatbot]',
-			};
-
-			const selector = selectors[ this.platform ];
-			return selector ? document.querySelector( selector ) : null;
+			const sig = this.PLATFORM_SIGNATURES[ this.platform ];
+			return sig ? document.querySelector( sig.widget ) : null;
 		},
 
 		/**

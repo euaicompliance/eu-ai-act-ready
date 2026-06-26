@@ -89,6 +89,10 @@ class EUAIACTREADY_Activator {
 		add_option( 'euaiactready_media_transparency', 0 );
 		add_option( 'euaiactready_show_in_excerpts', 0 );
 
+		// RSS & Feed disclosure defaults (opt-in).
+		add_option( 'euaiactready_rss_disclosure_enabled', 0 );
+		add_option( 'euaiactready_rss_title_prefix', 0 );
+
 		// Posts and pages are enabled by default for AI disclosure meta box.
 		add_option( 'euaiactready_enabled_post_types', array( 'post', 'page' ) );
 	}
