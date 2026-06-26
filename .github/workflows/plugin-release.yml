@@ -46,7 +46,7 @@ jobs:
         id: create_zip
         run: |
           PLUGIN_SLUG="eu-ai-act-ready"
-          GITHUB_REF_NAME="${{ github.ref_name }}"
+          GITHUB_REF_NAME="${{ github.event.release.tag_name }}"
           VERSION="${GITHUB_REF_NAME#v}"
           ZIP_NAME="${PLUGIN_SLUG}-${VERSION}.zip"
           OUT="${RUNNER_TEMP}/${ZIP_NAME}"
