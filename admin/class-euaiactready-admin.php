@@ -71,11 +71,35 @@ class EUAIACTREADY_Admin {
 
 		// Localize script for AJAX.
 		$euaiactready_buffer_count = null;
+		$current_page              = '';
 		if ( ! empty( $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only page check.
-			$page = sanitize_text_field( wp_unslash( $_GET['page'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only page check.
-			if ( 0 === strpos( $page, $this->plugin_slug ) ) {
+			$current_page = sanitize_text_field( wp_unslash( $_GET['page'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only page check.
+			if ( 0 === strpos( $current_page, $this->plugin_slug ) ) {
 				$euaiactready_buffer_count = EUAIACTREADY_Data_Store::get_bulk_scan_buffer_count();
 			}
+		}
+
+		// Enqueue AI Systems page JS only on that page.
+		if ( $this->plugin_slug . '-ai-systems' === $current_page ) {
+			wp_enqueue_script(
+				$this->plugin_slug . '-ai-systems',
+				EUAIACTREADY_PLUGIN_URL . 'build/admin/ai-tools.js',
+				array( 'jquery' ),
+				$this->version,
+				true
+			);
+			wp_localize_script(
+				$this->plugin_slug . '-ai-systems',
+				'euaiactreadyAiTools',
+				array(
+					'i18n' => array(
+						'errorOccurred' => __( 'An error occurred. Please try again.', 'eu-ai-act-ready' ),
+						'saving'        => __( 'Saving...', 'eu-ai-act-ready' ),
+						'markAsAi'      => __( 'Mark as AI', 'eu-ai-act-ready' ),
+						'confirmRemove' => __( 'Remove this manual AI tool declaration?', 'eu-ai-act-ready' ),
+					),
+				)
+			);
 		}
 
 		wp_localize_script(
@@ -131,6 +155,24 @@ class EUAIACTREADY_Admin {
 
 		add_submenu_page(
 			$this->plugin_slug,
+			__( 'Assessment', 'eu-ai-act-ready' ),
+			__( 'Assessment', 'eu-ai-act-ready' ),
+			'manage_options',
+			$this->plugin_slug . '-assessment',
+			array( $this, 'euaiactready_display_assessment_page' )
+		);
+
+		add_submenu_page(
+			$this->plugin_slug,
+			__( 'AI Systems', 'eu-ai-act-ready' ),
+			__( 'AI Systems', 'eu-ai-act-ready' ),
+			'manage_options',
+			$this->plugin_slug . '-ai-systems',
+			array( $this, 'euaiactready_display_ai_tools_page' )
+		);
+
+		add_submenu_page(
+			$this->plugin_slug,
 			__( 'AI Content', 'eu-ai-act-ready' ),
 			__( 'AI Content', 'eu-ai-act-ready' ),
 			'manage_options',
@@ -149,12 +191,22 @@ class EUAIACTREADY_Admin {
 
 		add_submenu_page(
 			$this->plugin_slug,
+			__( 'AI Literacy', 'eu-ai-act-ready' ),
+			__( 'AI Literacy', 'eu-ai-act-ready' ),
+			'manage_options',
+			$this->plugin_slug . '-literacy',
+			array( $this, 'euaiactready_display_literacy_page' )
+		);
+
+		add_submenu_page(
+			$this->plugin_slug,
 			__( 'Settings', 'eu-ai-act-ready' ),
 			__( 'Settings', 'eu-ai-act-ready' ),
 			'manage_options',
 			$this->plugin_slug . '-settings',
 			array( $this, 'euaiactready_display_settings_page' )
 		);
+
 	}
 
 	/**
@@ -191,10 +243,119 @@ class EUAIACTREADY_Admin {
 	}
 
 	/**
+	 * Render the AI Tools Registry page.
+	 */
+	public function euaiactready_display_ai_tools_page() {
+		include_once EUAIACTREADY_PLUGIN_DIR . 'admin/partials/euaiactready-admin-ai-tools.php';
+	}
+
+	/**
 	 * Render the settings page.
 	 */
 	public function euaiactready_display_settings_page() {
 		include_once EUAIACTREADY_PLUGIN_DIR . 'admin/partials/settings.php';
+	}
+
+	/**
+	 * Render the assessment wizard page.
+	 */
+	public function euaiactready_display_assessment_page() {
+		include_once EUAIACTREADY_PLUGIN_DIR . 'admin/partials/assessment.php';
+	}
+
+	/**
+	 * Render the AI literacy page.
+	 */
+	public function euaiactready_display_literacy_page() {
+		include_once EUAIACTREADY_PLUGIN_DIR . 'admin/partials/ai-literacy.php';
+	}
+
+	/**
+	 * Handle the print report request (admin_post action).
+	 * Outputs a self-contained print-friendly HTML page and exits.
+	 */
+	public function euaiactready_handle_print_report() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Unauthorized.', 'eu-ai-act-ready' ) );
+		}
+
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ), 'euaiactready_print_report' ) ) {
+			wp_die( esc_html__( 'Security check failed.', 'eu-ai-act-ready' ) );
+		}
+
+		include EUAIACTREADY_PLUGIN_DIR . 'admin/partials/report.php';
+		exit;
+	}
+
+	/**
+	 * Register the WP Dashboard widget.
+	 */
+	public function euaiactready_register_dashboard_widget() {
+		wp_add_dashboard_widget(
+			'euaiactready_dashboard_widget',
+			__( 'EU AI Act Readiness', 'eu-ai-act-ready' ),
+			array( $this, 'euaiactready_render_dashboard_widget' )
+		);
+	}
+
+	/**
+	 * Render the WP Dashboard widget content.
+	 */
+	public function euaiactready_render_dashboard_widget() {
+		$readiness     = new Euaiactready_Readiness();
+		$score         = $readiness->calculate();
+		$traffic_light = Euaiactready_Readiness::get_traffic_light( $score );
+		$light_label   = Euaiactready_Readiness::get_traffic_light_label( $traffic_light );
+
+		$detector    = new Euaiactready_AI_Tools_Detector( new Euaiactready_AI_Tools_Registry() );
+		$tool_count  = count( $detector->get_detected() );
+
+		$content_count = 0;
+		$content_query = new WP_Query( array(
+			'post_type'      => 'any',
+			'post_status'    => 'any',
+			'posts_per_page' => 1,
+			'fields'         => 'ids',
+			'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				array(
+					'key'     => '_euaiactready_ai_content',
+					'value'   => array( '1', 'assisted', 'generated', 'generated_reviewed' ),
+					'compare' => 'IN',
+				),
+			),
+		) );
+		$content_count = $content_query->found_posts;
+		?>
+		<div class="euaiactready-widget">
+			<div class="euaiactready-widget-score">
+				<div class="euaiactready-widget-circle euaiactready-traffic-<?php echo esc_attr( $traffic_light ); ?>">
+					<span class="euaiactready-widget-number"><?php echo esc_html( $score ); ?></span>
+					<span class="euaiactready-widget-denom">/100</span>
+				</div>
+				<div class="euaiactready-widget-info">
+					<strong><?php echo esc_html( $light_label ); ?></strong><br>
+					<span><?php esc_html_e( 'Compliance Readiness', 'eu-ai-act-ready' ); ?></span>
+				</div>
+			</div>
+			<div class="euaiactready-widget-stats">
+				<div class="euaiactready-widget-stat">
+					<span class="euaiactready-widget-stat-num"><?php echo esc_html( $tool_count ); ?></span>
+					<span class="euaiactready-widget-stat-lbl"><?php esc_html_e( 'AI Systems', 'eu-ai-act-ready' ); ?></span>
+				</div>
+				<div class="euaiactready-widget-stat">
+					<span class="euaiactready-widget-stat-num"><?php echo esc_html( $content_count ); ?></span>
+					<span class="euaiactready-widget-stat-lbl"><?php esc_html_e( 'AI Content', 'eu-ai-act-ready' ); ?></span>
+				</div>
+			</div>
+			<div class="euaiactready-widget-links">
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=eu-ai-act-ready' ) ); ?>"><?php esc_html_e( 'Dashboard', 'eu-ai-act-ready' ); ?></a>
+				&middot;
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=eu-ai-act-ready-ai-systems' ) ); ?>"><?php esc_html_e( 'AI Systems', 'eu-ai-act-ready' ); ?></a>
+				&middot;
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=eu-ai-act-ready-assessment' ) ); ?>"><?php esc_html_e( 'Assessment', 'eu-ai-act-ready' ); ?></a>
+			</div>
+		</div>
+		<?php
 	}
 
 	/**

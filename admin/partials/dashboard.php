@@ -99,10 +99,79 @@ $euaiactready_manually_unmarked_query = new WP_Query( $euaiactready_manually_unm
 $euaiactready_manually_unmarked_count = (int) $euaiactready_manually_unmarked_query->post_count;
 
 wp_reset_postdata();
-?>
 
+// Get AI Systems count.
+$euaiactready_ai_tools_count = 0;
+global $euaiactready_ai_tools_instance;
+if ( $euaiactready_ai_tools_instance instanceof Euaiactready_AI_Tools ) {
+	$euaiactready_ai_tools_count = count( $euaiactready_ai_tools_instance->get_detector()->get_detected() );
+}
+?>
 <div class="wrap euaiactready-dashboard">
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+
+	<?php
+	// ---- Readiness Score ----
+	$euaiactready_readiness      = new Euaiactready_Readiness();
+	$euaiactready_score          = $euaiactready_readiness->calculate();
+	$euaiactready_traffic_light  = Euaiactready_Readiness::get_traffic_light( $euaiactready_score );
+	$euaiactready_light_label    = Euaiactready_Readiness::get_traffic_light_label( $euaiactready_traffic_light );
+	$euaiactready_readiness_items = $euaiactready_readiness->get_items();
+	?>
+	<div class="euaiactready-readiness-card">
+		<div class="euaiactready-readiness-header">
+			<div class="euaiactready-readiness-score-wrap">
+				<div class="euaiactready-readiness-circle euaiactready-traffic-<?php echo esc_attr( $euaiactready_traffic_light ); ?>">
+					<span class="euaiactready-readiness-number"><?php echo esc_html( $euaiactready_score ); ?></span>
+					<span class="euaiactready-readiness-denom">/100</span>
+				</div>
+			</div>
+			<div class="euaiactready-readiness-info">
+				<h2><?php esc_html_e( 'Compliance Readiness Score', 'eu-ai-act-ready' ); ?></h2>
+				<p class="euaiactready-traffic-label euaiactready-traffic-<?php echo esc_attr( $euaiactready_traffic_light ); ?>">
+					<?php echo esc_html( $euaiactready_light_label ); ?>
+				</p>
+				<p class="description">
+					<?php esc_html_e( 'Each factor represents a key EU AI Act obligation. Address all six to reach 100.', 'eu-ai-act-ready' ); ?>
+				</p>
+				<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=euaiactready_print_report' ), 'euaiactready_print_report' ) ); ?>"
+					class="button euaiactready-report-btn" target="_blank">
+					<span class="dashicons dashicons-media-document"></span>
+					<?php esc_html_e( 'Export Report', 'eu-ai-act-ready' ); ?>
+				</a>
+			</div>
+		</div>
+
+		<?php if ( ! empty( $euaiactready_readiness_items['unmet'] ) ) : ?>
+		<div class="euaiactready-readiness-unmet">
+			<h3><?php esc_html_e( 'Items to address:', 'eu-ai-act-ready' ); ?></h3>
+			<ul>
+				<?php foreach ( $euaiactready_readiness_items['unmet'] as $euaiactready_item ) : ?>
+				<li>
+					<span class="dashicons dashicons-no-alt"></span>
+					<?php echo esc_html( $euaiactready_item['label'] ); ?>
+					<?php if ( ! empty( $euaiactready_item['link'] ) ) : ?>
+					&mdash; <a href="<?php echo esc_url( $euaiactready_item['link'] ); ?>"><?php echo esc_html( $euaiactready_item['cta'] ); ?></a>
+					<?php endif; ?>
+				</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+		<?php endif; ?>
+
+		<?php if ( ! empty( $euaiactready_readiness_items['met'] ) ) : ?>
+		<div class="euaiactready-readiness-met">
+			<ul>
+				<?php foreach ( $euaiactready_readiness_items['met'] as $euaiactready_item ) : ?>
+				<li>
+					<span class="dashicons dashicons-yes-alt"></span>
+					<?php echo esc_html( $euaiactready_item['label'] ); ?>
+				</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+		<?php endif; ?>
+	</div>
 
 	<div class="euaiactready-scan-cta">
 		<div class="scan-cta-icon">
@@ -143,7 +212,7 @@ wp_reset_postdata();
 		</div>
 	</div>
 
-	<!-- Statistics Cards -->
+	<!-- Statistics Cards - Row 1: AI Content -->
 	<div class="euaiactready-stats">
 		<div class="stat-card">
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=eu-ai-act-ready-content' ) ); ?>">
@@ -206,6 +275,21 @@ wp_reset_postdata();
 				</div>
 			</a>
 		</div>
+	</div>
+
+	<!-- Statistics Cards - Row 2: AI Systems & Exceptions -->
+	<div class="euaiactready-stats euaiactready-stats--secondary">
+		<div class="stat-card">
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=eu-ai-act-ready-ai-systems' ) ); ?>">
+				<div class="stat-icon">
+					<span class="dashicons dashicons-superhero"></span>
+				</div>
+				<div class="stat-content">
+				<h3><?php echo esc_html( number_format_i18n( $euaiactready_ai_tools_count ) ); ?></h3>
+					<p><?php esc_html_e( 'AI Systems Detected', 'eu-ai-act-ready' ); ?></p>
+				</div>
+			</a>
+		</div>
 
 		<div class="stat-card">
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=eu-ai-act-ready-images&tab=unmarked' ) ); ?>">
@@ -222,9 +306,12 @@ wp_reset_postdata();
 
 	<!-- Feature Activation Status -->
 	<?php
-	$euaiactready_content_transparency_enabled = get_option( 'euaiactready_transparency_enabled', true );
-	$euaiactready_chatbot_transparency_enabled = get_option( 'euaiactready_chatbot_transparency', true );
-	$euaiactready_media_transparency_enabled   = get_option( 'euaiactready_media_transparency', true );
+	$euaiactready_content_transparency_enabled  = get_option( 'euaiactready_transparency_enabled', true );
+	$euaiactready_chatbot_transparency_enabled  = get_option( 'euaiactready_chatbot_transparency', true );
+	$euaiactready_media_transparency_enabled    = get_option( 'euaiactready_media_transparency', true );
+	$euaiactready_ai_systems_visibility         = get_option( Euaiactready_AI_Tools::OPTION_VISIBILITY, array() );
+	$euaiactready_ai_systems_notice_enabled     = (bool) get_option( Euaiactready_AI_Tools::OPTION_ENABLED, true )
+		&& ! empty( array_filter( $euaiactready_ai_systems_visibility ) );
 	?>
 	<div class="euaiactready-transparency-status">
 		<h2 class="section-header">
@@ -236,7 +323,8 @@ wp_reset_postdata();
 		// Check if all transparency features are disabled.
 		$euaiactready_all_disabled = ! $euaiactready_content_transparency_enabled
 			&& ! $euaiactready_chatbot_transparency_enabled
-			&& ! $euaiactready_media_transparency_enabled;
+			&& ! $euaiactready_media_transparency_enabled
+			&& ! $euaiactready_ai_systems_notice_enabled;
 
 		if ( $euaiactready_all_disabled ) :
 			?>
@@ -290,6 +378,20 @@ wp_reset_postdata();
 					</div>
 				</a>
 			</div>
+
+			<div class="stat-card <?php echo esc_attr( $euaiactready_ai_systems_notice_enabled ? 'activated' : 'deactivated' ); ?>">
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=eu-ai-act-ready-ai-systems' ) ); ?>">
+					<div class="stat-icon <?php echo esc_attr( $euaiactready_ai_systems_notice_enabled ? 'activated' : 'deactivated' ); ?>">
+						<span class="dashicons dashicons-superhero"></span>
+					</div>
+					<div class="stat-content">
+						<h3 class="<?php echo esc_attr( $euaiactready_ai_systems_notice_enabled ? 'activated' : 'deactivated' ); ?>">
+							<?php echo esc_html( $euaiactready_ai_systems_notice_enabled ? __( 'Activated', 'eu-ai-act-ready' ) : __( 'Deactivated', 'eu-ai-act-ready' ) ); ?>
+						</h3>
+						<p><?php esc_html_e( 'AI Systems Notice', 'eu-ai-act-ready' ); ?></p>
+					</div>
+				</a>
+			</div>
 		</div>
 	</div>
 
@@ -315,6 +417,81 @@ wp_reset_postdata();
 				<li><?php esc_html_e( 'Manually mark images in the Media Library editor.', 'eu-ai-act-ready' ); ?></li>
 				<li><?php esc_html_e( 'Use Caption or Badge style for best visibility.', 'eu-ai-act-ready' ); ?></li>
 			</ul>
+		</div>
+	</div>
+
+	<!-- Law Change Radar -->
+	<div class="euaiactready-law-radar">
+		<h2 class="section-header">
+			<span class="dashicons dashicons-calendar-alt"></span>
+			<?php esc_html_e( 'EU AI Act Enforcement Timeline', 'eu-ai-act-ready' ); ?>
+		</h2>
+		<p class="description">
+			<?php esc_html_e( 'Key dates for EU AI Act enforcement. Dates shown in green are already in effect.', 'eu-ai-act-ready' ); ?>
+		</p>
+		<?php
+		$euaiactready_now        = time();
+		$euaiactready_milestones = array(
+			array(
+				'timestamp' => mktime( 0, 0, 0, 2, 1, 2025 ),
+				'label'     => __( 'February 2025', 'eu-ai-act-ready' ),
+				'title'     => __( 'Prohibited AI practices banned', 'eu-ai-act-ready' ),
+				'desc'      => __( 'Ban on unacceptable-risk AI systems: subliminal manipulation, social scoring by governments, and real-time remote biometric surveillance.', 'eu-ai-act-ready' ),
+			),
+			array(
+				'timestamp' => mktime( 0, 0, 0, 8, 1, 2025 ),
+				'label'     => __( 'August 2025', 'eu-ai-act-ready' ),
+				'title'     => __( 'Transparency obligations now in force (Article 50)', 'eu-ai-act-ready' ),
+				'desc'      => __( 'Chatbot disclosure, deepfake labeling, AI-generated content transparency. This is what this plugin helps you address.', 'eu-ai-act-ready' ),
+			),
+			array(
+				'timestamp' => mktime( 0, 0, 0, 8, 1, 2026 ),
+				'label'     => __( 'August 2026', 'eu-ai-act-ready' ),
+				'title'     => __( 'Full Act enforceable - GPAI model obligations', 'eu-ai-act-ready' ),
+				'desc'      => __( 'General Purpose AI (GPAI) model providers must comply with transparency, copyright, and systemic risk requirements.', 'eu-ai-act-ready' ),
+			),
+			array(
+				'timestamp' => mktime( 0, 0, 0, 8, 1, 2027 ),
+				'label'     => __( 'August 2027', 'eu-ai-act-ready' ),
+				'title'     => __( 'High-risk AI obligations extended', 'eu-ai-act-ready' ),
+				'desc'      => __( 'Additional requirements for high-risk AI systems in areas such as critical infrastructure, education, employment, and essential services.', 'eu-ai-act-ready' ),
+			),
+		);
+		?>
+		<div class="euaiactready-timeline">
+			<?php foreach ( $euaiactready_milestones as $euaiactready_milestone ) : ?>
+				<?php
+				$euaiactready_is_past    = $euaiactready_now >= $euaiactready_milestone['timestamp'];
+				$euaiactready_item_class = $euaiactready_is_past ? 'euaiactready-timeline-past' : 'euaiactready-timeline-upcoming';
+				$euaiactready_dot_class  = $euaiactready_is_past ? 'past' : 'upcoming';
+				$euaiactready_months     = (int) round( ( $euaiactready_milestone['timestamp'] - $euaiactready_now ) / ( 30 * DAY_IN_SECONDS ) );
+				?>
+				<div class="euaiactready-timeline-item <?php echo esc_attr( $euaiactready_item_class ); ?>">
+					<div class="euaiactready-timeline-dot <?php echo esc_attr( $euaiactready_dot_class ); ?>"></div>
+					<div class="euaiactready-timeline-content">
+						<span class="euaiactready-timeline-date">
+							<?php echo esc_html( $euaiactready_milestone['label'] ); ?>
+							<?php if ( ! $euaiactready_is_past ) : ?>
+								<span class="euaiactready-timeline-countdown">
+									<?php
+									if ( $euaiactready_months > 0 ) {
+										printf(
+											/* translators: %d: number of months until the deadline */
+											esc_html( _n( '%d month away', '%d months away', $euaiactready_months, 'eu-ai-act-ready' ) ),
+											absint( $euaiactready_months )
+										);
+									} else {
+										esc_html_e( 'This month', 'eu-ai-act-ready' );
+									}
+									?>
+								</span>
+							<?php endif; ?>
+						</span>
+						<strong><?php echo esc_html( $euaiactready_milestone['title'] ); ?></strong>
+						<p><?php echo esc_html( $euaiactready_milestone['desc'] ); ?></p>
+					</div>
+				</div>
+			<?php endforeach; ?>
 		</div>
 	</div>
 

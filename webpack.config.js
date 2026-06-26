@@ -34,6 +34,8 @@ module.exports = {
 			path.resolve( process.cwd(), 'src/assets', 'eu-ai-act-ready.scss' ),
 		],
 		'assets/chatbot-transparency': path.resolve( process.cwd(), 'src/assets', 'chatbot-transparency.js' ),
+		'admin/ai-tools': path.resolve( process.cwd(), 'src/admin', 'ai-tools.js' ),
+		'assets/ai-tools-notice': path.resolve( process.cwd(), 'src/assets', 'ai-tools-notice.js' ),
 	},
 	output: {
 		filename: '[name].js',
