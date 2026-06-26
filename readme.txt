@@ -4,7 +4,7 @@ Tags: eu ai act, article 50, ai transparency, ai compliance, ai disclosure
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -166,6 +166,9 @@ That is all. All previously saved settings, AI content markers, and media scan r
 The translation bug is fixed in version 1.0.3. After updating to the fixed release the plugin name will always display as "EU AI Act Ready" regardless of the site language.
 
 == Changelog ==
+
+= 2.0.1 =
+* Added: Add new screenshots.
 
 = 2.0.0 =
 * Added: Compliance Self-Assessment wizard (6 questions) to identify which EU AI Act obligations apply to your site; applicable articles and recommended actions shown on completion.
