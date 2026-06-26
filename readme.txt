@@ -79,6 +79,22 @@ Final responsibility for assessing and meeting legal obligations remains with th
 2. Activate the plugin through the "Plugins" screen in WordPress.
 3. Navigate to **EU AI Act Ready --> Settings** to configure disclosure notices, detection options, and chatbot transparency.
 
+== Screenshots ==
+
+1. Dashboard showing the Compliance Readiness Score, obligation checklist, and content statistics at a glance.
+2. Transparency Status indicators and EU AI Act Enforcement Timeline with upcoming enforcement dates.
+3. Self-Assessment results page listing applicable EU AI Act obligations and recommended configuration actions.
+4. Six-step Self-Assessment wizard that identifies which EU AI Act obligations apply to your site.
+5. AI Systems page showing the frontend disclosure notice settings and automatically detected AI tools.
+6. Manual AI tool declaration panel with heuristic "Possibly AI" flagging for unrecognised plugins.
+7. Article 4 AI Literacy checklist tracking staff awareness, policy documentation, and training obligations.
+8. RSS & Feed Disclosure settings - append AI disclosure notes and title prefixes to RSS feed items.
+9. Shortcode reference panel showing how to place AI disclosure notices anywhere using [eu_ai_disclosure].
+10. AI Content Disclosure meta box in the post editor - choose from four disclosure levels per post.
+11. Content Transparency settings - enable notices, choose banner/inline/badge/modal style, and set a custom message.
+12. Media library AI detection - mark images as AI-generated and review heuristic metadata signals.
+13. Frontend transparency notices in action: content banner, image label, and floating AI systems badge.
+
 == Frequently Asked Questions ==
 
 = How does the plugin detect AI-generated media? =
