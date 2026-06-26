@@ -59,6 +59,10 @@ if ( isset( $_POST['save_settings'] ) && check_admin_referer( 'euaiactready_sett
 	$euaiactready_saved_types  = array_values( array_filter( array_map( 'sanitize_key', $euaiactready_raw_types ) ) );
 	update_option( 'euaiactready_enabled_post_types', $euaiactready_saved_types );
 
+	// RSS & Feed disclosure settings.
+	update_option( 'euaiactready_rss_disclosure_enabled', ! empty( $euaiactready_post_data['rss_disclosure_enabled'] ) ? 1 : 0 );
+	update_option( 'euaiactready_rss_title_prefix', ! empty( $euaiactready_post_data['rss_title_prefix'] ) ? 1 : 0 );
+
 	$euaiactready_settings_saved = true;
 }
 
@@ -84,10 +88,16 @@ $euaiactready_media_transparency         = get_option( 'euaiactready_media_trans
 $euaiactready_media_label_style          = get_option( 'euaiactready_media_label_style', EUAIACTREADY_DEFAULT_MEDIA_LABEL_STYLE );
 $euaiactready_media_confidence_threshold = get_option( 'euaiactready_media_confidence_threshold', EUAIACTREADY_DEFAULT_MEDIA_CONFIDENCE_THRESHOLD );
 
+// RSS & Feed disclosure settings.
+$euaiactready_rss_disclosure_enabled = get_option( 'euaiactready_rss_disclosure_enabled', 0 );
+$euaiactready_rss_title_prefix       = get_option( 'euaiactready_rss_title_prefix', 0 );
+
 $euaiactready_tab_definitions = array(
 	'transparency' => __( 'Content Transparency', 'eu-ai-act-ready' ),
 	'media'        => __( 'Media/Image Labels', 'eu-ai-act-ready' ),
 	'chatbot'      => __( 'Chatbot Transparency', 'eu-ai-act-ready' ),
+	'rss'          => __( 'RSS &amp; Feeds', 'eu-ai-act-ready' ),
+	'shortcode'    => __( 'Shortcode', 'eu-ai-act-ready' ),
 );
 ?>
 
@@ -480,18 +490,27 @@ $euaiactready_tab_definitions = array(
 					</th>
 					<td>
 						<select id="chatbot_platform" name="chatbot_platform">
-							<option value="formilla" <?php selected( $euaiactready_chatbot_platform, 'formilla' ); ?>>Formilla</option>
-							<option value="intercom" <?php selected( $euaiactready_chatbot_platform, 'intercom' ); ?>>Intercom</option>
-							<option value="drift" <?php selected( $euaiactready_chatbot_platform, 'drift' ); ?>>Drift</option>
-							<option value="tidio" <?php selected( $euaiactready_chatbot_platform, 'tidio' ); ?>>Tidio</option>
-							<option value="tawk" <?php selected( $euaiactready_chatbot_platform, 'tawk' ); ?>>Tawk.to</option>
-							<option value="zendesk" <?php selected( $euaiactready_chatbot_platform, 'zendesk' ); ?>>Zendesk Chat</option>
-							<option value="livechat" <?php selected( $euaiactready_chatbot_platform, 'livechat' ); ?>>LiveChat</option>
-							<option value="crisp" <?php selected( $euaiactready_chatbot_platform, 'crisp' ); ?>>Crisp</option>
-							<option value="freshchat" <?php selected( $euaiactready_chatbot_platform, 'freshchat' ); ?>>Freshchat</option>
-
+							<option value="auto"      <?php selected( $euaiactready_chatbot_platform, 'auto' ); ?>><?php esc_html_e( 'Auto-detect (Recommended)', 'eu-ai-act-ready' ); ?></option>
+							<optgroup label="<?php esc_attr_e( 'Specific Platforms', 'eu-ai-act-ready' ); ?>">
+								<option value="formilla"  <?php selected( $euaiactready_chatbot_platform, 'formilla' ); ?>>Formilla</option>
+								<option value="intercom"  <?php selected( $euaiactready_chatbot_platform, 'intercom' ); ?>>Intercom</option>
+								<option value="drift"     <?php selected( $euaiactready_chatbot_platform, 'drift' ); ?>>Drift</option>
+								<option value="tidio"     <?php selected( $euaiactready_chatbot_platform, 'tidio' ); ?>>Tidio</option>
+								<option value="tawk"      <?php selected( $euaiactready_chatbot_platform, 'tawk' ); ?>>Tawk.to</option>
+								<option value="zendesk"   <?php selected( $euaiactready_chatbot_platform, 'zendesk' ); ?>>Zendesk Chat</option>
+								<option value="livechat"  <?php selected( $euaiactready_chatbot_platform, 'livechat' ); ?>>LiveChat</option>
+								<option value="crisp"     <?php selected( $euaiactready_chatbot_platform, 'crisp' ); ?>>Crisp</option>
+								<option value="freshchat" <?php selected( $euaiactready_chatbot_platform, 'freshchat' ); ?>>Freshchat</option>
+								<option value="smartsupp" <?php selected( $euaiactready_chatbot_platform, 'smartsupp' ); ?>>Smartsupp</option>
+								<option value="hubspot"   <?php selected( $euaiactready_chatbot_platform, 'hubspot' ); ?>>HubSpot Chat</option>
+								<option value="chaport"   <?php selected( $euaiactready_chatbot_platform, 'chaport' ); ?>>Chaport</option>
+								<option value="userlike"  <?php selected( $euaiactready_chatbot_platform, 'userlike' ); ?>>Userlike</option>
+								<option value="olark"     <?php selected( $euaiactready_chatbot_platform, 'olark' ); ?>>Olark</option>
+								<option value="chatra"    <?php selected( $euaiactready_chatbot_platform, 'chatra' ); ?>>Chatra</option>
+								<option value="custom"    <?php selected( $euaiactready_chatbot_platform, 'custom' ); ?>><?php esc_html_e( 'Custom / Other', 'eu-ai-act-ready' ); ?></option>
+							</optgroup>
 						</select>
-						<p class="description"><?php esc_html_e( 'Select your chatbot platform. The plugin will automatically detect and position the notice.', 'eu-ai-act-ready' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Auto-detect probes for all supported platforms automatically. Select a specific platform only if auto-detect gives incorrect results.', 'eu-ai-act-ready' ); ?></p>
 					</td>
 				</tr>
 
@@ -611,6 +630,107 @@ $euaiactready_tab_definitions = array(
 				</div>
 			</div>
 		</div>
+		<!-- RSS & Feeds Tab -->
+		<div id="rss-tab" class="tab-content" style="<?php echo esc_attr( 'rss' === $euaiactready_active_tab ? '' : 'display:none;' ); ?>">
+			<h3><?php esc_html_e( 'RSS & Feed Disclosure', 'eu-ai-act-ready' ); ?></h3>
+			<p class="description"><?php esc_html_e( 'Append a plain-text AI disclosure note to RSS feed content and titles for posts marked as AI-generated.', 'eu-ai-act-ready' ); ?></p>
+
+			<div class="how-it-works-section">
+				<h4><?php esc_html_e( 'How It Works', 'eu-ai-act-ready' ); ?></h4>
+				<p><?php esc_html_e( 'When enabled, a plain-text disclosure line is appended to the RSS content and excerpt for any post marked as AI-generated. Feed readers and aggregators will see the disclosure alongside the article.', 'eu-ai-act-ready' ); ?></p>
+				<div class="warning-box">
+					<p><strong><?php esc_html_e( 'Note:', 'eu-ai-act-ready' ); ?></strong> <?php esc_html_e( 'RSS disclosures are independent of the global transparency toggle and are controlled solely by the settings below.', 'eu-ai-act-ready' ); ?></p>
+				</div>
+			</div>
+
+			<table class="form-table">
+				<tr>
+					<th scope="row">
+						<label for="rss_disclosure_enabled"><?php esc_html_e( 'Enable RSS Disclosure', 'eu-ai-act-ready' ); ?></label>
+					</th>
+					<td>
+						<input type="checkbox" id="rss_disclosure_enabled" name="rss_disclosure_enabled" value="1" <?php checked( $euaiactready_rss_disclosure_enabled, 1 ); ?>>
+						<p class="description"><?php esc_html_e( 'Append a plain-text "- AI Disclosure: …" line to RSS feed content and excerpts for AI-marked posts.', 'eu-ai-act-ready' ); ?></p>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="rss_title_prefix"><?php esc_html_e( 'Prefix Feed Titles', 'eu-ai-act-ready' ); ?></label>
+					</th>
+					<td>
+						<input type="checkbox" id="rss_title_prefix" name="rss_title_prefix" value="1" <?php checked( $euaiactready_rss_title_prefix, 1 ); ?>>
+						<p class="description"><?php esc_html_e( 'Add [AI Content] before the post title in RSS feeds for AI-marked posts.', 'eu-ai-act-ready' ); ?></p>
+					</td>
+				</tr>
+			</table>
+
+			<p class="submit">
+				<button type="submit" name="save_settings" class="button button-primary">
+					<?php esc_html_e( 'Save Settings', 'eu-ai-act-ready' ); ?>
+				</button>
+			</p>
+		</div>
+
+		<!-- Shortcode Tab -->
+		<div id="shortcode-tab" class="tab-content" style="<?php echo esc_attr( 'shortcode' === $euaiactready_active_tab ? '' : 'display:none;' ); ?>">
+			<h3><?php esc_html_e( 'Shortcode', 'eu-ai-act-ready' ); ?></h3>
+			<p class="description"><?php esc_html_e( 'Use the [eu_ai_disclosure] shortcode to place an AI disclosure notice anywhere - inside posts, pages, widgets, or block templates.', 'eu-ai-act-ready' ); ?></p>
+
+			<h4><?php esc_html_e( 'Basic Usage', 'eu-ai-act-ready' ); ?></h4>
+			<table class="form-table">
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Content notice', 'eu-ai-act-ready' ); ?></th>
+					<td>
+						<code>[eu_ai_disclosure]</code>
+						<p class="description"><?php esc_html_e( 'Displays the default content notice using your saved style and message from Content Transparency settings.', 'eu-ai-act-ready' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Image notice', 'eu-ai-act-ready' ); ?></th>
+					<td>
+						<code>[eu_ai_disclosure type="image"]</code>
+						<p class="description"><?php esc_html_e( 'Displays an AI-generated image disclosure notice.', 'eu-ai-act-ready' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Chatbot notice', 'eu-ai-act-ready' ); ?></th>
+					<td>
+						<code>[eu_ai_disclosure type="chatbot"]</code>
+						<p class="description"><?php esc_html_e( 'Displays an AI chatbot disclosure notice using your saved chatbot style and message.', 'eu-ai-act-ready' ); ?></p>
+					</td>
+				</tr>
+			</table>
+
+			<h4><?php esc_html_e( 'Optional Attributes', 'eu-ai-act-ready' ); ?></h4>
+			<table class="form-table">
+				<tr>
+					<th scope="row"><code>style</code></th>
+					<td>
+						<code>[eu_ai_disclosure style="inline"]</code>
+						<p class="description">
+							<?php esc_html_e( 'Override the notice style for this instance. Accepted values:', 'eu-ai-act-ready' ); ?>
+							<code>banner</code>, <code>inline</code>, <code>badge</code>, <code>modal</code>.
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><code>message</code></th>
+					<td>
+						<code>[eu_ai_disclosure message="This article was written with AI assistance."]</code>
+						<p class="description"><?php esc_html_e( 'Override the notice text for this instance only. Omit to use the saved message.', 'eu-ai-act-ready' ); ?></p>
+					</td>
+				</tr>
+			</table>
+
+			<h4><?php esc_html_e( 'Combined Example', 'eu-ai-act-ready' ); ?></h4>
+			<p><code>[eu_ai_disclosure type="content" style="inline" message="This article was written with AI assistance."]</code></p>
+
+			<div class="how-it-works-section" style="margin-top: 16px;">
+				<p><strong><?php esc_html_e( 'Note:', 'eu-ai-act-ready' ); ?></strong> <?php esc_html_e( 'The shortcode always renders regardless of whether the global transparency toggle is on or off. Placing the shortcode is an explicit editorial decision.', 'eu-ai-act-ready' ); ?></p>
+			</div>
+		</div>
+
 	</form>
 
 	<?php require EUAIACTREADY_PLUGIN_DIR . 'admin/partials/bulk-scan-modal.php'; ?>

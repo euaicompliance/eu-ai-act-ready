@@ -61,9 +61,18 @@ class EUAIACTREADY {
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-data-store.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-chatbot-transparency.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-content-transparency.php';
+		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-shortcode.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-loader.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-media-transparency.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-post-meta-box.php';
+		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/ai-tools/class-euaiactready-ai-tools-registry.php';
+		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/ai-tools/class-euaiactready-ai-tools-detector.php';
+		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/ai-tools/class-euaiactready-category-suggester.php';
+		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-ai-tools.php';
+		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-readiness.php';
+		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-ai-literacy.php';
+		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-assessment.php';
+		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/ai-tools/class-euaiactready-ai-tools-site-fetch.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'admin/class-euaiactready-admin.php';
 
 		$this->loader = new EUAIACTREADY_Loader();
@@ -92,6 +101,8 @@ class EUAIACTREADY {
 		$this->loader->add_action( 'wp_ajax_euaiactready_restore_image', $plugin_admin, 'euaiactready_ajax_restore_image' );
 		$this->loader->add_action( 'wp_ajax_euaiactready_mark_image_as_ai', $plugin_admin, 'euaiactready_ajax_mark_image_as_ai' );
 		$this->loader->add_action( 'wp_ajax_euaiactready_bulk_action', $plugin_admin, 'euaiactready_ajax_bulk_action' );
+		$this->loader->add_action( 'admin_post_euaiactready_print_report', $plugin_admin, 'euaiactready_handle_print_report' );
+		$this->loader->add_action( 'wp_dashboard_setup', $plugin_admin, 'euaiactready_register_dashboard_widget' );
 
 		// Initialize post meta box for AI disclosure.
 		new EUAIACTREADY_Post_Meta_Box();
@@ -102,29 +113,23 @@ class EUAIACTREADY {
 	 * Register all of the hooks related to the public-facing functionality.
 	 */
 	private function euaiactready_define_public_hooks() {
-		// Enqueue frontend assets if any transparency feature is enabled.
-		$any_feature_enabled =
-			get_option( 'euaiactready_transparency_enabled', true )
-			|| get_option( 'euaiactready_chatbot_transparency', true )
-			|| get_option( 'euaiactready_media_transparency', true );
+		add_action( 'wp_enqueue_scripts', array( $this, 'euaiactready_enqueue_frontend_assets' ) );
+		
+		new EUAIACTREADY_Content_Transparency();
+		new EUAIACTREADY_Shortcode();
 
-		if ( $any_feature_enabled ) {
-			add_action( 'wp_enqueue_scripts', array( $this, 'euaiactready_enqueue_frontend_assets' ) );
-		}
-
-		// Initialize transparency notices if enabled.
-		if ( get_option( 'euaiactready_transparency_enabled', true ) ) {
-			new EUAIACTREADY_Content_Transparency();
-		}
-
-		// Initialize chatbot transparency if enabled (frontend-only feature).
+		// Chatbot transparency is frontend-only; skip instantiation entirely when disabled.
 		if ( get_option( 'euaiactready_chatbot_transparency', true ) ) {
 			new EUAIACTREADY_Chatbot_Transparency();
 		}
 
-		// Initialize media transparency (always loaded - has backend admin features).
-		// The option 'euaiactready_media_transparency' only controls frontend display, not backend.
+		// Media transparency is always instantiated because it also powers admin-side features.
+		// The euaiactready_media_transparency option controls frontend label display only.
 		new EUAIACTREADY_Media_Transparency();
+
+		// AI Tools Registry - always active (handles its own frontend guard).
+		global $euaiactready_ai_tools_instance;
+		$euaiactready_ai_tools_instance = new Euaiactready_AI_Tools();
 	}
 
 	/**

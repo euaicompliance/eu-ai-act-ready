@@ -64,9 +64,13 @@
 /* Statistics Cards */
 .euaiactready-stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax($stat-card-min-width, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax($stat-card-min-width, 1fr));
     gap: $gap-2xl;
     margin: $spacing-xl 0;
+
+    &--secondary {
+        margin-top: 0;
+    }
 }
 
 .stat-card {
@@ -2271,4 +2275,894 @@ table.dataTable.no-footer {
 // Success state for scan indicator
 .scan-complete {
     color: #388e3c;
+}
+
+/* ========================================
+   Readiness Score Card
+   ======================================== */
+
+.euaiactready-readiness-card {
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    margin: 20px 0;
+    padding: 24px;
+
+    h2 {
+        font-size: 18px;
+        margin: 0 0 4px;
+    }
+
+    h3 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0 0 8px;
+        color: #1d2327;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            align-items: flex-start;
+            display: flex;
+            font-size: 13px;
+            gap: 6px;
+            margin-bottom: 6px;
+
+            .dashicons {
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+        }
+    }
+}
+
+.euaiactready-readiness-header {
+    align-items: center;
+    display: flex;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.euaiactready-readiness-info {
+    flex: 1;
+
+    .description {
+        color: #646970;
+        font-size: 13px;
+        margin-top: 4px;
+    }
+}
+
+.euaiactready-readiness-circle {
+    align-items: center;
+    border: 4px solid #ccc;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    height: 90px;
+    justify-content: center;
+    min-width: 90px;
+    width: 90px;
+
+    &.euaiactready-traffic-green  { border-color: #10b981; }
+    &.euaiactready-traffic-amber  { border-color: #f59e0b; }
+    &.euaiactready-traffic-red    { border-color: #ef4444; }
+}
+
+.euaiactready-readiness-number {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.euaiactready-readiness-denom {
+    color: #646970;
+    font-size: 12px;
+}
+
+.euaiactready-traffic-label {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 4px;
+
+    &.euaiactready-traffic-green { color: #10b981; }
+    &.euaiactready-traffic-amber { color: #f59e0b; }
+    &.euaiactready-traffic-red   { color: #ef4444; }
+}
+
+.euaiactready-readiness-unmet {
+    border-top: 1px solid #f0f0f0;
+    margin-top: 16px;
+    padding-top: 16px;
+
+    ul li .dashicons { color: #ef4444; }
+}
+
+.euaiactready-readiness-met {
+    border-top: 1px solid #f0f0f0;
+    margin-top: 12px;
+    padding-top: 12px;
+
+    ul li {
+        color: #646970;
+
+        .dashicons { color: #10b981; }
+    }
+}
+
+/* AI Tools admin page cards */
+.euaiactready-card {
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.euaiactready-page-title {
+    margin-bottom: 4px;
+}
+
+.euaiactready-registry-status {
+    align-items: center;
+    background: #f8f9fa;
+    border: 1px solid #e2e4e7;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+}
+
+.euaiactready-registry-status-info {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.euaiactready-registry-label {
+    color: #1d2327;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.euaiactready-registry-sep {
+    color: #c3c4c7;
+}
+
+.euaiactready-registry-count,
+.euaiactready-registry-fetched-at {
+    color: #50575e;
+    font-size: 13px;
+}
+
+.euaiactready-registry-status-chip {
+    border-radius: 10px;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    text-transform: uppercase;
+
+    &.euaiactready-status-ok {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    &.euaiactready-status-error {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    &.euaiactready-status- {
+        background: #e2e3e5;
+        color: #383d41;
+    }
+}
+
+.euaiactready-category-badge {
+    background: #e8eaf6;
+    border-radius: 10px;
+    color: #3949ab;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    text-transform: uppercase;
+}
+
+.euaiactready-source-registry {
+    background: #e6f6ec;
+    border-radius: 10px;
+    color: #00a32a;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+}
+
+.euaiactready-source-manual {
+    background: #e8f0fe;
+    border-radius: 10px;
+    color: #1a56db;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+}
+
+.euaiactready-source-script {
+    background: #fef9e7;
+    border-radius: 10px;
+    color: #856404;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+}
+
+.euaiactready-possibly-ai-badge {
+    background: #fcf9e8;
+    border: 1px solid #f0b849;
+    border-radius: 10px;
+    color: #856404;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 6px;
+    padding: 2px 8px;
+}
+
+.euaiactready-row-possibly-ai {
+    background: #fffdf0 !important;
+}
+
+.euaiactready-toggle {
+    cursor: pointer;
+    display: inline-block;
+    flex-shrink: 0;
+    height: 22px;
+    overflow: hidden;
+    position: relative;
+    width: 40px;
+
+    input {
+        -webkit-appearance: none;
+        appearance: none;
+        background: transparent;
+        border: 0;
+        height: 0 !important;
+        left: 0;
+        margin: 0;
+        max-height: 0 !important;
+        max-width: 0 !important;
+        min-height: 0 !important;
+        min-width: 0 !important;
+        opacity: 0;
+        outline: none;
+        padding: 0;
+        position: absolute;
+        top: 0;
+        width: 0 !important;
+
+        &:focus {
+            outline: none;
+        }
+    }
+}
+
+.euaiactready-toggle-slider {
+    background: #ccc;
+    border-radius: 12px;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: background .2s;
+
+    &::before {
+        background: #fff;
+        border-radius: 50%;
+        bottom: 3px;
+        content: '';
+        height: 16px;
+        left: 3px;
+        position: absolute;
+        transition: transform .2s;
+        width: 16px;
+    }
+}
+
+.euaiactready-toggle input:checked + .euaiactready-toggle-slider {
+    background: #10b981;
+}
+
+.euaiactready-toggle input:checked + .euaiactready-toggle-slider::before {
+    transform: translateX(18px);
+}
+
+.dashicons.spin {
+    animation: spin 1s linear infinite;
+}
+
+
+// --- Assessment wizard -------------------------------------------------------
+
+.euaiactready-hidden { display: none !important; }
+
+// Segmented tab control (Your Results / Update Answers).
+.euaiactready-tabs-segmented {
+	align-self: flex-start;
+	background: #e9eaeb;
+	border-radius: 9px;
+	display: flex;
+	gap: 2px;
+	margin-bottom: 22px;
+	padding: 3px;
+	width: auto;
+}
+
+.euaiactready-tab-seg {
+	align-items: center;
+	background: transparent;
+	border: none;
+	border-radius: 7px;
+	color: #50575e;
+	cursor: pointer;
+	display: inline-flex;
+	font-size: 13px;
+	font-weight: 500;
+	gap: 7px;
+	line-height: 1.4;
+	padding: 9px 22px;
+	transition: all .15s;
+	white-space: nowrap;
+
+	.dashicons {
+		font-size: 15px;
+		height: 15px;
+		margin-top: 1px;
+		width: 15px;
+	}
+
+	&--active {
+		background: #fff;
+		box-shadow: 0 1px 4px rgba(0, 0, 0, .14);
+		color: #1d2327;
+		font-weight: 600;
+	}
+
+	&:hover:not(.euaiactready-tab-seg--active) {
+		background: rgba(255, 255, 255, .6);
+		color: #1d2327;
+	}
+}
+
+// Wizard question steps - only the active step is shown.
+.euaiactready-wizard-step {
+	display: none;
+
+	&--active { display: block; }
+}
+
+// Question card layout.
+.euaiactready-wizard-question {
+	padding: 8px 0 0;
+}
+
+.euaiactready-wizard-question-number {
+	color: #667eea;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: .05em;
+	margin-bottom: 8px;
+	text-transform: uppercase;
+}
+
+.euaiactready-wizard-question-text {
+	color: #1d2327;
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 1.35;
+	margin: 0 0 8px;
+}
+
+.euaiactready-wizard-question-hint {
+	color: #646970;
+	font-size: 13px;
+	margin-bottom: 24px;
+}
+
+// Option cards (Yes / Sometimes / No).
+.euaiactready-wizard-options {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 8px;
+}
+
+.euaiactready-wizard-option {
+	align-items: center;
+	background: #fff;
+	border: 2px solid #dcdcde;
+	border-radius: 10px;
+	cursor: pointer;
+	display: flex;
+	flex: 1;
+	gap: 12px;
+	min-width: 130px;
+	padding: 16px 20px;
+	transition: border-color .15s, background .15s, box-shadow .15s;
+
+	input[type="radio"] {
+		accent-color: #667eea;
+		flex-shrink: 0;
+		height: 18px;
+		width: 18px;
+	}
+
+	&:hover {
+		background: #f5f6ff;
+		border-color: #667eea;
+	}
+
+	&--selected {
+		background: #f0f2ff;
+		border-color: #667eea;
+		box-shadow: 0 0 0 1px #667eea;
+	}
+}
+
+.euaiactready-wizard-option-label {
+	color: #1d2327;
+	font-size: 15px;
+	font-weight: 500;
+}
+
+// Results list (shown on the final wizard step and on the Results tab).
+.euaiactready-wizard-results-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-top: 8px;
+}
+
+.euaiactready-wizard-result-item {
+	background: #f9f9f9;
+	border: 1px solid #e2e4e7;
+	border-left: 4px solid #667eea;
+	border-radius: 6px;
+	padding: 14px 16px;
+}
+
+.euaiactready-wizard-result-articles {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-bottom: 8px;
+}
+
+.euaiactready-wizard-result-action {
+	color: #1d2327;
+	font-size: 13px;
+	margin: 0;
+}
+
+// Step dot progress track.
+.euaiactready-wizard-dots {
+	align-items: center;
+	display: flex !important;
+	flex-direction: row !important;
+	gap: 0;
+	justify-content: center;
+	margin: 0 0 8px;
+	padding: 20px 24px 0;
+}
+
+.euaiactready-wizard-dot {
+	align-items: center;
+	background: #e2e4e7;
+	border-radius: 50%;
+	box-sizing: border-box;
+	color: #646970;
+	display: flex !important;
+	flex-shrink: 0;
+	font-size: 13px;
+	font-weight: 700;
+	height: 32px;
+	justify-content: center;
+	line-height: 1;
+	min-width: 32px;
+	transition: background .2s, color .2s, box-shadow .2s;
+	width: 32px;
+
+	.dashicons {
+		font-size: 14px;
+		height: 14px;
+		width: 14px;
+	}
+
+	&--active {
+		background: #667eea;
+		box-shadow: 0 0 0 4px rgba(102, 126, 234, .2);
+		color: #fff;
+	}
+
+	&--done {
+		background: #10b981;
+		color: #fff;
+	}
+}
+
+.euaiactready-wizard-conn {
+	background: #e2e4e7;
+	flex: 1;
+	height: 2px;
+	max-width: 48px;
+	min-width: 6px;
+	transition: background .2s;
+
+	&--done { background: #10b981; }
+}
+
+.euaiactready-wizard-step-label {
+	color: #646970;
+	display: block;
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: .02em;
+	margin: 6px 0 18px;
+	text-align: center;
+}
+
+// Wizard panels (animated on show).
+.euaiactready-wizard-panel {
+	animation: euaiActFadeIn .15s ease;
+}
+
+@keyframes euaiActFadeIn {
+	from { opacity: 0; transform: translateY(4px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+
+// Custom nav buttons (replaces WP .button so we control sizing precisely).
+.euaiactready-wizard-nav {
+	align-items: center;
+	border-top: 1px solid #e2e4e7;
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
+	padding: 20px 24px 24px;
+
+	&--results-top {
+		border-bottom: 1px solid #e2e4e7;
+		border-top: none;
+		margin-top: 0;
+		padding: 16px 24px;
+	}
+
+	.ewiz-btn {
+		align-items: center;
+		border-radius: 6px;
+		cursor: pointer;
+		display: inline-flex;
+		font-size: 14px;
+		font-weight: 500;
+		gap: 7px;
+		height: auto;
+		line-height: 1.5;
+		padding: 10px 22px;
+
+		.dashicons {
+			font-size: 16px;
+			height: 16px;
+			margin: 0;
+			width: 16px;
+		}
+	}
+
+	.ewiz-btn-back {
+		background: #f6f7f7;
+		border: 1px solid #dcdcde;
+		box-shadow: none;
+		color: #3c434a;
+
+		&:hover:not(:disabled) {
+			background: #f0f0f1;
+			border-color: #c3c4c7;
+		}
+
+		&:disabled {
+			cursor: not-allowed;
+			opacity: .4;
+		}
+	}
+
+	.ewiz-btn-primary {
+		background: #2271b1;
+		border: 1px solid #2271b1;
+		color: #fff;
+		justify-content: center;
+		min-width: 120px;
+
+		.dashicons { color: #fff; }
+
+		&:hover:not(:disabled) {
+			background: #135e96;
+			border-color: #135e96;
+		}
+	}
+}
+
+.euaiactready-wizard-nav-right { display: flex; gap: 8px; }
+
+.euaiactready-wizard-unsaved-notice {
+	align-items: center;
+	background: #fef9e7;
+	border-left: 3px solid #f0b849;
+	color: #856404;
+	display: flex;
+	font-size: 12px;
+	gap: 8px;
+	margin: 8px 0 0;
+	padding: 8px 14px;
+
+	.dashicons {
+		flex-shrink: 0;
+		font-size: 14px;
+		height: 14px;
+		width: 14px;
+	}
+}
+
+// --- AI Literacy page -------------------------------------------------------
+
+.euaiactready-literacy-intro-header {
+	align-items: flex-start;
+	display: flex;
+	gap: 24px;
+	justify-content: space-between;
+}
+
+.euaiactready-literacy-progress-wrap {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 0;
+	gap: 6px;
+	text-align: center;
+}
+
+.euaiactready-literacy-progress-circle {
+	align-items: center;
+	border: 4px solid #e2e4e7;
+	border-radius: 50%;
+	display: flex;
+	gap: 1px;
+	height: 72px;
+	justify-content: center;
+	width: 72px;
+
+	&.complete   { border-color: #10b981; }
+	&.incomplete { border-color: #f0b849; }
+}
+
+.euaiactready-literacy-progress-number {
+	color: #1d2327;
+	font-size: 22px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.euaiactready-literacy-progress-denom {
+	color: #646970;
+	font-size: 13px;
+	line-height: 1;
+}
+
+.euaiactready-literacy-progress-label {
+	color: #646970;
+	font-size: 12px;
+	font-weight: 500;
+	margin: 0;
+}
+
+.euaiactready-literacy-tasks {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin: 20px 0 24px;
+}
+
+.euaiactready-literacy-task {
+	align-items: flex-start;
+	background: #fff;
+	border: 2px solid #dcdcde;
+	border-radius: 8px;
+	cursor: pointer;
+	display: flex;
+	gap: 14px;
+	padding: 14px 16px;
+	transition: border-color .15s, background .15s;
+
+	input[type="checkbox"] { display: none; }
+
+	&:hover { border-color: #667eea; }
+
+	&.task-checked {
+		background: #f0f2ff;
+		border-color: #667eea;
+
+		.euaiactready-literacy-task-check {
+			background: #667eea;
+			border-color: #667eea;
+			color: #fff;
+		}
+	}
+}
+
+.euaiactready-literacy-task-check {
+	align-items: center;
+	background: #fff;
+	border: 2px solid #dcdcde;
+	border-radius: 5px;
+	display: flex;
+	flex-shrink: 0;
+	height: 22px;
+	justify-content: center;
+	margin-top: 1px;
+	transition: background .15s, border-color .15s;
+	width: 22px;
+
+	.dashicons { color: inherit; font-size: 16px; height: 16px; visibility: hidden; width: 16px; }
+}
+
+.euaiactready-literacy-task.task-checked .euaiactready-literacy-task-check .dashicons { visibility: visible; }
+
+.euaiactready-literacy-task-label {
+	color: #1d2327;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+// --- Dashboard button icon fix -----------------------------------------------
+
+.button-primary .dashicons { color: #fff !important; }
+
+.euaiactready-report-btn .dashicons { color: currentColor; vertical-align: middle; }
+
+/* ========================================
+   LAW RADAR / ENFORCEMENT TIMELINE
+   ======================================== */
+
+.euaiactready-law-radar {
+	background: $color-white;
+	border: 1px solid $color-wp-border;
+	border-radius: $radius-xl;
+	box-shadow: $shadow-sm;
+	margin: $spacing-xl 0;
+	padding: $spacing-2xl;
+
+	.description {
+		color: $color-wp-gray;
+		font-size: $font-size-lg;
+		margin: 0 0 $spacing-2xl;
+	}
+}
+
+.euaiactready-timeline {
+	display: flex;
+	flex-direction: column;
+}
+
+.euaiactready-timeline-item {
+	column-gap: 16px;
+	display: grid;
+	grid-template-columns: 22px 1fr;
+	padding-bottom: $spacing-2xl;
+	position: relative;
+
+	&:last-child {
+		padding-bottom: 0;
+	}
+
+	// Vertical connecting line between dots.
+	&:not(:last-child)::before {
+		background: $color-wp-border;
+		bottom: 0;
+		content: '';
+		left: 10px;
+		position: absolute;
+		top: 26px;
+		width: 2px;
+	}
+}
+
+.euaiactready-timeline-dot {
+	background: $color-white;
+	border: 3px solid #c3c4c7;
+	border-radius: $radius-circle;
+	flex-shrink: 0;
+	height: 22px;
+	margin-top: 2px;
+	position: relative;
+	width: 22px;
+	z-index: $z-base;
+
+	&.past {
+		background: #10b981;
+		border-color: #10b981;
+	}
+
+	&.upcoming {
+		background: $color-white;
+		border-color: $color-wp-blue;
+	}
+}
+
+.euaiactready-timeline-content {
+	background: #f9f9f9;
+	border: 1px solid $color-wp-border;
+	border-left: 3px solid #c3c4c7;
+	border-radius: $radius-lg;
+	padding: $spacing-md 16px;
+
+	strong {
+		color: $color-wp-gray-dark;
+		display: block;
+		font-size: $font-size-xl;
+		margin-bottom: $spacing-xs;
+	}
+
+	p {
+		color: $color-wp-gray;
+		font-size: $font-size-lg;
+		line-height: $line-height-normal;
+		margin: 0;
+	}
+}
+
+.euaiactready-timeline-past .euaiactready-timeline-content {
+	border-left-color: #10b981;
+}
+
+.euaiactready-timeline-upcoming .euaiactready-timeline-content {
+	border-left-color: $color-wp-blue;
+}
+
+.euaiactready-timeline-date {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-semibold;
+	gap: $gap-sm;
+	margin-bottom: $spacing-xs;
+}
+
+.euaiactready-timeline-past .euaiactready-timeline-date {
+	color: #0d9668;
+}
+
+.euaiactready-timeline-upcoming .euaiactready-timeline-date {
+	color: $color-wp-blue;
+}
+
+.euaiactready-timeline-countdown {
+	background: #e8f0fe;
+	border-radius: $radius-full;
+	color: #1a56db;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	padding: 2px 8px;
 }
