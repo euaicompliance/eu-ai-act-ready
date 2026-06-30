@@ -648,6 +648,7 @@ class EUAIACTREADY_Post_Meta_Box {
 					'message' => esc_html__( 'Invalid request.', 'eu-ai-act-ready' ),
 				)
 			);
+			return;
 		}
 
 		// Check permissions.
@@ -657,6 +658,7 @@ class EUAIACTREADY_Post_Meta_Box {
 					'message' => esc_html__( 'Permission denied.', 'eu-ai-act-ready' ),
 				)
 			);
+			return;
 		}
 
 		$action = isset( $_POST['action_type'] ) ? sanitize_text_field( wp_unslash( $_POST['action_type'] ) ) : '';
