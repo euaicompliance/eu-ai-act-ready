@@ -10,6 +10,7 @@ msgstr ""
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: includes/class-euaiactready-media-transparency.php:1571
 msgid "No AI"
@@ -388,7 +389,7 @@ msgstr "Hinweis zu KI-Inhalten"
 msgid "%s item unmarked as AI content."
 msgid_plural "%s items unmarked as AI content."
 msgstr[0] "%s Element als KI-Inhalt demarkiert."
-msgstr[1] ""
+msgstr[1] "%s Elemente als KI-Inhalt demarkiert."
 
 #. translators: %s: Number of items marked as AI.
 #: includes/class-euaiactready-post-meta-box.php:374
@@ -396,7 +397,7 @@ msgstr[1] ""
 msgid "%s item marked as AI content."
 msgid_plural "%s items marked as AI content."
 msgstr[0] "%s Element als KI-Inhalt markiert."
-msgstr[1] ""
+msgstr[1] "%s Elemente als KI-Inhalt markiert."
 
 #: includes/class-euaiactready-post-meta-box.php:413
 msgid "No"
