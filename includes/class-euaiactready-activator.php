@@ -101,6 +101,9 @@ class EUAIACTREADY_Activator {
 		add_option( 'euaiactready_media_label_tooltip', 'full' );
 		add_option( 'euaiactready_media_label_size', 'normal' );
 
+		// Notice placement relative to the content.
+		add_option( 'euaiactready_notice_position', EUAIACTREADY_DEFAULT_NOTICE_POSITION );
+
 		// RSS & Feed disclosure defaults (opt-in).
 		add_option( 'euaiactready_rss_disclosure_enabled', 0 );
 		add_option( 'euaiactready_rss_title_prefix', 0 );

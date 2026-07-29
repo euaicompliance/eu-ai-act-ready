@@ -29,6 +29,7 @@ $euaiactready_options = array(
 	'euaiactready_show_in_excerpts',
 	'euaiactready_transparency_enabled',
 	'euaiactready_notice_style',
+	'euaiactready_notice_position',
 	'euaiactready_notice_message',
 	'euaiactready_chatbot_transparency',
 	'euaiactready_chatbot_platform',
