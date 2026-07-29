@@ -376,7 +376,7 @@ class EUAIACTREADY_Content_Transparency {
 	 */
 	private function euaiactready_get_banner_html( $message ) {
 		return sprintf(
-			'<div class="eu-ai-act-ready-notice ai-notice-banner" role="alert" aria-label="%1$s">
+			'<div class="eu-ai-act-ready-notice ai-notice-banner" role="note" aria-label="%1$s">
                 <div class="ai-notice-icon">%2$s</div>
                 <div class="ai-notice-content">
                     <strong>%3$s</strong> %4$s
