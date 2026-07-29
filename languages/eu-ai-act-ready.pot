@@ -1583,7 +1583,7 @@ msgstr ""
 msgid "Tool removed."
 msgstr ""
 
-#: admin/partials/settings.php:191
+#: admin/partials/settings.php:240
 msgid "Notice Position"
 msgstr ""
 
@@ -1599,6 +1599,6 @@ msgstr ""
 msgid "Above and below the content"
 msgstr ""
 
-#: admin/partials/settings.php:199
+#: admin/partials/settings.php:248
 msgid "Choose whether the notice appears above the content, below it, or in both places."
 msgstr ""

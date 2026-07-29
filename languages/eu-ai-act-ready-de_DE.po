@@ -1588,3 +1588,23 @@ msgstr "Werkzeug hinzugefügt und Scan aktualisiert."
 #: includes/class-euaiactready-ai-tools.php:258
 msgid "Tool removed."
 msgstr "Werkzeug entfernt."
+
+#: admin/partials/settings.php:240
+msgid "Notice Position"
+msgstr "Position des Hinweises"
+
+#: includes/class-euaiactready-content-transparency.php:161
+msgid "Above the content"
+msgstr "Über dem Inhalt"
+
+#: includes/class-euaiactready-content-transparency.php:162
+msgid "Below the content"
+msgstr "Unter dem Inhalt"
+
+#: includes/class-euaiactready-content-transparency.php:163
+msgid "Above and below the content"
+msgstr "Über und unter dem Inhalt"
+
+#: admin/partials/settings.php:248
+msgid "Choose whether the notice appears above the content, below it, or in both places."
+msgstr "Legt fest, ob der Hinweis über dem Inhalt, unter dem Inhalt oder an beiden Stellen erscheint."
