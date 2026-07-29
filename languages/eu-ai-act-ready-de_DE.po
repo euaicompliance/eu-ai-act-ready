@@ -1432,3 +1432,63 @@ msgstr ""
 #: eu-ai-act-ready.php
 msgid "Disclose AI-generated content, media, and chatbots with transparent visitor notices, supporting transparency under Article 50 of the EU AI Act."
 msgstr ""
+
+#: includes/class-euaiactready-content-transparency.php:139
+#: includes/class-euaiactready-content-transparency.php:346
+msgid "This content was created with AI assistance."
+msgstr "Dieser Inhalt wurde mit KI-Unterstützung erstellt."
+
+#: includes/class-euaiactready-content-transparency.php:141
+#: includes/class-euaiactready-content-transparency.php:348
+msgid "This content was AI-generated and reviewed by a human editor."
+msgstr "Dieser Inhalt wurde KI-generiert und redaktionell von einem Menschen geprüft."
+
+#: includes/class-euaiactready-content-transparency.php:175
+#: includes/class-euaiactready-content-transparency.php:211
+msgid "AI tools in use on this site: %s."
+msgstr "Auf dieser Website eingesetzte KI-Werkzeuge: %s."
+
+#: includes/class-euaiactready-content-transparency.php:182
+msgid "- AI Disclosure: %s"
+msgstr "- KI-Offenlegung: %s"
+
+#: includes/class-euaiactready-content-transparency.php:491
+msgid "AI Content Marked"
+msgstr "KI-Inhalt markiert"
+
+#: includes/class-euaiactready-content-transparency.php:493
+msgid "- a transparency notice will be displayed to visitors."
+msgstr "- Besuchern wird ein Transparenzhinweis angezeigt."
+
+#: includes/class-euaiactready-shortcode.php:104
+msgid "This image was generated using AI."
+msgstr "Dieses Bild wurde mit KI erzeugt."
+
+#: includes/class-euaiactready-ai-tools.php:345
+msgid "AI Transparency: This site uses AI-powered tools and services."
+msgstr "KI-Transparenz: Diese Website nutzt KI-gestützte Werkzeuge und Dienste."
+
+#: includes/class-euaiactready-ai-tools.php:146
+msgid "Please wait a moment before syncing again."
+msgstr "Bitte warten Sie einen Moment, bevor Sie erneut synchronisieren."
+
+#: includes/class-euaiactready-ai-tools.php:169
+msgid "Registry refreshed: %1$d tools, %2$d detected on this site."
+msgstr "Verzeichnis aktualisiert: %1$d Werkzeuge, %2$d auf dieser Website erkannt."
+
+#: includes/class-euaiactready-ai-tools.php:194
+#: includes/class-euaiactready-ai-tools.php:251
+msgid "Invalid tool ID."
+msgstr "Ungültige Werkzeug-ID."
+
+#: includes/class-euaiactready-ai-tools.php:223
+msgid "Slug and name are required."
+msgstr "Slug und Name sind erforderlich."
+
+#: includes/class-euaiactready-ai-tools.php:232
+msgid "Tool added and scan updated."
+msgstr "Werkzeug hinzugefügt und Scan aktualisiert."
+
+#: includes/class-euaiactready-ai-tools.php:258
+msgid "Tool removed."
+msgstr "Werkzeug entfernt."
