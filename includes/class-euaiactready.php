@@ -63,7 +63,9 @@ class EUAIACTREADY {
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-content-transparency.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-shortcode.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-loader.php';
+		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-media-markup.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-media-transparency.php';
+		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-bricks-media.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-post-meta-box.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/ai-tools/class-euaiactready-ai-tools-registry.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/ai-tools/class-euaiactready-ai-tools-detector.php';
@@ -125,7 +127,19 @@ class EUAIACTREADY {
 
 		// Media transparency is always instantiated because it also powers admin-side features.
 		// The euaiactready_media_transparency option controls frontend label display only.
-		new EUAIACTREADY_Media_Transparency();
+		$media_transparency = new EUAIACTREADY_Media_Transparency();
+
+		// Bricks renders its element tree instead of running content through 'the_content'.
+		// Deferred to 'after_setup_theme' because plugins load before the theme defines
+		// BRICKS_VERSION.
+		add_action(
+			'after_setup_theme',
+			static function () use ( $media_transparency ) {
+				if ( defined( 'BRICKS_VERSION' ) ) {
+					new EUAIACTREADY_Bricks_Media( $media_transparency );
+				}
+			}
+		);
 
 		// AI Tools Registry - always active (handles its own frontend guard).
 		global $euaiactready_ai_tools_instance;
