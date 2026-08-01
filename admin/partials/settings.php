@@ -45,42 +45,18 @@ if ( isset( $_POST['save_settings'] ) && check_admin_referer( 'euaiactready_sett
 
 	// Media transparency settings.
 	update_option( 'euaiactready_media_transparency', ! empty( $euaiactready_post_data['media_transparency'] ) ? 1 : 0 );
-	// Only written while Bricks is active, because the checkbox is only rendered then.
-	// Saving unconditionally would read the missing checkbox as "off" on every other site
-	// and silently disable background labels for the day Bricks gets activated.
-	if ( defined( 'BRICKS_VERSION' ) ) {
-		update_option( 'euaiactready_bricks_background_labels', ! empty( $euaiactready_post_data['bricks_background_labels'] ) ? 1 : 0 );
-	}
 	if ( isset( $euaiactready_post_data['media_label_style'] ) ) {
 		update_option( 'euaiactready_media_label_style', sanitize_text_field( $euaiactready_post_data['media_label_style'] ) );
-	}
-	if ( isset( $euaiactready_post_data['media_label_position'] ) ) {
-		$euaiactready_position = sanitize_key( $euaiactready_post_data['media_label_position'] );
-		$euaiactready_allowed  = EUAIACTREADY_Media_Transparency::euaiactready_get_label_positions();
-
-		update_option(
-			'euaiactready_media_label_position',
-			isset( $euaiactready_allowed[ $euaiactready_position ] ) ? $euaiactready_position : ''
-		);
-	}
-	if ( defined( 'BRICKS_VERSION' ) && isset( $euaiactready_post_data['bricks_bg_label_position'] ) ) {
-		$euaiactready_bg_position = sanitize_key( $euaiactready_post_data['bricks_bg_label_position'] );
-		$euaiactready_allowed     = EUAIACTREADY_Media_Transparency::euaiactready_get_label_positions();
-
-		update_option(
-			'euaiactready_bricks_bg_label_position',
-			isset( $euaiactready_allowed[ $euaiactready_bg_position ] ) ? $euaiactready_bg_position : 'top-right'
-		);
 	}
 	if ( isset( $euaiactready_post_data['media_confidence_threshold'] ) ) {
 		update_option( 'euaiactready_media_confidence_threshold', floatval( $euaiactready_post_data['media_confidence_threshold'] ) );
 	}
 
 	// Enabled post types for AI content disclosure.
-	$euaiactready_raw_types   = isset( $euaiactready_post_data['enabled_post_types'] ) && is_array( $euaiactready_post_data['enabled_post_types'] )
+	$euaiactready_raw_types    = isset( $euaiactready_post_data['enabled_post_types'] ) && is_array( $euaiactready_post_data['enabled_post_types'] )
 		? $euaiactready_post_data['enabled_post_types']
 		: array();
-	$euaiactready_saved_types = array_values( array_filter( array_map( 'sanitize_key', $euaiactready_raw_types ) ) );
+	$euaiactready_saved_types  = array_values( array_filter( array_map( 'sanitize_key', $euaiactready_raw_types ) ) );
 	update_option( 'euaiactready_enabled_post_types', $euaiactready_saved_types );
 
 	// RSS & Feed disclosure settings.
@@ -109,9 +85,6 @@ $euaiactready_chatbot_notice_message = sanitize_text_field( get_option( 'euaiact
 
 // Media transparency settings.
 $euaiactready_media_transparency         = get_option( 'euaiactready_media_transparency', true );
-$euaiactready_bricks_background_labels   = get_option( 'euaiactready_bricks_background_labels', true );
-$euaiactready_media_label_position       = get_option( 'euaiactready_media_label_position', '' );
-$euaiactready_bricks_bg_label_position   = get_option( 'euaiactready_bricks_bg_label_position', 'top-right' );
 $euaiactready_media_label_style          = get_option( 'euaiactready_media_label_style', EUAIACTREADY_DEFAULT_MEDIA_LABEL_STYLE );
 $euaiactready_media_confidence_threshold = get_option( 'euaiactready_media_confidence_threshold', EUAIACTREADY_DEFAULT_MEDIA_CONFIDENCE_THRESHOLD );
 
@@ -361,18 +334,6 @@ $euaiactready_tab_definitions = array(
 					</td>
 				</tr>
 
-				<?php if ( defined( 'BRICKS_VERSION' ) ) : ?>
-				<tr>
-					<th scope="row">
-						<label for="bricks_background_labels"><?php esc_html_e( 'Label Background Images (Bricks)', 'eu-ai-act-ready' ); ?></label>
-					</th>
-					<td>
-					<input type="checkbox" id="bricks_background_labels" name="bricks_background_labels" value="1" <?php checked( $euaiactready_bricks_background_labels, true ); ?>>
-						<p class="description"><?php esc_html_e( 'Also label AI-generated images used as CSS background images in Bricks Builder. The badge is placed inside the element, which makes that element a positioning context.', 'eu-ai-act-ready' ); ?></p>
-					</td>
-				</tr>
-				<?php endif; ?>
-
 				<tr>
 					<th scope="row">
 						<label for="media_label_style"><?php esc_html_e( 'Label Style', 'eu-ai-act-ready' ); ?></label>
@@ -387,37 +348,6 @@ $euaiactready_tab_definitions = array(
 						<p class="description"><?php esc_html_e( 'Choose how AI labels appear on images.', 'eu-ai-act-ready' ); ?></p>
 					</td>
 				</tr>
-
-				<tr id="euaiactready-image-position-row"<?php echo 'caption' === $euaiactready_media_label_style ? ' style="display:none"' : ''; ?>>
-					<th scope="row">
-						<label for="media_label_position"><?php esc_html_e( 'Badge Placement (Images)', 'eu-ai-act-ready' ); ?></label>
-					</th>
-					<td>
-						<select id="media_label_position" name="media_label_position">
-							<option value="" <?php selected( $euaiactready_media_label_position, '' ); ?>><?php esc_html_e( 'Unchanged (Badge top right, Overlay top left, Border top centre)', 'eu-ai-act-ready' ); ?></option>
-							<?php foreach ( EUAIACTREADY_Media_Transparency::euaiactready_get_label_positions() as $euaiactready_value => $euaiactready_name ) : ?>
-							<option value="<?php echo esc_attr( $euaiactready_value ); ?>" <?php selected( $euaiactready_media_label_position, $euaiactready_value ); ?>><?php echo esc_html( $euaiactready_name ); ?></option>
-							<?php endforeach; ?>
-						</select>
-						<p class="description"><?php esc_html_e( 'Where the badge sits on an image. Elements with a background image are set separately below.', 'eu-ai-act-ready' ); ?></p>
-					</td>
-				</tr>
-
-				<?php if ( defined( 'BRICKS_VERSION' ) ) : ?>
-				<tr>
-					<th scope="row">
-						<label for="bricks_bg_label_position"><?php esc_html_e( 'Badge Placement (Background Images)', 'eu-ai-act-ready' ); ?></label>
-					</th>
-					<td>
-						<select id="bricks_bg_label_position" name="bricks_bg_label_position">
-							<?php foreach ( EUAIACTREADY_Media_Transparency::euaiactready_get_label_positions() as $euaiactready_value => $euaiactready_name ) : ?>
-							<option value="<?php echo esc_attr( $euaiactready_value ); ?>" <?php selected( $euaiactready_bricks_bg_label_position, $euaiactready_value ); ?>><?php echo esc_html( $euaiactready_name ); ?></option>
-							<?php endforeach; ?>
-						</select>
-						<p class="description"><?php esc_html_e( 'Where the badge sits on an element with an AI-generated background image.', 'eu-ai-act-ready' ); ?></p>
-					</td>
-				</tr>
-				<?php endif; ?>
 
 				<tr>
 					<th scope="row">

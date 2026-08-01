@@ -900,160 +900,6 @@ class EUAIACTREADY_Media_Transparency {
 	}
 
 	/**
-	 * Allowed HTML for label markup passed through wp_kses().
-	 *
-	 * @return array
-	 */
-	public static function euaiactready_get_label_allowed_html() {
-		return array(
-			'div'  => array(
-				'class' => true,
-				'title' => true,
-			),
-			'span' => array(
-				'class' => true,
-				'title' => true,
-			),
-			'svg'  => array(
-				'xmlns'   => true,
-				'width'   => true,
-				'height'  => true,
-				'viewbox' => true,
-				'fill'    => true,
-				'stroke'  => true,
-				'class'   => true,
-			),
-			'path' => array(
-				'd' => true,
-			),
-		);
-	}
-
-	/**
-	 * Detection payload for labelling, or null when the image must not be labelled.
-	 *
-	 * Only attachments explicitly flagged as AI are labelled; no detection is run on the
-	 * frontend. Results are cached per request so query loops do not repeat meta lookups.
-	 *
-	 * @param int $attachment_id Attachment ID.
-	 * @return array|null
-	 */
-	public function euaiactready_get_label_detection( $attachment_id ) {
-		static $cache = array();
-
-		$attachment_id = absint( $attachment_id );
-
-		if ( ! $attachment_id ) {
-			return null;
-		}
-
-		// Attachment IDs repeat across a network, so a switched blog must not be served
-		// the previous one's answer.
-		$blog = self::euaiactready_cache_scope();
-
-		if ( isset( $cache[ $blog ][ $attachment_id ] ) || ( isset( $cache[ $blog ] ) && array_key_exists( $attachment_id, $cache[ $blog ] ) ) ) {
-			return $cache[ $blog ][ $attachment_id ];
-		}
-
-		if ( '1' !== get_post_meta( $attachment_id, '_euaiactready_ai_generated', true ) ) {
-			$cache[ $blog ][ $attachment_id ] = null;
-			return null;
-		}
-
-		$detection = $this->euaiactready_is_ai_media( $attachment_id );
-
-		$cache[ $blog ][ $attachment_id ] = $detection ? $detection : null;
-
-		return $cache[ $blog ][ $attachment_id ];
-	}
-
-	/**
-	 * Key that request-level caches are scoped by.
-	 *
-	 * Everything cached here - detection results, the markup engine, the uploads base URL -
-	 * belongs to one site. A multisite request that calls switch_to_blog() would otherwise
-	 * carry them across, and a wrong label is worse than a repeated query.
-	 *
-	 * @return int
-	 */
-	private static function euaiactready_cache_scope() {
-		return function_exists( 'get_current_blog_id' ) ? (int) get_current_blog_id() : 0;
-	}
-
-	/**
-	 * Build the markup engine bound to this site's options and attachment data.
-	 *
-	 * @return EUAIACTREADY_Media_Markup
-	 */
-	public function euaiactready_get_markup_engine() {
-		static $engines = array();
-
-		// Options and the uploads base URL are per site, and so are the closures below.
-		$blog = self::euaiactready_cache_scope();
-
-		if ( isset( $engines[ $blog ] ) ) {
-			return $engines[ $blog ];
-		}
-
-		$label_style    = get_option( 'euaiactready_media_label_style', 'caption' );
-		$label_position = get_option( 'euaiactready_media_label_position', '' );
-		$bg_position    = get_option( 'euaiactready_bricks_bg_label_position', 'top-right' );
-
-		$engines[ $blog ] = new EUAIACTREADY_Media_Markup(
-			array( $this, 'euaiactready_get_label_detection' ),
-			function ( $detection ) use ( $label_style, $label_position ) {
-				// generate_image_label() escapes with esc_html()/esc_attr(); wp_kses() is a
-				// second gate in case a filtered detection source smuggles in markup.
-				return wp_kses(
-					$this->euaiactready_generate_image_label( $detection, $label_style, $label_position ),
-					self::euaiactready_get_label_allowed_html()
-				);
-			},
-			static function ( $url ) {
-				static $resolved = array();
-				static $baseurl  = null;
-
-				if ( null === $baseurl ) {
-					$uploads = wp_get_upload_dir();
-					$baseurl = isset( $uploads['baseurl'] ) ? $uploads['baseurl'] : '';
-				}
-
-				// Anything outside the uploads directory has no attachment, so skip the
-				// database lookup entirely.
-				if ( '' === $baseurl || 0 !== strpos( $url, $baseurl ) ) {
-					return 0;
-				}
-
-				if ( ! isset( $resolved[ $url ] ) ) {
-					$resolved[ $url ] = absint( attachment_url_to_postid( $url ) );
-				}
-
-				return $resolved[ $url ];
-			},
-			function ( $detection ) use ( $label_style, $bg_position ) {
-				// A caption sits below its image; a background has no image box to sit
-				// below, so it becomes a badge on the element instead.
-				$style = 'caption' === $label_style ? 'badge' : $label_style;
-
-				/**
-				 * Filters the label style used for CSS background images.
-				 *
-				 * @param string $style       Label style.
-				 * @param string $label_style The configured image label style.
-				 */
-				$style = apply_filters( 'euaiactready_bricks_bg_label_style', $style, $label_style );
-
-				return wp_kses(
-					$this->euaiactready_generate_image_label( $detection, $style, $bg_position ),
-					self::euaiactready_get_label_allowed_html()
-				);
-			}
-		);
-
-		return $engines[ $blog ];
-	}
-
-	/**
 	 * Add image labels to content for AI-generated images.
 	 *
 	 * Hooks into 'the_content' filter to wrap AI-generated images with labels.
@@ -1070,42 +916,86 @@ class EUAIACTREADY_Media_Transparency {
 			return $content;
 		}
 
-		return $this->euaiactready_get_markup_engine()->add_labels_to_content( $content );
-	}
+		$label_style = get_option( 'euaiactready_media_label_style', 'caption' );
 
+		preg_match_all( '/<img[^>]+>/i', $content, $matches );
 
-
-	/**
-	 * Label placements a positioned label can take.
-	 *
-	 * @return array<string,string> Option value to human-readable label.
-	 */
-	public static function euaiactready_get_label_positions() {
-		return array(
-			'top-left'     => __( 'Top left', 'eu-ai-act-ready' ),
-			'top-right'    => __( 'Top right', 'eu-ai-act-ready' ),
-			'bottom-left'  => __( 'Bottom left', 'eu-ai-act-ready' ),
-			'bottom-right' => __( 'Bottom right', 'eu-ai-act-ready' ),
-		);
-	}
-
-	/**
-	 * Turn a placement setting into the class that positions the label.
-	 *
-	 * An empty or unknown placement yields no class, leaving each style at the position
-	 * it has always used.
-	 *
-	 * @param string $position Placement setting.
-	 * @return string Class name, prefixed with a space, or an empty string.
-	 */
-	private function euaiactready_get_position_class( $position ) {
-		$position = sanitize_key( (string) $position );
-
-		if ( ! isset( self::euaiactready_get_label_positions()[ $position ] ) ) {
-			return '';
+		if ( empty( $matches[0] ) ) {
+			return $content;
 		}
 
-		return ' ai-media-pos-' . $position;
+		foreach ( $matches[0] as $img_tag ) {
+			$attachment_id = $this->euaiactready_extract_attachment_id( $img_tag );
+
+			if ( ! $attachment_id ) {
+				continue;
+			}
+
+			$attachment_id = absint( $attachment_id );
+			$manual_flag   = get_post_meta( $attachment_id, '_euaiactready_ai_generated', true );
+
+			if ( '1' === $manual_flag ) {
+				$detection = $this->euaiactready_is_ai_media( $attachment_id );
+				// Note: generate_image_label() escapes all output using esc_html() and esc_attr().
+				// $content is already sanitized by WordPress on save via wp_kses_post().
+				$label_html = $this->euaiactready_generate_image_label( $detection, $label_style );
+
+				if ( $label_html ) {
+					$allowed_html = array(
+						'div'  => array(
+							'class' => true,
+							'title' => true,
+						),
+						'span' => array(
+							'class' => true,
+							'title' => true,
+						),
+						'svg'  => array(
+							'xmlns'   => true,
+							'width'   => true,
+							'height'  => true,
+							'viewbox' => true,
+							'fill'    => true,
+							'stroke'  => true,
+							'class'   => true,
+						),
+						'path' => array(
+							'd' => true,
+						),
+					);
+
+					$wrapped = '<div class="ai-media-container">' . $img_tag . wp_kses( $label_html, $allowed_html ) . '</div>';
+					$content = str_replace( $img_tag, $wrapped, $content );
+				}
+			}
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Extract attachment ID from image tag.
+	 *
+	 * @param string $img_tag Image HTML tag.
+	 * @return int|false Attachment ID or false.
+	 */
+	private function euaiactready_extract_attachment_id( $img_tag ) {
+		if ( preg_match( '/wp-image-(\d+)/i', $img_tag, $class_id ) ) {
+			return absint( $class_id[1] );
+		}
+
+		if ( preg_match( '/data-id["\'](\d+)["\']/i', $img_tag, $data_id ) ) {
+			return absint( $data_id[1] );
+		}
+
+		if ( preg_match( '/src["\'](.*?)["\']/i', $img_tag, $src ) ) {
+			$attachment_id = attachment_url_to_postid( $src[1] );
+			if ( $attachment_id ) {
+				return absint( $attachment_id );
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -1113,15 +1003,12 @@ class EUAIACTREADY_Media_Transparency {
 	 *
 	 * @param array  $detection Detection data.
 	 * @param string $style Label style.
-	 * @param string $position Placement for the positioned styles.
 	 * @return string Label HTML.
 	 */
-	private function euaiactready_generate_image_label( $detection, $style, $position = '' ) {
+	private function euaiactready_generate_image_label( $detection, $style ) {
 		if ( empty( $detection ) ) {
 			return '';
 		}
-
-		$position_class = esc_attr( $this->euaiactready_get_position_class( $position ) );
 
 		$label_text = __( 'AI-Generated Image', 'eu-ai-act-ready' );
 		$tooltip    = $label_text;
@@ -1144,17 +1031,16 @@ class EUAIACTREADY_Media_Transparency {
 
 		switch ( $style ) {
 			case 'badge':
-				return '<div class="ai-media-badge' . $position_class . '" title="' . $tooltip_escaped . '"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
+				return '<div class="ai-media-badge" title="' . $tooltip_escaped . '"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
 
 			case 'caption':
-				// Sits below the image, so placement does not apply.
 				return '<div class="ai-media-caption"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
 
 			case 'overlay':
-				return '<div class="ai-media-overlay"><span class="ai-overlay-badge' . $position_class . '" title="' . $tooltip_escaped . '"><span class="ai-icon">' . $icon_html . '</span>' . $label_text_escaped . '</span></div>';
+				return '<div class="ai-media-overlay"><span class="ai-overlay-badge" title="' . $tooltip_escaped . '"><span class="ai-icon">' . $icon_html . '</span>' . $label_text_escaped . '</span></div>';
 
 			case 'border':
-				return '<div class="ai-media-border-label' . $position_class . '" title="' . $tooltip_escaped . '"><span class="ai-icon">' . $icon_html . '</span>' . $label_text_escaped . '</div>';
+				return '<div class="ai-media-border-label" title="' . $tooltip_escaped . '"><span class="ai-icon">' . $icon_html . '</span>' . $label_text_escaped . '</div>';
 
 			default:
 				return '<div class="ai-media-caption"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';

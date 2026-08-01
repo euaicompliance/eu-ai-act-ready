@@ -33,8 +33,5 @@ Icon?
 *.sql
 *.ps1
 
-# PHPUnit
-.phpunit.result.cache
-
 # Misc
 *.log

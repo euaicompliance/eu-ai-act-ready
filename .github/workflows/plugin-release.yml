@@ -41,7 +41,6 @@ jobs:
           rm -rf webpack.*
           rm -rf *.ps1
           rm -rf *.xml
-          rm -rf tests
 
       - name: Create plugin zip
         id: create_zip

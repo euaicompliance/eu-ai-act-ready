@@ -9,11 +9,9 @@
  * 5. Border Style
  * 6. WordPress Integration
  * 7. Gallery Support
- * 7b. Bricks Builder Support
  * 8. Animations
  * 9. Responsive Design
  * 10. Accessibility & Print
- * 11. Label Placement
  */
 
 @use '../variables' as *;
@@ -29,6 +27,8 @@
 
     img {
         display: block;
+        max-width: 100% !important;
+        height: auto !important;
     }
 
     // Clear floats
@@ -37,20 +37,6 @@
         display: table;
         clear: both;
     }
-}
-
-/*
- * Keeps a labelled image inside its container on themes that do not constrain images
- * themselves.
- *
- * Deliberately not applied to builder-placed images: a builder sizes those itself, and
- * because these declarations are !important they would win over it. A hero using
- * height:100% with object-fit:cover would snap back to its natural aspect ratio and
- * overflow everything below it.
- */
-.ai-media-container:not(.ai-media-bricks) img {
-    max-width: 100% !important;
-    height: auto !important;
 }
 
 /* ========================================
@@ -169,7 +155,6 @@
     box-shadow: $shadow-lg;
 }
 
-
 /* ========================================
    6. WORDPRESS INTEGRATION
    ======================================== */
@@ -229,82 +214,6 @@
         padding: $badge-padding-sm;
         font-size: $font-size-xs;
     }
-}
-
-/* ========================================
-   7b. BRICKS BUILDER SUPPORT
-   ======================================== */
-
-/*
- * The label container lands on one of two sides of the Bricks element root:
- *
- *   1. It wraps the root. That is the bare <img> carrying .brxe-image and #brxe-{id},
- *      a <picture> root when Sources are set without a link, or the link anchor.
- *   2. It sits inside the root, between root and image. A caption, overlay, gradient or
- *      custom tag makes Bricks emit its own <div>/<figure>/<a> and produces this.
- *
- * Either way the container is a box that was not there when the theme was written, so it
- * has to stay layout-neutral - and the two placements need opposite treatment, because
- * Bricks sizes the image differently in each:
- *
- *   wraps the root: the root sizes itself, since only the generic
- *                   `img { max-width: 100%; height: auto }` applies to it. A container
- *                   stretched to 100% would be wider than the image and drag the badge
- *                   off it, so the container shrinks to the root instead.
- *   inside the root: the image matches `:where(.brxe-image) img { width: 100%; height: 100% }`
- *                   and fills its parent - which is now the container. So the container
- *                   has to fill the root, or the image cannot reach the size the theme
- *                   intended. This is what a hero needs: full height, then object-fit
- *                   does the cropping.
- *
- * Which placement we are in is readable from the container: wrapping it contains the
- * brxe- root, inside it does not. The .ai-media-bricks class is still what gates both,
- * since a brxe- selector alone would also catch images inside the Post Content element,
- * which are ordinary content images.
- *
- * Where :has() is unsupported both rules drop and the container keeps the inline-block
- * above, which is the shape 1 behaviour and matches how the plugin behaved before.
- */
-.ai-media-bricks:has([class*="brxe-"]) {
-    display: inline-block;
-    max-width: 100%;
-}
-
-.ai-media-bricks:not(:has([class*="brxe-"])) {
-    display: block;
-    width: 100%;
-    height: 100%;
-    min-width: 0;
-}
-
-/*
- * CSS background images. The badge is injected straight into the element root, so that
- * root has to provide the positioning context the badge is placed against.
- *
- * This turns a static element into a positioned one, which can change stacking order.
- * Override it per element if that matters.
- */
-[data-euaiact-bg-done] {
-    position: relative;
-}
-
-/*
- * The badge is out of flow, so it never becomes a flex or grid item. It is inserted as
- * the first child, which shifts :first-child selectors on that element by one.
- *
- * Corners are deliberately left to the placement classes in section 11. Setting them
- * here would win on source order at equal specificity and pin every background badge to
- * one corner.
- */
-[data-euaiact-bg-done] > .ai-media-badge,
-[data-euaiact-bg-done] > .ai-media-overlay,
-[data-euaiact-bg-done] > .ai-media-border-label {
-    position: absolute;
-    z-index: $z-dropdown;
-}
-
-[data-euaiact-bg-done] > .ai-media-overlay {
-    inset: 0;
 }
 
 /* ========================================
@@ -405,92 +314,5 @@
             content: "AI-Generated Image: ";
             font-weight: $font-weight-bold;
         }
-    }
-}
-
-/* ========================================
-   11. LABEL PLACEMENT
-   ======================================== */
-
-/*
- * Last in the file on purpose: these are overrides, and several later blocks - the
- * gallery rules above, for instance - set corners at the same specificity. Source
- * order decides there, so placement has to come after everything it overrides.
- *
- * Applied on top of the per-style defaults, so a site that never picks a placement keeps
- * the position its label style has always had.
- *
- * The caption style is deliberately absent: it sits below the image, not on it.
- */
-.ai-media-badge,
-.ai-overlay-badge {
-    &.ai-media-pos-top-left {
-        top: $spacing-lg;
-        left: $spacing-lg;
-        right: auto;
-        bottom: auto;
-    }
-
-    &.ai-media-pos-top-right {
-        top: $spacing-lg;
-        right: $spacing-lg;
-        left: auto;
-        bottom: auto;
-    }
-
-    &.ai-media-pos-bottom-left {
-        bottom: $spacing-lg;
-        left: $spacing-lg;
-        top: auto;
-        right: auto;
-    }
-
-    &.ai-media-pos-bottom-right {
-        bottom: $spacing-lg;
-        right: $spacing-lg;
-        top: auto;
-        left: auto;
-    }
-}
-
-/*
- * The border label straddles the frame rather than sitting inside it, so it keeps its
- * offset onto the edge and only changes which corner it hangs from. The default centring
- * transform has to be cleared, otherwise the label sits half outside its corner.
- */
-.ai-media-border-label {
-    &.ai-media-pos-top-left,
-    &.ai-media-pos-top-right,
-    &.ai-media-pos-bottom-left,
-    &.ai-media-pos-bottom-right {
-        transform: none;
-    }
-
-    &.ai-media-pos-top-left {
-        top: -12px;
-        left: $spacing-lg;
-        right: auto;
-        bottom: auto;
-    }
-
-    &.ai-media-pos-top-right {
-        top: -12px;
-        right: $spacing-lg;
-        left: auto;
-        bottom: auto;
-    }
-
-    &.ai-media-pos-bottom-left {
-        bottom: -12px;
-        left: $spacing-lg;
-        top: auto;
-        right: auto;
-    }
-
-    &.ai-media-pos-bottom-right {
-        bottom: -12px;
-        right: $spacing-lg;
-        top: auto;
-        left: auto;
     }
 }
