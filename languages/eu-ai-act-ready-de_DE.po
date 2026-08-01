@@ -1431,3 +1431,47 @@ msgstr ""
 #: eu-ai-act-ready.php
 msgid "Disclose AI-generated content, media, and chatbots with transparent visitor notices, supporting transparency under Article 50 of the EU AI Act."
 msgstr ""
+
+#: admin/partials/settings.php:338
+msgid "Label Background Images (Bricks)"
+msgstr "Hintergrundbilder kennzeichnen (Bricks)"
+
+#: admin/partials/settings.php:342
+msgid "Also label AI-generated images used as CSS background images in Bricks Builder. The badge is placed inside the element, which makes that element a positioning context."
+msgstr "Kennzeichnet auch KI-generierte Bilder, die in Bricks Builder als CSS-Hintergrundbild eingesetzt werden. Das Abzeichen wird im Element platziert, wodurch dieses Element zum Positionierungskontext wird."
+
+#: includes/class-euaiactready-media-transparency.php:1059
+msgid "Top left"
+msgstr "Oben links"
+
+#: includes/class-euaiactready-media-transparency.php:1060
+msgid "Top right"
+msgstr "Oben rechts"
+
+#: includes/class-euaiactready-media-transparency.php:1061
+msgid "Bottom left"
+msgstr "Unten links"
+
+#: includes/class-euaiactready-media-transparency.php:1062
+msgid "Bottom right"
+msgstr "Unten rechts"
+
+#: admin/partials/settings.php:369
+msgid "Badge Placement (Images)"
+msgstr "Badge-Platzierung (Bilder)"
+
+#: admin/partials/settings.php:373
+msgid "Unchanged (Badge top right, Overlay top left, Border top centre)"
+msgstr "Unverändert (Badge oben rechts, Overlay oben links, Rahmen oben mittig)"
+
+#: admin/partials/settings.php:379
+msgid "Where the badge sits on an image. Applies to the Badge, Overlay and Border styles; the Caption style always sits below the image. Elements with a background image are set separately below."
+msgstr "Wo das Badge auf einem Bild sitzt. Gilt für die Stile Badge, Overlay und Rahmen; der Stil Beschriftung sitzt immer unter dem Bild. Elemente mit Hintergrundbild werden weiter unten separat eingestellt."
+
+#: admin/partials/settings.php:387
+msgid "Badge Placement (Background Images)"
+msgstr "Badge-Platzierung (Hintergrundbilder)"
+
+#: admin/partials/settings.php:394
+msgid "Where the badge sits on an element with an AI-generated background image."
+msgstr "Wo das Badge auf einem Element mit KI-generiertem Hintergrundbild sitzt."
