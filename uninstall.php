@@ -37,6 +37,9 @@ $euaiactready_options = array(
 	'euaiactready_media_transparency',
 	'euaiactready_media_label_style',
 	'euaiactready_media_confidence_threshold',
+	'euaiactready_bricks_background_labels',
+	'euaiactready_media_label_position',
+	'euaiactready_bricks_bg_label_position',
 );
 
 
