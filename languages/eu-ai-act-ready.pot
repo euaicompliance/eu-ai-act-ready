@@ -1457,6 +1457,52 @@ msgstr ""
 msgid "Bottom right"
 msgstr ""
 
+#: includes/class-euaiactready-media-transparency.php:1121
+msgid "Label and detection source"
+msgstr ""
+
+#: includes/class-euaiactready-media-transparency.php:1122
+msgid "Label only"
+msgstr ""
+
+#: includes/class-euaiactready-media-transparency.php:1123
+msgid "No tooltip"
+msgstr ""
+
+#: includes/class-euaiactready-media-transparency.php:1134
+msgid "Normal"
+msgstr ""
+
+#: includes/class-euaiactready-media-transparency.php:1135
+msgid "Compact"
+msgstr ""
+
+#: admin/partials/settings.php:413
+msgid "Label Size"
+msgstr ""
+
+#: admin/partials/settings.php:421
+msgid ""
+"Compact renders a smaller, translucent label that sits over the image rather "
+"than on top of it."
+msgstr ""
+
+#: admin/partials/settings.php:427
+msgid "Hover Tooltip"
+msgstr ""
+
+#: admin/partials/settings.php:436
+msgid ""
+"What the browser shows when a visitor hovers the label. The label itself "
+"stays visible either way."
+msgstr ""
+
+#: admin/partials/settings.php:437
+msgid ""
+"The detection source is only ever carried by the tooltip, so hiding it also "
+"hides that detail from screen readers."
+msgstr ""
+
 #: admin/partials/settings.php:369
 msgid "Badge Placement (Images)"
 msgstr ""

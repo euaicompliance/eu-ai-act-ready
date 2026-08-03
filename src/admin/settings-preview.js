@@ -6,25 +6,34 @@
 
 ( function () {
 	/**
-	 * Show the image badge placement only for the styles that can act on it.
+	 * Show the rows that only apply to a label drawn on the image itself.
 	 *
 	 * The Caption style sits below the image rather than on it, so a corner is
-	 * meaningless there. Background images are unaffected: a caption has no image box to
-	 * sit below, so those fall back to a badge and always have a corner.
+	 * meaningless there and it has never carried a tooltip. Background images are
+	 * unaffected: a caption has no image box to sit below, so those fall back to a badge
+	 * and always have both.
+	 *
+	 * Label Size is deliberately absent - a caption can be compact too.
 	 */
-	function bindLabelPlacementVisibility() {
+	function bindLabelStyleRowVisibility() {
 		const styleField = document.getElementById( 'media_label_style' );
-		const positionRow = document.getElementById(
-			'euaiactready-image-position-row'
-		);
+		const rows = [
+			'euaiactready-image-position-row',
+			'euaiactready-image-tooltip-row',
+		]
+			.map( ( id ) => document.getElementById( id ) )
+			.filter( Boolean );
 
-		if ( ! styleField || ! positionRow ) {
+		if ( ! styleField || ! rows.length ) {
 			return;
 		}
 
 		const sync = function () {
-			positionRow.style.display =
-				styleField.value === 'caption' ? 'none' : '';
+			const hidden = styleField.value === 'caption';
+
+			rows.forEach( ( row ) => {
+				row.style.display = hidden ? 'none' : '';
+			} );
 		};
 
 		styleField.addEventListener( 'change', sync );
@@ -33,7 +42,7 @@
 
 	// Wait for DOM to be ready.
 	document.addEventListener( 'DOMContentLoaded', function () {
-		bindLabelPlacementVisibility();
+		bindLabelStyleRowVisibility();
 
 		if ( typeof euaiactreadySettings === 'undefined' ) {
 			return;

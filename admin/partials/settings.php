@@ -63,6 +63,24 @@ if ( isset( $_POST['save_settings'] ) && check_admin_referer( 'euaiactready_sett
 			isset( $euaiactready_allowed[ $euaiactready_position ] ) ? $euaiactready_position : ''
 		);
 	}
+	if ( isset( $euaiactready_post_data['media_label_tooltip'] ) ) {
+		$euaiactready_tooltip = sanitize_key( $euaiactready_post_data['media_label_tooltip'] );
+		$euaiactready_allowed = EUAIACTREADY_Media_Transparency::euaiactready_get_label_tooltip_modes();
+
+		update_option(
+			'euaiactready_media_label_tooltip',
+			isset( $euaiactready_allowed[ $euaiactready_tooltip ] ) ? $euaiactready_tooltip : 'full'
+		);
+	}
+	if ( isset( $euaiactready_post_data['media_label_size'] ) ) {
+		$euaiactready_size    = sanitize_key( $euaiactready_post_data['media_label_size'] );
+		$euaiactready_allowed = EUAIACTREADY_Media_Transparency::euaiactready_get_label_sizes();
+
+		update_option(
+			'euaiactready_media_label_size',
+			isset( $euaiactready_allowed[ $euaiactready_size ] ) ? $euaiactready_size : 'normal'
+		);
+	}
 	if ( defined( 'BRICKS_VERSION' ) && isset( $euaiactready_post_data['bricks_bg_label_position'] ) ) {
 		$euaiactready_bg_position = sanitize_key( $euaiactready_post_data['bricks_bg_label_position'] );
 		$euaiactready_allowed     = EUAIACTREADY_Media_Transparency::euaiactready_get_label_positions();
@@ -113,6 +131,8 @@ $euaiactready_bricks_background_labels   = get_option( 'euaiactready_bricks_back
 $euaiactready_media_label_position       = get_option( 'euaiactready_media_label_position', '' );
 $euaiactready_bricks_bg_label_position   = get_option( 'euaiactready_bricks_bg_label_position', 'top-right' );
 $euaiactready_media_label_style          = get_option( 'euaiactready_media_label_style', EUAIACTREADY_DEFAULT_MEDIA_LABEL_STYLE );
+$euaiactready_media_label_tooltip        = get_option( 'euaiactready_media_label_tooltip', 'full' );
+$euaiactready_media_label_size           = get_option( 'euaiactready_media_label_size', 'normal' );
 $euaiactready_media_confidence_threshold = get_option( 'euaiactready_media_confidence_threshold', EUAIACTREADY_DEFAULT_MEDIA_CONFIDENCE_THRESHOLD );
 
 // RSS & Feed disclosure settings.
@@ -385,6 +405,37 @@ $euaiactready_tab_definitions = array(
 						<option value="border" <?php selected( $euaiactready_media_label_style, 'border' ); ?>><?php esc_html_e( 'Border', 'eu-ai-act-ready' ); ?></option>
 						</select>
 						<p class="description"><?php esc_html_e( 'Choose how AI labels appear on images.', 'eu-ai-act-ready' ); ?></p>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="media_label_size"><?php esc_html_e( 'Label Size', 'eu-ai-act-ready' ); ?></label>
+					</th>
+					<td>
+						<select id="media_label_size" name="media_label_size">
+							<?php foreach ( EUAIACTREADY_Media_Transparency::euaiactready_get_label_sizes() as $euaiactready_value => $euaiactready_name ) : ?>
+							<option value="<?php echo esc_attr( $euaiactready_value ); ?>" <?php selected( $euaiactready_media_label_size, $euaiactready_value ); ?>><?php echo esc_html( $euaiactready_name ); ?></option>
+							<?php endforeach; ?>
+						</select>
+						<p class="description"><?php esc_html_e( 'Compact renders a smaller, translucent label that sits over the image rather than on top of it.', 'eu-ai-act-ready' ); ?></p>
+					</td>
+				</tr>
+
+				<tr id="euaiactready-image-tooltip-row"<?php echo 'caption' === $euaiactready_media_label_style ? ' style="display:none"' : ''; ?>>
+					<th scope="row">
+						<label for="media_label_tooltip"><?php esc_html_e( 'Hover Tooltip', 'eu-ai-act-ready' ); ?></label>
+					</th>
+					<td>
+						<select id="media_label_tooltip" name="media_label_tooltip">
+							<?php foreach ( EUAIACTREADY_Media_Transparency::euaiactready_get_label_tooltip_modes() as $euaiactready_value => $euaiactready_name ) : ?>
+							<option value="<?php echo esc_attr( $euaiactready_value ); ?>" <?php selected( $euaiactready_media_label_tooltip, $euaiactready_value ); ?>><?php echo esc_html( $euaiactready_name ); ?></option>
+							<?php endforeach; ?>
+						</select>
+						<p class="description">
+							<?php esc_html_e( 'What the browser shows when a visitor hovers the label. The label itself stays visible either way.', 'eu-ai-act-ready' ); ?><br>
+							<?php esc_html_e( 'The detection source is only ever carried by the tooltip, so hiding it also hides that detail from screen readers.', 'eu-ai-act-ready' ); ?>
+						</p>
 					</td>
 				</tr>
 

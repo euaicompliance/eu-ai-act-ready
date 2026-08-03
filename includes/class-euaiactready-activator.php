@@ -95,6 +95,11 @@ class EUAIACTREADY_Activator {
 		add_option( 'euaiactready_media_label_position', '' );
 		add_option( 'euaiactready_bricks_bg_label_position', 'top-right' );
 
+		// Both defaults reproduce the label exactly as it rendered before these settings
+		// existed, so upgrading never changes an existing site.
+		add_option( 'euaiactready_media_label_tooltip', 'full' );
+		add_option( 'euaiactready_media_label_size', 'normal' );
+
 		// RSS & Feed disclosure defaults (opt-in).
 		add_option( 'euaiactready_rss_disclosure_enabled', 0 );
 		add_option( 'euaiactready_rss_title_prefix', 0 );
