@@ -1457,6 +1457,58 @@ msgstr "Unten links"
 msgid "Bottom right"
 msgstr "Unten rechts"
 
+#: includes/class-euaiactready-media-transparency.php:1121
+msgid "Label and detection source"
+msgstr "Kennzeichnung und Erkennungsquelle"
+
+#: includes/class-euaiactready-media-transparency.php:1122
+msgid "Label only"
+msgstr "Nur Kennzeichnung"
+
+#: includes/class-euaiactready-media-transparency.php:1123
+msgid "No tooltip"
+msgstr "Kein Tooltip"
+
+#: includes/class-euaiactready-media-transparency.php:1134
+msgid "Normal"
+msgstr "Normal"
+
+#: includes/class-euaiactready-media-transparency.php:1135
+msgid "Compact"
+msgstr "Kompakt"
+
+#: admin/partials/settings.php:413
+msgid "Label Size"
+msgstr "Größe der Kennzeichnung"
+
+#: admin/partials/settings.php:421
+msgid ""
+"Compact renders a smaller, translucent label that sits over the image rather "
+"than on top of it."
+msgstr ""
+"Kompakt zeigt eine kleinere, transparente Kennzeichnung, die über dem Bild "
+"liegt statt darauf zu kleben."
+
+#: admin/partials/settings.php:427
+msgid "Hover Tooltip"
+msgstr "Tooltip beim Überfahren"
+
+#: admin/partials/settings.php:436
+msgid ""
+"What the browser shows when a visitor hovers the label. The label itself "
+"stays visible either way."
+msgstr ""
+"Was der Browser anzeigt, wenn Besucher die Kennzeichnung überfahren. Die "
+"Kennzeichnung selbst bleibt in jedem Fall sichtbar."
+
+#: admin/partials/settings.php:437
+msgid ""
+"The detection source is only ever carried by the tooltip, so hiding it also "
+"hides that detail from screen readers."
+msgstr ""
+"Die Erkennungsquelle steht ausschließlich im Tooltip. Wird er ausgeblendet, "
+"ist diese Angabe auch für Screenreader nicht mehr verfügbar."
+
 #: admin/partials/settings.php:369
 msgid "Badge Placement (Images)"
 msgstr "Badge-Platzierung (Bilder)"

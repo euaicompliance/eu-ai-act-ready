@@ -74,6 +74,9 @@ class EUAIACTREADY_Media_Transparency {
 		// Add image labels in content.
 		add_filter( 'the_content', array( $this, 'euaiactready_add_image_labels' ), 999 );
 
+		// Add image labels to the post's featured image.
+		add_filter( 'post_thumbnail_html', array( $this, 'euaiactready_add_featured_image_label' ), 999 );
+
 		// Add media library column.
 		add_filter( 'manage_media_columns', array( $this, 'euaiactready_add_media_column' ) );
 		add_action( 'manage_media_custom_column', array( $this, 'euaiactready_display_media_column' ), 10, 2 );
@@ -172,10 +175,20 @@ class EUAIACTREADY_Media_Transparency {
 
 		if ( ! empty( $detection_source ) ) {
 			$detection_info = json_decode( $detection_source, true );
+			$confidence     = isset( $detection_info['confidence'] ) ? (float) $detection_info['confidence'] : 0;
+			$threshold      = (float) get_option( 'euaiactready_media_confidence_threshold', EUAIACTREADY_DEFAULT_MEDIA_CONFIDENCE_THRESHOLD );
+			$marked_method  = get_post_meta( $attachment_id, '_euaiactready_ai_marked_method', true );
+
+			/*
+			 * A scan below the threshold still stores its result, so the presence of stored
+			 * data says only that the image was examined - not that it is AI. Derive the
+			 * verdict from the confidence, exactly as euaiactready_run_detection() does, so
+			 * a cached read and a fresh scan cannot disagree.
+			 */
 			return array(
-				'is_ai'      => true,
-				'confidence' => isset( $detection_info['confidence'] ) ? $detection_info['confidence'] : 0,
-				'method'     => 'auto',
+				'is_ai'      => $confidence >= $threshold,
+				'confidence' => $confidence,
+				'method'     => ! empty( $marked_method ) ? $marked_method : 'auto',
 				'indicators' => isset( $detection_info['indicators'] ) ? $detection_info['indicators'] : array(),
 				'source'     => isset( $detection_info['source'] ) ? $detection_info['source'] : '',
 			);
@@ -205,16 +218,44 @@ class EUAIACTREADY_Media_Transparency {
 
 		// If flagged as '1', return the appropriate result.
 		if ( '1' === $manual_flag ) {
-			if ( 'manual' === $marked_method && empty( $detection_source ) ) {
-				// Truly manual - no auto-detection.
+			$detection_info = ! empty( $detection_source ) ? json_decode( $detection_source, true ) : array();
+
+			if ( ! is_array( $detection_info ) ) {
+				$detection_info = array();
+			}
+
+			/*
+			 * A human marking the image is the most recent decision about it, so it wins
+			 * over anything a scan stored earlier. Checking this before the stored source
+			 * matters: a scan that fell below the threshold still writes its result, and
+			 * describing a hand-marked image as "No AI detected" contradicts the label
+			 * shown next to it.
+			 *
+			 * The scan's confidence and indicators are kept, since they are still true and
+			 * the metabox displays them - only the source is overridden.
+			 */
+			if ( 'manual' === $marked_method ) {
 				return array(
 					'is_ai'      => true,
-					'confidence' => 1.0,
+					'confidence' => isset( $detection_info['confidence'] ) ? (float) $detection_info['confidence'] : 1.0,
 					'method'     => 'manual',
-					'indicators' => array( 'manual' ),
+					'indicators' => isset( $detection_info['indicators'] ) ? $detection_info['indicators'] : array( 'manual' ),
 					'source'     => __( 'Manually marked as AI-generated', 'eu-ai-act-ready' ),
 				);
-			} elseif ( 'auto' === $marked_method && empty( $detection_source ) ) {
+			}
+
+			if ( ! empty( $detection_source ) ) {
+				// Auto-detected - use stored detection info.
+				return array(
+					'is_ai'      => true,
+					'confidence' => isset( $detection_info['confidence'] ) ? (float) $detection_info['confidence'] : 0,
+					'method'     => 'auto',
+					'indicators' => isset( $detection_info['indicators'] ) ? $detection_info['indicators'] : array(),
+					'source'     => isset( $detection_info['source'] ) ? $detection_info['source'] : '',
+				);
+			}
+
+			if ( 'auto' === $marked_method ) {
 				// Auto-marked without stored detection data - don't re-scan on frontend.
 				return array(
 					'is_ai'      => true,
@@ -222,16 +263,6 @@ class EUAIACTREADY_Media_Transparency {
 					'method'     => 'auto',
 					'indicators' => array( 'auto' ),
 					'source'     => __( 'Auto-detected', 'eu-ai-act-ready' ),
-				);
-			} elseif ( ! empty( $detection_source ) ) {
-				// Auto-detected - use stored detection info.
-				$detection_info = json_decode( $detection_source, true );
-				return array(
-					'is_ai'      => true,
-					'confidence' => isset( $detection_info['confidence'] ) ? $detection_info['confidence'] : 0,
-					'method'     => 'auto',
-					'indicators' => isset( $detection_info['indicators'] ) ? $detection_info['indicators'] : array(),
-					'source'     => isset( $detection_info['source'] ) ? $detection_info['source'] : '',
 				);
 			}
 		}
@@ -998,14 +1029,24 @@ class EUAIACTREADY_Media_Transparency {
 		$label_style    = get_option( 'euaiactready_media_label_style', 'caption' );
 		$label_position = get_option( 'euaiactready_media_label_position', '' );
 		$bg_position    = get_option( 'euaiactready_bricks_bg_label_position', 'top-right' );
+		$label_tooltip  = get_option( 'euaiactready_media_label_tooltip', 'full' );
+		$label_size     = get_option( 'euaiactready_media_label_size', 'normal' );
 
 		$engines[ $blog ] = new EUAIACTREADY_Media_Markup(
 			array( $this, 'euaiactready_get_label_detection' ),
-			function ( $detection ) use ( $label_style, $label_position ) {
+			function ( $detection ) use ( $label_style, $label_position, $label_tooltip, $label_size ) {
 				// generate_image_label() escapes with esc_html()/esc_attr(); wp_kses() is a
 				// second gate in case a filtered detection source smuggles in markup.
 				return wp_kses(
-					$this->euaiactready_generate_image_label( $detection, $label_style, $label_position ),
+					$this->euaiactready_generate_image_label(
+						$detection,
+						array(
+							'style'    => $label_style,
+							'position' => $label_position,
+							'tooltip'  => $label_tooltip,
+							'size'     => $label_size,
+						)
+					),
 					self::euaiactready_get_label_allowed_html()
 				);
 			},
@@ -1030,7 +1071,7 @@ class EUAIACTREADY_Media_Transparency {
 
 				return $resolved[ $url ];
 			},
-			function ( $detection ) use ( $label_style, $bg_position ) {
+			function ( $detection ) use ( $label_style, $bg_position, $label_tooltip, $label_size ) {
 				// A caption sits below its image; a background has no image box to sit
 				// below, so it becomes a badge on the element instead.
 				$style = 'caption' === $label_style ? 'badge' : $label_style;
@@ -1044,7 +1085,15 @@ class EUAIACTREADY_Media_Transparency {
 				$style = apply_filters( 'euaiactready_bricks_bg_label_style', $style, $label_style );
 
 				return wp_kses(
-					$this->euaiactready_generate_image_label( $detection, $style, $bg_position ),
+					$this->euaiactready_generate_image_label(
+						$detection,
+						array(
+							'style'    => $style,
+							'position' => $bg_position,
+							'tooltip'  => $label_tooltip,
+							'size'     => $label_size,
+						)
+					),
 					self::euaiactready_get_label_allowed_html()
 				);
 			}
@@ -1076,6 +1125,33 @@ class EUAIACTREADY_Media_Transparency {
 
 
 	/**
+	 * Add an AI transparency label to the post's featured image.
+	 *
+	 * Hooks into 'post_thumbnail_html', which WordPress already renders with a
+	 * wp-image-{ID} class on the <img> tag, so the image-resolution logic built for
+	 * in-content images (euaiactready_get_markup_engine()->add_labels_to_content())
+	 * applies to it unchanged.
+	 *
+	 * @param string $html Featured image HTML, or an empty string when the post has none.
+	 * @return string
+	 */
+	public function euaiactready_add_featured_image_label( $html ) {
+		if ( '' === $html || ! is_singular() ) {
+			return $html;
+		}
+
+		if ( ! get_option( 'euaiactready_media_transparency', true ) ) {
+			return $html;
+		}
+
+		if ( ! get_option( 'euaiactready_media_label_featured_images', true ) ) {
+			return $html;
+		}
+
+		return $this->euaiactready_get_markup_engine()->add_labels_to_content( $html );
+	}
+
+	/**
 	 * Label placements a positioned label can take.
 	 *
 	 * @return array<string,string> Option value to human-readable label.
@@ -1087,6 +1163,79 @@ class EUAIACTREADY_Media_Transparency {
 			'bottom-left'  => __( 'Bottom left', 'eu-ai-act-ready' ),
 			'bottom-right' => __( 'Bottom right', 'eu-ai-act-ready' ),
 		);
+	}
+
+	/**
+	 * How much of the label a hover tooltip repeats.
+	 *
+	 * The detection source lives only in the tooltip, so dropping it removes that detail
+	 * from assistive technology as well as from hover. The label itself stays visible in
+	 * every mode, so the disclosure never depends on this setting.
+	 *
+	 * @return array<string,string> Option value to human-readable label.
+	 */
+	public static function euaiactready_get_label_tooltip_modes() {
+		return array(
+			'full'  => __( 'Label and detection source', 'eu-ai-act-ready' ),
+			'label' => __( 'Label only', 'eu-ai-act-ready' ),
+			'none'  => __( 'No tooltip', 'eu-ai-act-ready' ),
+		);
+	}
+
+	/**
+	 * Sizes a label can be rendered at.
+	 *
+	 * @return array<string,string> Option value to human-readable label.
+	 */
+	public static function euaiactready_get_label_sizes() {
+		return array(
+			'normal'  => __( 'Normal', 'eu-ai-act-ready' ),
+			'compact' => __( 'Compact', 'eu-ai-act-ready' ),
+		);
+	}
+
+	/**
+	 * Turn a size setting into the class that shrinks the label.
+	 *
+	 * The normal size carries no class, so it stays exactly what it has always been.
+	 *
+	 * @param string $size Size setting.
+	 * @return string Class name, prefixed with a space, or an empty string.
+	 */
+	private function euaiactready_get_size_class( $size ) {
+		return 'compact' === sanitize_key( (string) $size ) ? ' ai-media-size-compact' : '';
+	}
+
+	/**
+	 * Build the tooltip text for a label, or nothing when tooltips are switched off.
+	 *
+	 * @param array  $detection Detection data.
+	 * @param string $label     Visible label text.
+	 * @param string $mode      Tooltip mode.
+	 * @return string Ready-to-insert title attribute, or an empty string.
+	 */
+	private function euaiactready_get_label_title_attribute( $detection, $label, $mode ) {
+		$mode = sanitize_key( (string) $mode );
+
+		if ( ! isset( self::euaiactready_get_label_tooltip_modes()[ $mode ] ) ) {
+			$mode = 'full';
+		}
+
+		if ( 'none' === $mode ) {
+			return '';
+		}
+
+		$tooltip = $label;
+
+		if ( 'full' === $mode && ! empty( $detection['source'] ) ) {
+			$tooltip = sprintf(
+				/* translators: %s: Source of the AI detection. */
+				__( 'AI-Generated Image (%s)', 'eu-ai-act-ready' ),
+				wp_strip_all_tags( (string) $detection['source'] )
+			);
+		}
+
+		return ' title="' . esc_attr( $tooltip ) . '"';
 	}
 
 	/**
@@ -1111,53 +1260,67 @@ class EUAIACTREADY_Media_Transparency {
 	/**
 	 * Generate image label HTML.
 	 *
-	 * @param array  $detection Detection data.
-	 * @param string $style Label style.
-	 * @param string $position Placement for the positioned styles.
+	 * @param array $detection Detection data.
+	 * @param array $args {
+	 *     Display settings.
+	 *
+	 *     @type string $style    Label style.
+	 *     @type string $position Placement for the positioned styles.
+	 *     @type string $tooltip  How much of the label the hover tooltip repeats.
+	 *     @type string $size     Label size.
+	 * }
 	 * @return string Label HTML.
 	 */
-	private function euaiactready_generate_image_label( $detection, $style, $position = '' ) {
+	private function euaiactready_generate_image_label( $detection, array $args = array() ) {
 		if ( empty( $detection ) ) {
 			return '';
 		}
 
-		$position_class = esc_attr( $this->euaiactready_get_position_class( $position ) );
+		$args = array_merge(
+			array(
+				'style'    => 'caption',
+				'position' => '',
+				'tooltip'  => 'full',
+				'size'     => 'normal',
+			),
+			$args
+		);
 
 		$label_text = __( 'AI-Generated Image', 'eu-ai-act-ready' );
-		$tooltip    = $label_text;
 
-		if ( ! empty( $detection['source'] ) ) {
-			$source_value = wp_strip_all_tags( (string) $detection['source'] );
-			$tooltip      = sprintf(
-				/* translators: %s: Source of the AI detection. */
-				__( 'AI-Generated Image (%s)', 'eu-ai-act-ready' ),
-				$source_value
-			);
-		}
+		// Placement and size both land on the element the style positions, so they travel
+		// together as one attribute value.
+		$modifier_class = esc_attr(
+			$this->euaiactready_get_position_class( $args['position'] )
+			. $this->euaiactready_get_size_class( $args['size'] )
+		);
+		$size_class     = esc_attr( $this->euaiactready_get_size_class( $args['size'] ) );
+
+		// Already escaped with esc_attr(), and empty when tooltips are switched off.
+		$title_attribute = $this->euaiactready_get_label_title_attribute( $detection, $label_text, $args['tooltip'] );
 
 		$label_text_escaped = esc_html( $label_text );
-		$tooltip_escaped    = esc_attr( $tooltip );
 		$icon_html          = wp_kses(
 			EUAIACTREADY::euaiactready_get_ai_icon( 18, 'currentColor' ),
 			EUAIACTREADY::euaiactready_get_svg_allowed_html()
 		);
 
-		switch ( $style ) {
+		switch ( $args['style'] ) {
 			case 'badge':
-				return '<div class="ai-media-badge' . $position_class . '" title="' . $tooltip_escaped . '"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
+				return '<div class="ai-media-badge' . $modifier_class . '"' . $title_attribute . '><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
 
 			case 'caption':
 				// Sits below the image, so placement does not apply.
-				return '<div class="ai-media-caption"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
+				return '<div class="ai-media-caption' . $size_class . '"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
 
 			case 'overlay':
-				return '<div class="ai-media-overlay"><span class="ai-overlay-badge' . $position_class . '" title="' . $tooltip_escaped . '"><span class="ai-icon">' . $icon_html . '</span>' . $label_text_escaped . '</span></div>';
+				return '<div class="ai-media-overlay"><span class="ai-overlay-badge' . $modifier_class . '"' . $title_attribute . '><span class="ai-icon">' . $icon_html . '</span>' . $label_text_escaped . '</span></div>';
 
 			case 'border':
-				return '<div class="ai-media-border-label' . $position_class . '" title="' . $tooltip_escaped . '"><span class="ai-icon">' . $icon_html . '</span>' . $label_text_escaped . '</div>';
+				return '<div class="ai-media-border-label' . $modifier_class . '"' . $title_attribute . '><span class="ai-icon">' . $icon_html . '</span>' . $label_text_escaped . '</div>';
 
 			default:
-				return '<div class="ai-media-caption"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
+				return '<div class="ai-media-caption' . $size_class . '"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
 		}
 	}
 
@@ -1314,29 +1477,39 @@ class EUAIACTREADY_Media_Transparency {
 				esc_html( $threshold_percent )
 			);
 
-			if ( $detection && ! empty( $detection['is_ai'] ) ) {
-				if ( ! empty( $detection['source'] ) ) {
-					echo '<strong>' . esc_html__( 'Source:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html( $detection['source'] ) . '<br>';
-				}
+			/*
+			 * Whether the scan found AI and how the image came to be marked are separate
+			 * questions, so they are reported separately. An image can be marked by hand
+			 * while its scan sat below the threshold, and that combination has to read
+			 * correctly rather than pick one of the two to hide.
+			 */
+			if ( $detection && ! empty( $detection['is_ai'] ) && ! empty( $detection['source'] ) ) {
+				echo '<strong>' . esc_html__( 'Source:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html( $detection['source'] ) . '<br>';
+			}
 
-				if ( '1' === $manual_flag && ! empty( $marked_method ) ) {
-					if ( 'manual' === $marked_method ) {
-						echo '<strong>' . esc_html__( 'Marking:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html__( 'Manually marked', 'eu-ai-act-ready' ) . '<br>';
-					} elseif ( 'auto' === $marked_method ) {
-						echo '<strong>' . esc_html__( 'Marking:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html__( 'Auto-detected', 'eu-ai-act-ready' ) . '<br>';
-					}
+			if ( '1' === $manual_flag && ! empty( $marked_method ) ) {
+				if ( 'manual' === $marked_method ) {
+					echo '<strong>' . esc_html__( 'Marking:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html__( 'Manually marked', 'eu-ai-act-ready' ) . '<br>';
+				} elseif ( 'auto' === $marked_method ) {
+					echo '<strong>' . esc_html__( 'Marking:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html__( 'Auto-detected', 'eu-ai-act-ready' ) . '<br>';
 				}
+			}
 
-				if ( ! empty( $detection['indicators'] ) && is_array( $detection['indicators'] ) ) {
-					echo '<strong>' . esc_html__( 'Indicators found:', 'eu-ai-act-ready' ) . '</strong><br>';
-					foreach ( $detection['indicators'] as $indicator ) {
-						echo '&#8226; ' . esc_html( $this->euaiactready_get_indicator_label( $indicator ) ) . '<br>';
-					}
+			if ( $detection && ! empty( $detection['indicators'] ) && is_array( $detection['indicators'] ) ) {
+				echo '<strong>' . esc_html__( 'Indicators found:', 'eu-ai-act-ready' ) . '</strong><br>';
+				foreach ( $detection['indicators'] as $indicator ) {
+					echo '&#8226; ' . esc_html( $this->euaiactready_get_indicator_label( $indicator ) ) . '<br>';
 				}
-			} elseif ( $confidence > 0 && $confidence < $threshold ) {
+			}
+
+			if ( $confidence > 0 && $confidence < $threshold ) {
 				echo '<strong>' . esc_html__( 'Note:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html__( 'Some AI indicators found, but confidence is below threshold.', 'eu-ai-act-ready' ) . '<br>';
-				echo '<em>' . esc_html__( 'Consider manually marking if you know this is AI-generated.', 'eu-ai-act-ready' ) . '</em>';
-			} else {
+
+				// Pointless advice for an image that already carries the mark.
+				if ( '1' !== $manual_flag ) {
+					echo '<em>' . esc_html__( 'Consider manually marking if you know this is AI-generated.', 'eu-ai-act-ready' ) . '</em>';
+				}
+			} elseif ( ! $detection || empty( $detection['is_ai'] ) ) {
 				echo '<em>' . esc_html__( 'No AI indicators detected in filename, metadata, or image properties.', 'eu-ai-act-ready' ) . '</em>';
 			}
 

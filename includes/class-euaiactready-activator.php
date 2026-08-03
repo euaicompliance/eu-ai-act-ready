@@ -92,8 +92,14 @@ class EUAIACTREADY_Activator {
 		// Refines media transparency rather than enabling disclosures on its own, so it
 		// follows along once that feature is switched on.
 		add_option( 'euaiactready_bricks_background_labels', 1 );
+		add_option( 'euaiactready_media_label_featured_images', 1 );
 		add_option( 'euaiactready_media_label_position', '' );
 		add_option( 'euaiactready_bricks_bg_label_position', 'top-right' );
+
+		// Both defaults reproduce the label exactly as it rendered before these settings
+		// existed, so upgrading never changes an existing site.
+		add_option( 'euaiactready_media_label_tooltip', 'full' );
+		add_option( 'euaiactready_media_label_size', 'normal' );
 
 		// RSS & Feed disclosure defaults (opt-in).
 		add_option( 'euaiactready_rss_disclosure_enabled', 0 );
