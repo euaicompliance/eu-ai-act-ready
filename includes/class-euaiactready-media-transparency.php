@@ -172,10 +172,20 @@ class EUAIACTREADY_Media_Transparency {
 
 		if ( ! empty( $detection_source ) ) {
 			$detection_info = json_decode( $detection_source, true );
+			$confidence     = isset( $detection_info['confidence'] ) ? (float) $detection_info['confidence'] : 0;
+			$threshold      = (float) get_option( 'euaiactready_media_confidence_threshold', EUAIACTREADY_DEFAULT_MEDIA_CONFIDENCE_THRESHOLD );
+			$marked_method  = get_post_meta( $attachment_id, '_euaiactready_ai_marked_method', true );
+
+			/*
+			 * A scan below the threshold still stores its result, so the presence of stored
+			 * data says only that the image was examined - not that it is AI. Derive the
+			 * verdict from the confidence, exactly as euaiactready_run_detection() does, so
+			 * a cached read and a fresh scan cannot disagree.
+			 */
 			return array(
-				'is_ai'      => true,
-				'confidence' => isset( $detection_info['confidence'] ) ? $detection_info['confidence'] : 0,
-				'method'     => 'auto',
+				'is_ai'      => $confidence >= $threshold,
+				'confidence' => $confidence,
+				'method'     => ! empty( $marked_method ) ? $marked_method : 'auto',
 				'indicators' => isset( $detection_info['indicators'] ) ? $detection_info['indicators'] : array(),
 				'source'     => isset( $detection_info['source'] ) ? $detection_info['source'] : '',
 			);
@@ -205,16 +215,44 @@ class EUAIACTREADY_Media_Transparency {
 
 		// If flagged as '1', return the appropriate result.
 		if ( '1' === $manual_flag ) {
-			if ( 'manual' === $marked_method && empty( $detection_source ) ) {
-				// Truly manual - no auto-detection.
+			$detection_info = ! empty( $detection_source ) ? json_decode( $detection_source, true ) : array();
+
+			if ( ! is_array( $detection_info ) ) {
+				$detection_info = array();
+			}
+
+			/*
+			 * A human marking the image is the most recent decision about it, so it wins
+			 * over anything a scan stored earlier. Checking this before the stored source
+			 * matters: a scan that fell below the threshold still writes its result, and
+			 * describing a hand-marked image as "No AI detected" contradicts the label
+			 * shown next to it.
+			 *
+			 * The scan's confidence and indicators are kept, since they are still true and
+			 * the metabox displays them - only the source is overridden.
+			 */
+			if ( 'manual' === $marked_method ) {
 				return array(
 					'is_ai'      => true,
-					'confidence' => 1.0,
+					'confidence' => isset( $detection_info['confidence'] ) ? (float) $detection_info['confidence'] : 1.0,
 					'method'     => 'manual',
-					'indicators' => array( 'manual' ),
+					'indicators' => isset( $detection_info['indicators'] ) ? $detection_info['indicators'] : array( 'manual' ),
 					'source'     => __( 'Manually marked as AI-generated', 'eu-ai-act-ready' ),
 				);
-			} elseif ( 'auto' === $marked_method && empty( $detection_source ) ) {
+			}
+
+			if ( ! empty( $detection_source ) ) {
+				// Auto-detected - use stored detection info.
+				return array(
+					'is_ai'      => true,
+					'confidence' => isset( $detection_info['confidence'] ) ? (float) $detection_info['confidence'] : 0,
+					'method'     => 'auto',
+					'indicators' => isset( $detection_info['indicators'] ) ? $detection_info['indicators'] : array(),
+					'source'     => isset( $detection_info['source'] ) ? $detection_info['source'] : '',
+				);
+			}
+
+			if ( 'auto' === $marked_method ) {
 				// Auto-marked without stored detection data - don't re-scan on frontend.
 				return array(
 					'is_ai'      => true,
@@ -222,16 +260,6 @@ class EUAIACTREADY_Media_Transparency {
 					'method'     => 'auto',
 					'indicators' => array( 'auto' ),
 					'source'     => __( 'Auto-detected', 'eu-ai-act-ready' ),
-				);
-			} elseif ( ! empty( $detection_source ) ) {
-				// Auto-detected - use stored detection info.
-				$detection_info = json_decode( $detection_source, true );
-				return array(
-					'is_ai'      => true,
-					'confidence' => isset( $detection_info['confidence'] ) ? $detection_info['confidence'] : 0,
-					'method'     => 'auto',
-					'indicators' => isset( $detection_info['indicators'] ) ? $detection_info['indicators'] : array(),
-					'source'     => isset( $detection_info['source'] ) ? $detection_info['source'] : '',
 				);
 			}
 		}
@@ -1314,29 +1342,39 @@ class EUAIACTREADY_Media_Transparency {
 				esc_html( $threshold_percent )
 			);
 
-			if ( $detection && ! empty( $detection['is_ai'] ) ) {
-				if ( ! empty( $detection['source'] ) ) {
-					echo '<strong>' . esc_html__( 'Source:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html( $detection['source'] ) . '<br>';
-				}
+			/*
+			 * Whether the scan found AI and how the image came to be marked are separate
+			 * questions, so they are reported separately. An image can be marked by hand
+			 * while its scan sat below the threshold, and that combination has to read
+			 * correctly rather than pick one of the two to hide.
+			 */
+			if ( $detection && ! empty( $detection['is_ai'] ) && ! empty( $detection['source'] ) ) {
+				echo '<strong>' . esc_html__( 'Source:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html( $detection['source'] ) . '<br>';
+			}
 
-				if ( '1' === $manual_flag && ! empty( $marked_method ) ) {
-					if ( 'manual' === $marked_method ) {
-						echo '<strong>' . esc_html__( 'Marking:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html__( 'Manually marked', 'eu-ai-act-ready' ) . '<br>';
-					} elseif ( 'auto' === $marked_method ) {
-						echo '<strong>' . esc_html__( 'Marking:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html__( 'Auto-detected', 'eu-ai-act-ready' ) . '<br>';
-					}
+			if ( '1' === $manual_flag && ! empty( $marked_method ) ) {
+				if ( 'manual' === $marked_method ) {
+					echo '<strong>' . esc_html__( 'Marking:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html__( 'Manually marked', 'eu-ai-act-ready' ) . '<br>';
+				} elseif ( 'auto' === $marked_method ) {
+					echo '<strong>' . esc_html__( 'Marking:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html__( 'Auto-detected', 'eu-ai-act-ready' ) . '<br>';
 				}
+			}
 
-				if ( ! empty( $detection['indicators'] ) && is_array( $detection['indicators'] ) ) {
-					echo '<strong>' . esc_html__( 'Indicators found:', 'eu-ai-act-ready' ) . '</strong><br>';
-					foreach ( $detection['indicators'] as $indicator ) {
-						echo '&#8226; ' . esc_html( $this->euaiactready_get_indicator_label( $indicator ) ) . '<br>';
-					}
+			if ( $detection && ! empty( $detection['indicators'] ) && is_array( $detection['indicators'] ) ) {
+				echo '<strong>' . esc_html__( 'Indicators found:', 'eu-ai-act-ready' ) . '</strong><br>';
+				foreach ( $detection['indicators'] as $indicator ) {
+					echo '&#8226; ' . esc_html( $this->euaiactready_get_indicator_label( $indicator ) ) . '<br>';
 				}
-			} elseif ( $confidence > 0 && $confidence < $threshold ) {
+			}
+
+			if ( $confidence > 0 && $confidence < $threshold ) {
 				echo '<strong>' . esc_html__( 'Note:', 'eu-ai-act-ready' ) . '</strong> ' . esc_html__( 'Some AI indicators found, but confidence is below threshold.', 'eu-ai-act-ready' ) . '<br>';
-				echo '<em>' . esc_html__( 'Consider manually marking if you know this is AI-generated.', 'eu-ai-act-ready' ) . '</em>';
-			} else {
+
+				// Pointless advice for an image that already carries the mark.
+				if ( '1' !== $manual_flag ) {
+					echo '<em>' . esc_html__( 'Consider manually marking if you know this is AI-generated.', 'eu-ai-act-ready' ) . '</em>';
+				}
+			} elseif ( ! $detection || empty( $detection['is_ai'] ) ) {
 				echo '<em>' . esc_html__( 'No AI indicators detected in filename, metadata, or image properties.', 'eu-ai-act-ready' ) . '</em>';
 			}
 
