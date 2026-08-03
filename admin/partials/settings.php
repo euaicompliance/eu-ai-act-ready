@@ -45,6 +45,7 @@ if ( isset( $_POST['save_settings'] ) && check_admin_referer( 'euaiactready_sett
 
 	// Media transparency settings.
 	update_option( 'euaiactready_media_transparency', ! empty( $euaiactready_post_data['media_transparency'] ) ? 1 : 0 );
+	update_option( 'euaiactready_media_label_featured_images', ! empty( $euaiactready_post_data['media_label_featured_images'] ) ? 1 : 0 );
 	// Only written while Bricks is active, because the checkbox is only rendered then.
 	// Saving unconditionally would read the missing checkbox as "off" on every other site
 	// and silently disable background labels for the day Bricks gets activated.
@@ -126,14 +127,15 @@ $euaiactready_chatbot_notice_style   = get_option( 'euaiactready_chatbot_notice_
 $euaiactready_chatbot_notice_message = sanitize_text_field( get_option( 'euaiactready_chatbot_notice_message', '' ) );
 
 // Media transparency settings.
-$euaiactready_media_transparency         = get_option( 'euaiactready_media_transparency', true );
-$euaiactready_bricks_background_labels   = get_option( 'euaiactready_bricks_background_labels', true );
-$euaiactready_media_label_position       = get_option( 'euaiactready_media_label_position', '' );
-$euaiactready_bricks_bg_label_position   = get_option( 'euaiactready_bricks_bg_label_position', 'top-right' );
-$euaiactready_media_label_style          = get_option( 'euaiactready_media_label_style', EUAIACTREADY_DEFAULT_MEDIA_LABEL_STYLE );
-$euaiactready_media_label_tooltip        = get_option( 'euaiactready_media_label_tooltip', 'full' );
-$euaiactready_media_label_size           = get_option( 'euaiactready_media_label_size', 'normal' );
-$euaiactready_media_confidence_threshold = get_option( 'euaiactready_media_confidence_threshold', EUAIACTREADY_DEFAULT_MEDIA_CONFIDENCE_THRESHOLD );
+$euaiactready_media_transparency          = get_option( 'euaiactready_media_transparency', true );
+$euaiactready_media_label_featured_images = get_option( 'euaiactready_media_label_featured_images', true );
+$euaiactready_bricks_background_labels    = get_option( 'euaiactready_bricks_background_labels', true );
+$euaiactready_media_label_position        = get_option( 'euaiactready_media_label_position', '' );
+$euaiactready_bricks_bg_label_position    = get_option( 'euaiactready_bricks_bg_label_position', 'top-right' );
+$euaiactready_media_label_style           = get_option( 'euaiactready_media_label_style', EUAIACTREADY_DEFAULT_MEDIA_LABEL_STYLE );
+$euaiactready_media_label_tooltip         = get_option( 'euaiactready_media_label_tooltip', 'full' );
+$euaiactready_media_label_size            = get_option( 'euaiactready_media_label_size', 'normal' );
+$euaiactready_media_confidence_threshold  = get_option( 'euaiactready_media_confidence_threshold', EUAIACTREADY_DEFAULT_MEDIA_CONFIDENCE_THRESHOLD );
 
 // RSS & Feed disclosure settings.
 $euaiactready_rss_disclosure_enabled = get_option( 'euaiactready_rss_disclosure_enabled', 0 );
@@ -378,6 +380,16 @@ $euaiactready_tab_definitions = array(
 					<td>
 					<input type="checkbox" id="media_transparency" name="media_transparency" value="1" <?php checked( $euaiactready_media_transparency, true ); ?>>
 						<p class="description"><?php esc_html_e( 'Automatically add labels to AI-generated images and media in posts.', 'eu-ai-act-ready' ); ?></p>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="media_label_featured_images"><?php esc_html_e( 'Label Featured Images', 'eu-ai-act-ready' ); ?></label>
+					</th>
+					<td>
+					<input type="checkbox" id="media_label_featured_images" name="media_label_featured_images" value="1" <?php checked( $euaiactready_media_label_featured_images, true ); ?>>
+						<p class="description"><?php esc_html_e( 'Also add the AI label to a post\'s featured image, not just images inside the content.', 'eu-ai-act-ready' ); ?></p>
 					</td>
 				</tr>
 
