@@ -4,7 +4,7 @@ Tags: eu ai act, article 50, ai transparency, ai compliance, ai disclosure
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.0.3
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,7 @@ Final responsibility for assessing and meeting legal obligations remains with th
 * **EU AI Act Timeline** - Dashboard section showing enforcement dates with countdowns so you always know what is coming and when
 * **AI Content Admin Page** - Dedicated admin page listing all AI-marked content items (posts, pages, and custom post types) with their disclosure level, with one-click unmark and bulk actions
 * **Media & Image Analysis** - Flags potentially AI-generated images using heuristic metadata signals and filename patterns
+* **AI Image Labels** - Visitor-facing labels on AI-flagged images with configurable tooltip and size; works with Gutenberg, Elementor, Classic Editor, and Bricks Builder
 * **Bulk Scanning Tools** - Scan multiple media items simultaneously from the admin dashboard
 * **Manual Override Controls** - Mark or unmark content and media as AI-generated at any time
 * **Customizable Disclosure Messages** - Configure wording, style, and placement of transparency notices; each disclosure level shows its own default message or a shared custom message
@@ -118,7 +119,7 @@ For chatbots, the plugin supports disclosure notices for platforms including For
 Yes. The plugin does not collect, store, or transmit personal data and does not process user data for AI detection or AI transparency features. All processing happens locally on your server, and no data is sent to third-party services.
 
 = Does it work with Gutenberg, Elementor, and the Classic Editor? =
-Yes. EU AI Act Ready works with the Gutenberg block editor, Elementor, and the Classic Editor. The AI Content Disclosure meta box appears in the editor and lets you choose from four disclosure levels. You can also set the disclosure level from the Posts list using Quick Edit, without opening the post editor.
+Yes. EU AI Act Ready works with the Gutenberg block editor, Elementor, and the Classic Editor. The AI Content Disclosure meta box appears in the editor and lets you choose from four disclosure levels. You can also set the disclosure level from the Posts list using Quick Edit, without opening the post editor. AI image labels are also supported in Bricks Builder output.
 
 = How do I bulk scan existing images? =
 Go to **EU AI Act Ready --> Dashboard** and use the bulk scanning tools to process media library items in batches.
@@ -150,22 +151,15 @@ Article 4 of the EU AI Act requires deployers of AI systems to take reasonable s
 = What happens if I deactivate the plugin? =
 All plugin settings and AI content markers remain stored in the database. Reactivating the plugin restores all functionality. To remove all data, uninstall the plugin.
 
-= After updating to version 1.0.2 on a German-language site, the plugin seems to have disappeared. How do I fix this? =
-Version 1.0.2 shipped with a translation bug: the plugin's own name "EU AI Act Ready" was incorrectly translated to "EU-KI-Act-konform" in the German language file. On sites running WordPress in German (de_DE), this caused the plugin to appear under the translated name in the Plugins list, and - if you replaced the plugin files manually - WordPress may have auto-deactivated it while the directory was momentarily empty.
-
-**Your settings and data are safe.** No database content is deleted when a plugin is deactivated.
-
-To recover:
-
-1. Go to **Plugins --> Installed Plugins** in your WordPress admin.
-2. Look for either **"EU AI Act Ready"** or **"EU-KI-Act-konform"** in the list (depending on your WordPress version, it may appear under either name).
-3. Click **Activate**.
-
-That is all. All previously saved settings, AI content markers, and media scan results are restored immediately.
-
-The translation bug is fixed in version 1.0.3. After updating to the fixed release the plugin name will always display as "EU AI Act Ready" regardless of the site language.
 
 == Changelog ==
+
+= 2.1.0 =
+* Added: Extends AI transparency labels to a post's featured image, not just images inside the content.
+* Added: Bricks Builder support - AI images are now labelled in Bricks Builder output (props @13robin37)
+* Added: Configurable tooltip and size for AI image labels (props @13robin37)
+* Fixed: AI detection status now reflects the confidence threshold instead of assuming any scan means AI (props @13robin37)
+* Fixed: Content transparency banner uses role="note" instead of role="alert" for better accessibility (props @archandha)
 
 = 2.0.3 =
 * Security: Fixed missing return statement after failed nonce and permission checks in AJAX handler to prevent execution from continuing past a failed security verification.
