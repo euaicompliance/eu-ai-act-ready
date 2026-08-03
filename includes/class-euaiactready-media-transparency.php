@@ -998,14 +998,24 @@ class EUAIACTREADY_Media_Transparency {
 		$label_style    = get_option( 'euaiactready_media_label_style', 'caption' );
 		$label_position = get_option( 'euaiactready_media_label_position', '' );
 		$bg_position    = get_option( 'euaiactready_bricks_bg_label_position', 'top-right' );
+		$label_tooltip  = get_option( 'euaiactready_media_label_tooltip', 'full' );
+		$label_size     = get_option( 'euaiactready_media_label_size', 'normal' );
 
 		$engines[ $blog ] = new EUAIACTREADY_Media_Markup(
 			array( $this, 'euaiactready_get_label_detection' ),
-			function ( $detection ) use ( $label_style, $label_position ) {
+			function ( $detection ) use ( $label_style, $label_position, $label_tooltip, $label_size ) {
 				// generate_image_label() escapes with esc_html()/esc_attr(); wp_kses() is a
 				// second gate in case a filtered detection source smuggles in markup.
 				return wp_kses(
-					$this->euaiactready_generate_image_label( $detection, $label_style, $label_position ),
+					$this->euaiactready_generate_image_label(
+						$detection,
+						array(
+							'style'    => $label_style,
+							'position' => $label_position,
+							'tooltip'  => $label_tooltip,
+							'size'     => $label_size,
+						)
+					),
 					self::euaiactready_get_label_allowed_html()
 				);
 			},
@@ -1030,7 +1040,7 @@ class EUAIACTREADY_Media_Transparency {
 
 				return $resolved[ $url ];
 			},
-			function ( $detection ) use ( $label_style, $bg_position ) {
+			function ( $detection ) use ( $label_style, $bg_position, $label_tooltip, $label_size ) {
 				// A caption sits below its image; a background has no image box to sit
 				// below, so it becomes a badge on the element instead.
 				$style = 'caption' === $label_style ? 'badge' : $label_style;
@@ -1044,7 +1054,15 @@ class EUAIACTREADY_Media_Transparency {
 				$style = apply_filters( 'euaiactready_bricks_bg_label_style', $style, $label_style );
 
 				return wp_kses(
-					$this->euaiactready_generate_image_label( $detection, $style, $bg_position ),
+					$this->euaiactready_generate_image_label(
+						$detection,
+						array(
+							'style'    => $style,
+							'position' => $bg_position,
+							'tooltip'  => $label_tooltip,
+							'size'     => $label_size,
+						)
+					),
 					self::euaiactready_get_label_allowed_html()
 				);
 			}
@@ -1090,6 +1108,79 @@ class EUAIACTREADY_Media_Transparency {
 	}
 
 	/**
+	 * How much of the label a hover tooltip repeats.
+	 *
+	 * The detection source lives only in the tooltip, so dropping it removes that detail
+	 * from assistive technology as well as from hover. The label itself stays visible in
+	 * every mode, so the disclosure never depends on this setting.
+	 *
+	 * @return array<string,string> Option value to human-readable label.
+	 */
+	public static function euaiactready_get_label_tooltip_modes() {
+		return array(
+			'full'  => __( 'Label and detection source', 'eu-ai-act-ready' ),
+			'label' => __( 'Label only', 'eu-ai-act-ready' ),
+			'none'  => __( 'No tooltip', 'eu-ai-act-ready' ),
+		);
+	}
+
+	/**
+	 * Sizes a label can be rendered at.
+	 *
+	 * @return array<string,string> Option value to human-readable label.
+	 */
+	public static function euaiactready_get_label_sizes() {
+		return array(
+			'normal'  => __( 'Normal', 'eu-ai-act-ready' ),
+			'compact' => __( 'Compact', 'eu-ai-act-ready' ),
+		);
+	}
+
+	/**
+	 * Turn a size setting into the class that shrinks the label.
+	 *
+	 * The normal size carries no class, so it stays exactly what it has always been.
+	 *
+	 * @param string $size Size setting.
+	 * @return string Class name, prefixed with a space, or an empty string.
+	 */
+	private function euaiactready_get_size_class( $size ) {
+		return 'compact' === sanitize_key( (string) $size ) ? ' ai-media-size-compact' : '';
+	}
+
+	/**
+	 * Build the tooltip text for a label, or nothing when tooltips are switched off.
+	 *
+	 * @param array  $detection Detection data.
+	 * @param string $label     Visible label text.
+	 * @param string $mode      Tooltip mode.
+	 * @return string Ready-to-insert title attribute, or an empty string.
+	 */
+	private function euaiactready_get_label_title_attribute( $detection, $label, $mode ) {
+		$mode = sanitize_key( (string) $mode );
+
+		if ( ! isset( self::euaiactready_get_label_tooltip_modes()[ $mode ] ) ) {
+			$mode = 'full';
+		}
+
+		if ( 'none' === $mode ) {
+			return '';
+		}
+
+		$tooltip = $label;
+
+		if ( 'full' === $mode && ! empty( $detection['source'] ) ) {
+			$tooltip = sprintf(
+				/* translators: %s: Source of the AI detection. */
+				__( 'AI-Generated Image (%s)', 'eu-ai-act-ready' ),
+				wp_strip_all_tags( (string) $detection['source'] )
+			);
+		}
+
+		return ' title="' . esc_attr( $tooltip ) . '"';
+	}
+
+	/**
 	 * Turn a placement setting into the class that positions the label.
 	 *
 	 * An empty or unknown placement yields no class, leaving each style at the position
@@ -1111,53 +1202,67 @@ class EUAIACTREADY_Media_Transparency {
 	/**
 	 * Generate image label HTML.
 	 *
-	 * @param array  $detection Detection data.
-	 * @param string $style Label style.
-	 * @param string $position Placement for the positioned styles.
+	 * @param array $detection Detection data.
+	 * @param array $args {
+	 *     Display settings.
+	 *
+	 *     @type string $style    Label style.
+	 *     @type string $position Placement for the positioned styles.
+	 *     @type string $tooltip  How much of the label the hover tooltip repeats.
+	 *     @type string $size     Label size.
+	 * }
 	 * @return string Label HTML.
 	 */
-	private function euaiactready_generate_image_label( $detection, $style, $position = '' ) {
+	private function euaiactready_generate_image_label( $detection, array $args = array() ) {
 		if ( empty( $detection ) ) {
 			return '';
 		}
 
-		$position_class = esc_attr( $this->euaiactready_get_position_class( $position ) );
+		$args = array_merge(
+			array(
+				'style'    => 'caption',
+				'position' => '',
+				'tooltip'  => 'full',
+				'size'     => 'normal',
+			),
+			$args
+		);
 
 		$label_text = __( 'AI-Generated Image', 'eu-ai-act-ready' );
-		$tooltip    = $label_text;
 
-		if ( ! empty( $detection['source'] ) ) {
-			$source_value = wp_strip_all_tags( (string) $detection['source'] );
-			$tooltip      = sprintf(
-				/* translators: %s: Source of the AI detection. */
-				__( 'AI-Generated Image (%s)', 'eu-ai-act-ready' ),
-				$source_value
-			);
-		}
+		// Placement and size both land on the element the style positions, so they travel
+		// together as one attribute value.
+		$modifier_class = esc_attr(
+			$this->euaiactready_get_position_class( $args['position'] )
+			. $this->euaiactready_get_size_class( $args['size'] )
+		);
+		$size_class     = esc_attr( $this->euaiactready_get_size_class( $args['size'] ) );
+
+		// Already escaped with esc_attr(), and empty when tooltips are switched off.
+		$title_attribute = $this->euaiactready_get_label_title_attribute( $detection, $label_text, $args['tooltip'] );
 
 		$label_text_escaped = esc_html( $label_text );
-		$tooltip_escaped    = esc_attr( $tooltip );
 		$icon_html          = wp_kses(
 			EUAIACTREADY::euaiactready_get_ai_icon( 18, 'currentColor' ),
 			EUAIACTREADY::euaiactready_get_svg_allowed_html()
 		);
 
-		switch ( $style ) {
+		switch ( $args['style'] ) {
 			case 'badge':
-				return '<div class="ai-media-badge' . $position_class . '" title="' . $tooltip_escaped . '"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
+				return '<div class="ai-media-badge' . $modifier_class . '"' . $title_attribute . '><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
 
 			case 'caption':
 				// Sits below the image, so placement does not apply.
-				return '<div class="ai-media-caption"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
+				return '<div class="ai-media-caption' . $size_class . '"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
 
 			case 'overlay':
-				return '<div class="ai-media-overlay"><span class="ai-overlay-badge' . $position_class . '" title="' . $tooltip_escaped . '"><span class="ai-icon">' . $icon_html . '</span>' . $label_text_escaped . '</span></div>';
+				return '<div class="ai-media-overlay"><span class="ai-overlay-badge' . $modifier_class . '"' . $title_attribute . '><span class="ai-icon">' . $icon_html . '</span>' . $label_text_escaped . '</span></div>';
 
 			case 'border':
-				return '<div class="ai-media-border-label' . $position_class . '" title="' . $tooltip_escaped . '"><span class="ai-icon">' . $icon_html . '</span>' . $label_text_escaped . '</div>';
+				return '<div class="ai-media-border-label' . $modifier_class . '"' . $title_attribute . '><span class="ai-icon">' . $icon_html . '</span>' . $label_text_escaped . '</div>';
 
 			default:
-				return '<div class="ai-media-caption"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
+				return '<div class="ai-media-caption' . $size_class . '"><span class="ai-icon">' . $icon_html . '</span><span class="ai-text">' . $label_text_escaped . '</span></div>';
 		}
 	}
 

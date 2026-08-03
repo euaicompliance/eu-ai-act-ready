@@ -495,3 +495,141 @@
         left: auto;
     }
 }
+
+/* ========================================
+   12. LABEL SIZE
+   ======================================== */
+
+/*
+ * The tooltip is optional, so the cursor that advertises one has to be too. Keyed off the
+ * attribute rather than a class: the markup omits `title` entirely when tooltips are
+ * switched off, which makes this true by construction.
+ */
+.ai-media-badge:not([title]),
+.ai-overlay-badge:not([title]),
+.ai-media-border-label:not([title]) {
+    cursor: default;
+}
+
+/*
+ * Compact turns the label from a sticker placed on the image into an overlay belonging to
+ * it: smaller type, no shouting, translucent rather than solid, and tucked closer to the
+ * edge.
+ */
+$badge-inset-compact: $spacing-sm;
+
+@mixin label-compact-pill {
+    padding: 2px 6px;
+    gap: 3px;
+    background: rgba($color-black, 0.55);
+    backdrop-filter: blur(4px);
+    box-shadow: none;
+    border-radius: $radius-base;
+    color: $color-white;
+    font-size: 9px;
+
+    /*
+     * The icon is an inline SVG carrying width="18" height="18" attributes, so font-size
+     * cannot reach it.
+     */
+    .ai-icon svg {
+        width: 11px;
+        height: 11px;
+    }
+
+    .ai-text {
+        font-size: 9px;
+        text-transform: none;
+        letter-spacing: 0.3px;
+    }
+}
+
+/*
+ * Two rules per corner, and both are needed.
+ *
+ * The base rule (0,2,0) covers the shipped default, where the placement setting is
+ * "Unchanged" and the markup carries no `ai-media-pos-*` class at all. It beats the
+ * mobile block in section 9 on specificity, which is a bare `.ai-media-badge` at (0,1,0).
+ * Against `.gallery-item .ai-media-badge` in section 7 it ties at (0,2,0) and wins only
+ * on source order - so this section has to stay below section 7, like section 11 does.
+ *
+ * The combined rules (0,3,0) then outrank the placement classes in section 11 (0,2,0),
+ * and each resets all four sides: without that, the base rule above would leave a
+ * bottom-placed compact badge with the `top` it sets.
+ */
+.ai-media-badge.ai-media-size-compact {
+    @include label-compact-pill;
+
+    top: $badge-inset-compact;
+    right: $badge-inset-compact;
+
+    &:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+.ai-overlay-badge.ai-media-size-compact {
+    @include label-compact-pill;
+
+    top: $badge-inset-compact;
+    left: $badge-inset-compact;
+}
+
+.ai-media-badge,
+.ai-overlay-badge {
+    &.ai-media-size-compact.ai-media-pos-top-left {
+        top: $badge-inset-compact;
+        left: $badge-inset-compact;
+        right: auto;
+        bottom: auto;
+    }
+
+    &.ai-media-size-compact.ai-media-pos-top-right {
+        top: $badge-inset-compact;
+        right: $badge-inset-compact;
+        left: auto;
+        bottom: auto;
+    }
+
+    &.ai-media-size-compact.ai-media-pos-bottom-left {
+        bottom: $badge-inset-compact;
+        left: $badge-inset-compact;
+        top: auto;
+        right: auto;
+    }
+
+    &.ai-media-size-compact.ai-media-pos-bottom-right {
+        bottom: $badge-inset-compact;
+        right: $badge-inset-compact;
+        top: auto;
+        left: auto;
+    }
+}
+
+/*
+ * The border label straddles the frame, so it only loses weight - the offset onto the
+ * edge is what makes the style read, and shrinking it would just look broken.
+ */
+.ai-media-border-label.ai-media-size-compact {
+    padding: 1px $spacing-sm;
+    font-size: 9px;
+    font-weight: $font-weight-medium;
+    box-shadow: none;
+
+    .ai-icon svg {
+        width: 11px;
+        height: 11px;
+    }
+}
+
+/* A caption sits below the image, so it shrinks in type and padding only. */
+.ai-media-caption.ai-media-size-compact {
+    padding: $spacing-xs $spacing-sm;
+    font-size: 11px;
+
+    .ai-icon svg {
+        width: 12px;
+        height: 12px;
+    }
+}
