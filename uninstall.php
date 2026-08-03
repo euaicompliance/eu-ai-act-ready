@@ -42,6 +42,7 @@ $euaiactready_options = array(
 	'euaiactready_bricks_bg_label_position',
 	'euaiactready_media_label_tooltip',
 	'euaiactready_media_label_size',
+	'euaiactready_media_label_featured_images',
 );
 
 

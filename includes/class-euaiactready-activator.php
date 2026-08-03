@@ -92,6 +92,7 @@ class EUAIACTREADY_Activator {
 		// Refines media transparency rather than enabling disclosures on its own, so it
 		// follows along once that feature is switched on.
 		add_option( 'euaiactready_bricks_background_labels', 1 );
+		add_option( 'euaiactready_media_label_featured_images', 1 );
 		add_option( 'euaiactready_media_label_position', '' );
 		add_option( 'euaiactready_bricks_bg_label_position', 'top-right' );
 

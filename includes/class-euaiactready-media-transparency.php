@@ -74,6 +74,9 @@ class EUAIACTREADY_Media_Transparency {
 		// Add image labels in content.
 		add_filter( 'the_content', array( $this, 'euaiactready_add_image_labels' ), 999 );
 
+		// Add image labels to the post's featured image.
+		add_filter( 'post_thumbnail_html', array( $this, 'euaiactready_add_featured_image_label' ), 999 );
+
 		// Add media library column.
 		add_filter( 'manage_media_columns', array( $this, 'euaiactready_add_media_column' ) );
 		add_action( 'manage_media_custom_column', array( $this, 'euaiactready_display_media_column' ), 10, 2 );
@@ -1120,6 +1123,33 @@ class EUAIACTREADY_Media_Transparency {
 	}
 
 
+
+	/**
+	 * Add an AI transparency label to the post's featured image.
+	 *
+	 * Hooks into 'post_thumbnail_html', which WordPress already renders with a
+	 * wp-image-{ID} class on the <img> tag, so the image-resolution logic built for
+	 * in-content images (euaiactready_get_markup_engine()->add_labels_to_content())
+	 * applies to it unchanged.
+	 *
+	 * @param string $html Featured image HTML, or an empty string when the post has none.
+	 * @return string
+	 */
+	public function euaiactready_add_featured_image_label( $html ) {
+		if ( '' === $html || ! is_singular() ) {
+			return $html;
+		}
+
+		if ( ! get_option( 'euaiactready_media_transparency', true ) ) {
+			return $html;
+		}
+
+		if ( ! get_option( 'euaiactready_media_label_featured_images', true ) ) {
+			return $html;
+		}
+
+		return $this->euaiactready_get_markup_engine()->add_labels_to_content( $html );
+	}
 
 	/**
 	 * Label placements a positioned label can take.
