@@ -1582,3 +1582,23 @@ msgstr ""
 #: includes/class-euaiactready-ai-tools.php:258
 msgid "Tool removed."
 msgstr ""
+
+#: admin/partials/settings.php:240
+msgid "Notice Position"
+msgstr ""
+
+#: includes/class-euaiactready-content-transparency.php:161
+msgid "Above the content"
+msgstr ""
+
+#: includes/class-euaiactready-content-transparency.php:162
+msgid "Below the content"
+msgstr ""
+
+#: includes/class-euaiactready-content-transparency.php:163
+msgid "Above and below the content"
+msgstr ""
+
+#: admin/partials/settings.php:248
+msgid "Choose whether the notice appears above the content, below it, or in both places."
+msgstr ""

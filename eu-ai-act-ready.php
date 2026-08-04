@@ -33,6 +33,7 @@ define( 'EUAIACTREADY_CONTENT_STATE_TABLE', 'euaiactready_content_state' );
 define( 'EUAIACTREADY_MEDIA_STATE_TABLE', 'euaiactready_media_state' );
 define( 'EUAIACTREADY_MEDIA_SCANS_TABLE', 'euaiactready_media_scans' );
 define( 'EUAIACTREADY_DEFAULT_NOTICE_STYLE', 'banner' );
+define( 'EUAIACTREADY_DEFAULT_NOTICE_POSITION', 'before' );
 define( 'EUAIACTREADY_DEFAULT_CHATBOT_PLATFORM', 'formilla' );
 define( 'EUAIACTREADY_DEFAULT_CHATBOT_NOTICE_STYLE', 'badge' );
 define( 'EUAIACTREADY_DEFAULT_MEDIA_LABEL_STYLE', 'caption' );
