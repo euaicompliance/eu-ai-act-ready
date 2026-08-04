@@ -88,7 +88,11 @@ if ( isset( $_POST['save_settings'] ) && check_admin_referer( 'euaiactready_sett
 			isset( $euaiactready_allowed[ $euaiactready_size ] ) ? $euaiactready_size : 'normal'
 		);
 	}
-	if ( defined( 'BRICKS_VERSION' ) && isset( $euaiactready_post_data['bricks_bg_label_position'] ) ) {
+	// Not gated on Bricks: any theme can produce background labels through the
+	// euaiactready_label_media filter, so every site needs to be able to place them.
+	// A select is always submitted when the field renders, so isset() is enough - unlike
+	// the checkbox above, where a missing value would read as "off".
+	if ( isset( $euaiactready_post_data['bricks_bg_label_position'] ) ) {
 		$euaiactready_bg_position = sanitize_key( $euaiactready_post_data['bricks_bg_label_position'] );
 		$euaiactready_allowed     = EUAIACTREADY_Media_Transparency::euaiactready_get_label_positions();
 
@@ -487,7 +491,6 @@ $euaiactready_tab_definitions = array(
 					</td>
 				</tr>
 
-				<?php if ( defined( 'BRICKS_VERSION' ) ) : ?>
 				<tr>
 					<th scope="row">
 						<label for="bricks_bg_label_position"><?php esc_html_e( 'Badge Placement (Background Images)', 'eu-ai-act-ready' ); ?></label>
@@ -501,7 +504,6 @@ $euaiactready_tab_definitions = array(
 						<p class="description"><?php esc_html_e( 'Where the badge sits on an element with an AI-generated background image.', 'eu-ai-act-ready' ); ?></p>
 					</td>
 				</tr>
-				<?php endif; ?>
 
 				<tr>
 					<th scope="row">
