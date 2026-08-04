@@ -4,7 +4,7 @@ Tags: eu ai act, article 50, ai transparency, ai compliance, ai disclosure
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,9 @@ All plugin settings and AI content markers remain stored in the database. Reacti
 
 
 == Changelog ==
+
+= 2.1.1 =
+* Fixed: Added Author URI
 
 = 2.1.0 =
 * Added: Extends AI transparency labels to a post's featured image, not just images inside the content.
