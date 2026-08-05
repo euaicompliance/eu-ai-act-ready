@@ -1193,7 +1193,13 @@ class EUAIACTREADY_Media_Transparency {
 
 		$engine = $this->euaiactready_get_markup_engine();
 
-		return $engine->add_background_labels( $engine->add_labels( $html ) );
+		// add_labels_to_content() rather than add_labels(): the latter only matches <img>
+		// tags carrying the internal data-euaiact-id marker, which WordPress-built image
+		// markup gets and a theme's own <img src="..."> does not. Resolving by wp-image
+		// class, data-id or src is what a hand-written tag needs. Safe here because a
+		// fragment passes through this filter once, which is the condition that method
+		// documents.
+		return $engine->add_background_labels( $engine->add_labels_to_content( $html ) );
 	}
 
 	/**
