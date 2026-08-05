@@ -8,7 +8,7 @@ Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-EU AI Act compliance for WordPress. Disclose AI content, images and chatbots. Track readiness with built-in score, self-assessment wizard, and export reports.
+EU AI Act compliance for WordPress. Disclose AI content, images and chatbots. Readiness score, self-assessment wizard and exportable reports.
 
 == Description ==
 
