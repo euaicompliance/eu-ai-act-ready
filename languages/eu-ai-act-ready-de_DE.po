@@ -12,353 +12,357 @@ msgstr ""
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: includes/class-euaiactready-media-transparency.php:1571
+#: includes/class-euaiactready-media-transparency.php:1909
 msgid "No AI"
 msgstr "Keine KI"
 
-#: includes/class-euaiactready-media-transparency.php:1570
+#: includes/class-euaiactready-media-transparency.php:1908
 msgid "AI-Generated Only"
 msgstr "Nur KI-generiert"
 
-#: includes/class-euaiactready-media-transparency.php:1569
+#: includes/class-euaiactready-media-transparency.php:1907
 msgid "All Media"
 msgstr "Alle Medien"
 
 #. translators: %s: Confidence percentage.
-#: includes/class-euaiactready-media-transparency.php:1361
+#: includes/class-euaiactready-media-transparency.php:1699
 #, php-format
 msgid "Detection complete! Confidence is %s%%, below threshold."
 msgstr "Erkennung abgeschlossen! Konfidenz beträgt %s%%, unter Schwellenwert. "
 
 #. translators: %s: Confidence percentage.
-#: includes/class-euaiactready-media-transparency.php:1356
+#: includes/class-euaiactready-media-transparency.php:1694
 #, php-format
 msgid "Detection complete! AI detected with %s%% confidence."
 msgstr "Erkennung abgeschlossen! KI erkannt mit %s%% Konfidenz. "
 
-#: includes/class-euaiactready-media-transparency.php:1335
+#: includes/class-euaiactready-media-transparency.php:1673
 msgid "Could not detect AI information for this attachment."
 msgstr "KI-Informationen für diesen Anhang konnten nicht erkannt werden."
 
-#: includes/class-euaiactready-media-transparency.php:1329
+#: includes/class-euaiactready-media-transparency.php:1667
 msgid "You do not have permission to edit this attachment."
 msgstr "Sie haben keine Berechtigung, diesen Anhang zu bearbeiten."
 
-#: includes/class-euaiactready-media-transparency.php:1325
+#: admin/class-euaiactready-admin.php:283
+#: admin/partials/ai-literacy.php:16
+#: admin/partials/assessment.php:16
+#: admin/partials/report.php:18
+#: includes/class-euaiactready-media-transparency.php:1663
 msgid "Security check failed."
 msgstr "Sicherheitsprüfung fehlgeschlagen."
 
-#: includes/class-euaiactready-media-transparency.php:1226
+#: includes/class-euaiactready-media-transparency.php:1564
 msgid "No AI indicators detected in filename, metadata, or image properties."
 msgstr "Keine KI-Indikatoren in Dateiname, Metadaten oder Bildeigenschaften erkannt."
 
-#: includes/class-euaiactready-media-transparency.php:1224
+#: includes/class-euaiactready-media-transparency.php:1561
 msgid "Consider manually marking if you know this is AI-generated."
 msgstr "Erwägen Sie eine manuelle Markierung, wenn Sie wissen, dass dies KI-generiert ist."
 
-#: includes/class-euaiactready-media-transparency.php:1223
+#: includes/class-euaiactready-media-transparency.php:1557
 msgid "Some AI indicators found, but confidence is below threshold."
 msgstr "Einige KI-Indikatoren gefunden, aber Konfidenz liegt unter Schwellenwert."
 
-#: includes/class-euaiactready-media-transparency.php:1217
-#: includes/class-euaiactready-media-transparency.php:1507
+#: includes/class-euaiactready-media-transparency.php:1550
+#: includes/class-euaiactready-media-transparency.php:1845
 msgid "Indicators found:"
 msgstr "Gefundene Indikatoren:"
 
-#: includes/class-euaiactready-media-transparency.php:1210
-#: includes/class-euaiactready-media-transparency.php:1212
-#: includes/class-euaiactready-media-transparency.php:1500
-#: includes/class-euaiactready-media-transparency.php:1502
+#: includes/class-euaiactready-media-transparency.php:1543
+#: includes/class-euaiactready-media-transparency.php:1545
+#: includes/class-euaiactready-media-transparency.php:1838
+#: includes/class-euaiactready-media-transparency.php:1840
 msgid "Marking:"
 msgstr "Markierung:"
 
-#: includes/class-euaiactready-media-transparency.php:1205
-#: includes/class-euaiactready-media-transparency.php:1495
+#: includes/class-euaiactready-media-transparency.php:1538
+#: includes/class-euaiactready-media-transparency.php:1833
 msgid "Source:"
 msgstr "Quelle:"
 
-#: includes/class-euaiactready-media-transparency.php:1199
-#: includes/class-euaiactready-media-transparency.php:1492
+#: includes/class-euaiactready-media-transparency.php:1527
+#: includes/class-euaiactready-media-transparency.php:1830
 msgid "Threshold:"
 msgstr "Schwellenwert:"
 
-#: includes/class-euaiactready-media-transparency.php:1197
-#: includes/class-euaiactready-media-transparency.php:1491
+#: includes/class-euaiactready-media-transparency.php:1525
+#: includes/class-euaiactready-media-transparency.php:1829
 msgid "Confidence:"
 msgstr "Konfidenz:"
 
-#: includes/class-euaiactready-media-transparency.php:1172
-#: includes/class-euaiactready-media-transparency.php:1471
+#: includes/class-euaiactready-media-transparency.php:1500
+#: includes/class-euaiactready-media-transparency.php:1809
 msgid "This image has not been scanned for AI indicators yet. Click the \"Re-check AI Detection\" button below to scan this image."
 msgstr "Dieses Bild wurde noch nicht auf KI-Indikatoren geprüft. Klicken Sie auf die Schaltfläche „KI-Erkennung erneut prüfen“ unten, um dieses Bild zu scannen. "
 
-#: includes/class-euaiactready-media-transparency.php:1168
-#: includes/class-euaiactready-media-transparency.php:1467
+#: includes/class-euaiactready-media-transparency.php:1496
+#: includes/class-euaiactready-media-transparency.php:1805
 msgid "No Scan Performed Yet"
 msgstr "Noch kein Scan durchgeführt"
 
-#: includes/class-euaiactready-media-transparency.php:1162
-#: includes/class-euaiactready-media-transparency.php:1460
+#: includes/class-euaiactready-media-transparency.php:1490
+#: includes/class-euaiactready-media-transparency.php:1798
 msgid "Check this box to manually mark this image as AI-generated. This will display transparency labels on the frontend."
 msgstr "Aktivieren Sie dieses Kontrollkästchen, um dieses Bild manuell als KI-generiert zu markieren. Dies zeigt Transparenzhinweise im Frontend an. "
 
-#: includes/class-euaiactready-media-transparency.php:1160
-#: includes/class-euaiactready-media-transparency.php:1457
+#: includes/class-euaiactready-media-transparency.php:1488
+#: includes/class-euaiactready-media-transparency.php:1795
 msgid "Mark as AI-Generated"
 msgstr "Als KI-generiert markieren"
 
-#: includes/class-euaiactready-media-transparency.php:430
-#: includes/class-euaiactready-media-transparency.php:434
+#: includes/class-euaiactready-media-transparency.php:464
+#: includes/class-euaiactready-media-transparency.php:468
 msgid "This file type:"
 msgstr "Dieser Dateityp:"
 
-#: includes/class-euaiactready-media-transparency.php:421
+#: includes/class-euaiactready-media-transparency.php:455
 msgid "AI detection only works with image files (JPEG, PNG, GIF, WebP, etc.)."
 msgstr "KI-Erkennung funktioniert nur mit Bilddateien (JPEG, PNG, GIF, WebP usw.)."
 
-#: includes/class-euaiactready-media-transparency.php:420
+#: includes/class-euaiactready-media-transparency.php:454
 msgid "Not Eligible for AI Detection"
 msgstr "Nicht für KI-Erkennung geeignet"
 
-#: includes/class-euaiactready-media-transparency.php:1414
-#: includes/class-euaiactready-media-transparency.php:1522
+#: includes/class-euaiactready-media-transparency.php:1752
+#: includes/class-euaiactready-media-transparency.php:1860
 msgid "AI Generated"
 msgstr "KI-generiert"
 
-#: includes/class-euaiactready-media-transparency.php:1111
+#: includes/class-euaiactready-media-transparency.php:1439
 msgid "AI Generation Info"
 msgstr "KI-Generierungsinfo"
 
 #. translators: %s: Source of the AI detection.
-#: includes/class-euaiactready-media-transparency.php:1020
+#: includes/class-euaiactready-media-transparency.php:1284
 #, php-format
 msgid "AI-Generated Image (%s)"
 msgstr "KI-generiertes Bild (%s)"
 
-#: includes/class-euaiactready-media-transparency.php:855
+#: includes/class-euaiactready-media-transparency.php:889
 msgid "C2PA Sidecar Verified AI"
 msgstr "C2PA-Sidecar-verifizierte KI"
 
-#: includes/class-euaiactready-media-transparency.php:854
+#: includes/class-euaiactready-media-transparency.php:888
 msgid "IPTC Verified AI"
 msgstr "IPTC-verifizierte KI"
 
-#: includes/class-euaiactready-media-transparency.php:853
+#: includes/class-euaiactready-media-transparency.php:887
 msgid "C2PA Verified AI"
 msgstr "C2PA-verifizierte KI"
 
-#: includes/class-euaiactready-media-transparency.php:852
+#: includes/class-euaiactready-media-transparency.php:886
 msgid "AI Software"
 msgstr "KI-Software"
 
-#: includes/class-euaiactready-media-transparency.php:508
+#: includes/class-euaiactready-media-transparency.php:542
 msgid "Check AI Detection"
 msgstr "KI-Erkennung prüfen"
 
-#: includes/class-euaiactready-media-transparency.php:401
+#: includes/class-euaiactready-media-transparency.php:435
 msgid "No AI Detected"
 msgstr "Keine KI erkannt"
 
-#: includes/class-euaiactready-media-transparency.php:394
+#: includes/class-euaiactready-media-transparency.php:428
 msgid "Possibly AI (Below Threshold)"
 msgstr "Möglicherweise KI (unter Schwellenwert)"
 
-#: includes/class-euaiactready-media-transparency.php:387
+#: includes/class-euaiactready-media-transparency.php:421
 msgid "AI Detected"
 msgstr "KI erkannt"
 
-#: includes/class-euaiactready-media-transparency.php:367
-#: includes/class-euaiactready-media-transparency.php:1210
-#: includes/class-euaiactready-media-transparency.php:1500
+#: includes/class-euaiactready-media-transparency.php:401
+#: includes/class-euaiactready-media-transparency.php:1543
+#: includes/class-euaiactready-media-transparency.php:1838
 msgid "Manually marked"
 msgstr "Manuell markiert"
 
-#: includes/class-euaiactready-media-transparency.php:364
+#: includes/class-euaiactready-media-transparency.php:398
 msgid "Unusual compression"
 msgstr "Ungewöhnliche Komprimierung"
 
-#: includes/class-euaiactready-media-transparency.php:363
+#: includes/class-euaiactready-media-transparency.php:397
 msgid "Common AI aspect ratio"
 msgstr "Gängiges KI-Seitenverhältnis"
 
-#: includes/class-euaiactready-media-transparency.php:362
+#: includes/class-euaiactready-media-transparency.php:396
 msgid "Perfect square image"
 msgstr "Perfekt quadratisches Bild"
 
-#: includes/class-euaiactready-media-transparency.php:361
+#: includes/class-euaiactready-media-transparency.php:395
 msgid "Perfect square (AI size)"
 msgstr "Perfektes Quadrat (KI-Größe)"
 
-#: includes/class-euaiactready-media-transparency.php:360
+#: includes/class-euaiactready-media-transparency.php:394
 msgid "Common AI dimensions"
 msgstr "Gängige KI-Abmessungen"
 
-#: includes/class-euaiactready-media-transparency.php:357
+#: includes/class-euaiactready-media-transparency.php:391
 msgid "C2PA sidecar AI claim"
 msgstr "C2PA-Sidecar-KI-Angabe"
 
-#: includes/class-euaiactready-media-transparency.php:356
+#: includes/class-euaiactready-media-transparency.php:390
 msgid "IPTC AI source tag"
 msgstr "IPTC-KI-Quellen-Tag"
 
-#: includes/class-euaiactready-media-transparency.php:355
+#: includes/class-euaiactready-media-transparency.php:389
 msgid "C2PA AI verification"
 msgstr "C2PA-KI-Verifizierung"
 
-#: includes/class-euaiactready-media-transparency.php:352
+#: includes/class-euaiactready-media-transparency.php:386
 msgid "AI in model field"
 msgstr "KI im Modellfeld"
 
-#: includes/class-euaiactready-media-transparency.php:351
+#: includes/class-euaiactready-media-transparency.php:385
 msgid "AI in make field"
 msgstr "KI im Herstellerfeld"
 
-#: includes/class-euaiactready-media-transparency.php:350
+#: includes/class-euaiactready-media-transparency.php:384
 msgid "AI in user comment"
 msgstr "KI im Benutzerkommentar"
 
-#: includes/class-euaiactready-media-transparency.php:349
+#: includes/class-euaiactready-media-transparency.php:383
 msgid "AI in image description"
 msgstr "KI in Bildbeschreibung"
 
-#: includes/class-euaiactready-media-transparency.php:348
+#: includes/class-euaiactready-media-transparency.php:382
 msgid "AI in copyright field"
 msgstr "KI im Copyright-Feld"
 
-#: includes/class-euaiactready-media-transparency.php:347
+#: includes/class-euaiactready-media-transparency.php:381
 msgid "AI in artist field"
 msgstr "KI im Künstlerfeld"
 
-#: includes/class-euaiactready-media-transparency.php:346
+#: includes/class-euaiactready-media-transparency.php:380
 msgid "AI in creator field"
 msgstr "KI im Erstellerfeld"
 
-#: includes/class-euaiactready-media-transparency.php:345
+#: includes/class-euaiactready-media-transparency.php:379
 msgid "AI in processing software"
 msgstr "KI in Verarbeitungssoftware"
 
-#: includes/class-euaiactready-media-transparency.php:344
+#: includes/class-euaiactready-media-transparency.php:378
 msgid "AI in software field"
 msgstr "KI im Softwarebereich"
 
-#: includes/class-euaiactready-media-transparency.php:341
+#: includes/class-euaiactready-media-transparency.php:375
 msgid "Missing photo EXIF"
 msgstr "Fehlende Foto-EXIF"
 
-#: includes/class-euaiactready-media-transparency.php:340
+#: includes/class-euaiactready-media-transparency.php:374
 msgid "Missing camera info"
 msgstr "Fehlende Kamerainfos"
 
-#: includes/class-euaiactready-media-transparency.php:339
+#: includes/class-euaiactready-media-transparency.php:373
 msgid "No EXIF data"
 msgstr "Keine EXIF-Daten"
 
-#: includes/class-euaiactready-media-transparency.php:338
+#: includes/class-euaiactready-media-transparency.php:372
 msgid "AI tool in keywords"
 msgstr "KI-Tool in Schlüsselwörtern"
 
-#: includes/class-euaiactready-media-transparency.php:337
+#: includes/class-euaiactready-media-transparency.php:371
 msgid "AI tool in comment"
 msgstr "KI-Tool im Kommentar"
 
-#: includes/class-euaiactready-media-transparency.php:336
+#: includes/class-euaiactready-media-transparency.php:370
 msgid "AI tool in author field"
 msgstr "KI-Tool im Autorenfeld"
 
-#: includes/class-euaiactready-media-transparency.php:335
+#: includes/class-euaiactready-media-transparency.php:369
 msgid "AI tool in artist field"
 msgstr "KI-Tool im Künstlerfeld"
 
-#: includes/class-euaiactready-media-transparency.php:334
+#: includes/class-euaiactready-media-transparency.php:368
 msgid "AI tool in copyright"
 msgstr "KI-Tool im Copyright"
 
-#: includes/class-euaiactready-media-transparency.php:333
+#: includes/class-euaiactready-media-transparency.php:367
 msgid "AI software in EXIF"
 msgstr "KI-Software in EXIF"
 
-#: includes/class-euaiactready-media-transparency.php:332
+#: includes/class-euaiactready-media-transparency.php:366
 msgid "Suspicious EXIF software"
 msgstr "Verdächtige EXIF-Software"
 
-#: includes/class-euaiactready-media-transparency.php:331
+#: includes/class-euaiactready-media-transparency.php:365
 msgid "AI tool in EXIF credit"
 msgstr "KI-Tool in EXIF-Credit"
 
-#: includes/class-euaiactready-media-transparency.php:328
+#: includes/class-euaiactready-media-transparency.php:362
 msgid "AI tool in description"
 msgstr "KI-Tool in der Beschreibung"
 
-#: includes/class-euaiactready-media-transparency.php:327
+#: includes/class-euaiactready-media-transparency.php:361
 msgid "AI tool in caption"
 msgstr "KI-Tool in der Bildunterschrift"
 
-#: includes/class-euaiactready-media-transparency.php:326
+#: includes/class-euaiactready-media-transparency.php:360
 msgid "AI tool in alt text"
 msgstr "KI-Tool im Alt-Text"
 
-#: includes/class-euaiactready-media-transparency.php:325
+#: includes/class-euaiactready-media-transparency.php:359
 msgid "AI tool in title"
 msgstr "KI-Tool im Titel"
 
-#: includes/class-euaiactready-media-transparency.php:322
+#: includes/class-euaiactready-media-transparency.php:356
 msgid "Numeric filename pattern"
 msgstr "Numerisches Dateinamenmuster"
 
-#: includes/class-euaiactready-media-transparency.php:321
+#: includes/class-euaiactready-media-transparency.php:355
 msgid "Generic filename"
 msgstr "Generischer Dateiname"
 
-#: includes/class-euaiactready-media-transparency.php:320
+#: includes/class-euaiactready-media-transparency.php:354
 msgid "AI keyword in filename"
 msgstr "KI-Schlüsselwort im Dateinamen"
 
-#: includes/class-euaiactready-media-transparency.php:319
+#: includes/class-euaiactready-media-transparency.php:353
 msgid "UUID filename"
 msgstr "UUID-Dateiname"
 
-#: includes/class-euaiactready-media-transparency.php:318
+#: includes/class-euaiactready-media-transparency.php:352
 msgid "Hash-like filename"
 msgstr "Hash-ähnlicher Dateiname"
 
-#: includes/class-euaiactready-media-transparency.php:317
+#: includes/class-euaiactready-media-transparency.php:351
 msgid "AI tool in filename"
 msgstr "KI-Tool im Dateinamen"
 
-#: includes/class-euaiactready-media-transparency.php:300
-#: includes/class-euaiactready-media-transparency.php:849
-#: includes/class-euaiactready-media-transparency.php:1431
+#: includes/class-euaiactready-media-transparency.php:334
+#: includes/class-euaiactready-media-transparency.php:883
+#: includes/class-euaiactready-media-transparency.php:1769
 msgid "No AI detected"
 msgstr "Keine KI erkannt"
 
-#: includes/class-euaiactready-media-transparency.php:285
-#: includes/class-euaiactready-media-transparency.php:848
-#: includes/class-euaiactready-media-transparency.php:1438
+#: includes/class-euaiactready-media-transparency.php:319
+#: includes/class-euaiactready-media-transparency.php:882
+#: includes/class-euaiactready-media-transparency.php:1776
 msgid "AI Detection"
 msgstr "KI-Erkennung"
 
-#: includes/class-euaiactready-media-transparency.php:224
-#: includes/class-euaiactready-media-transparency.php:1212
-#: includes/class-euaiactready-media-transparency.php:1502
+#: includes/class-euaiactready-media-transparency.php:268
+#: includes/class-euaiactready-media-transparency.php:1545
+#: includes/class-euaiactready-media-transparency.php:1840
 msgid "Auto-detected"
 msgstr "Automatisch erkannt"
 
-#: includes/class-euaiactready-media-transparency.php:215
+#: includes/class-euaiactready-media-transparency.php:246
 msgid "Manually marked as AI-generated"
 msgstr "Manuell als KI-generiert markiert"
 
-#: includes/class-euaiactready-media-transparency.php:133
-#: includes/class-euaiactready-media-transparency.php:511
+#: includes/class-euaiactready-media-transparency.php:139
+#: includes/class-euaiactready-media-transparency.php:545
 msgid "Detection failed. Please try again."
 msgstr "Erkennung fehlgeschlagen. Bitte versuchen Sie es erneut. "
 
-#: includes/class-euaiactready-media-transparency.php:132
-#: includes/class-euaiactready-media-transparency.php:510
+#: includes/class-euaiactready-media-transparency.php:138
+#: includes/class-euaiactready-media-transparency.php:544
 msgid "Checking..."
 msgstr "Wird geprüft..."
 
-#: includes/class-euaiactready-media-transparency.php:131
-#: includes/class-euaiactready-media-transparency.php:508
+#: includes/class-euaiactready-media-transparency.php:137
+#: includes/class-euaiactready-media-transparency.php:542
 msgid "Re-check AI Detection"
 msgstr "KI-Erkennung erneut prüfen"
 
@@ -366,25 +370,17 @@ msgstr "KI-Erkennung erneut prüfen"
 msgid "AI Assistant"
 msgstr "KI-Assistent"
 
-#: includes/class-euaiactready-content-transparency.php:250
-msgid "This post is marked as AI-generated content. A transparency notice will be displayed to visitors."
-msgstr "Dieser Beitrag ist als KI-generierter Inhalt markiert. Für Besucher wird ein Transparenzhinweis angezeigt. "
-
-#: includes/class-euaiactready-content-transparency.php:249
-msgid "AI Content Marked:"
-msgstr "KI-Inhalt markiert:"
-
 #: includes/class-euaiactready-chatbot-transparency.php:126
-#: includes/class-euaiactready-content-transparency.php:151
+#: includes/class-euaiactready-content-transparency.php:481
 msgid "Close notice"
 msgstr "Hinweis schließen"
 
-#: includes/class-euaiactready-content-transparency.php:147
+#: includes/class-euaiactready-content-transparency.php:477
 msgid "AI Content Notice"
 msgstr "Hinweis zu KI-Inhalten"
 
 #. translators: %s: Number of items unmarked as AI.
-#: includes/class-euaiactready-post-meta-box.php:387
+#: includes/class-euaiactready-post-meta-box.php:503
 #, php-format
 msgid "%s item unmarked as AI content."
 msgid_plural "%s items unmarked as AI content."
@@ -392,84 +388,67 @@ msgstr[0] "%s Element als KI-Inhalt demarkiert."
 msgstr[1] "%s Elemente als KI-Inhalt demarkiert."
 
 #. translators: %s: Number of items marked as AI.
-#: includes/class-euaiactready-post-meta-box.php:374
+#: includes/class-euaiactready-post-meta-box.php:490
 #, php-format
 msgid "%s item marked as AI content."
 msgid_plural "%s items marked as AI content."
 msgstr[0] "%s Element als KI-Inhalt markiert."
 msgstr[1] "%s Elemente als KI-Inhalt markiert."
 
-#: includes/class-euaiactready-post-meta-box.php:413
+#: admin/partials/assessment.php:162
+#: admin/partials/report.php:280
 msgid "No"
 msgstr "Nein"
 
-#: includes/class-euaiactready-post-meta-box.php:412
+#: admin/partials/assessment.php:162
+#: admin/partials/report.php:278
 msgid "Yes"
 msgstr "Ja"
 
-#: includes/class-euaiactready-post-meta-box.php:251
-msgid "Non-AI Content"
-msgstr "Nicht-KI-Inhalt"
-
-#: includes/class-euaiactready-post-meta-box.php:249
+#: includes/class-euaiactready-post-meta-box.php:341
 msgid "All AI Status"
 msgstr "Alle KI-Status"
 
-#: includes/class-euaiactready-post-meta-box.php:103
-msgid "Check this box if this content has been generated or modified using AI tools."
-msgstr "Aktivieren Sie dieses Kontrollkästchen, wenn dieser Inhalt mit KI-Tools erstellt oder bearbeitet wurde."
-
-#: includes/class-euaiactready-post-meta-box.php:99
-msgid "Generated/modified by AI"
-msgstr "Von KI erstellt/bearbeitet"
-
-#: includes/class-euaiactready-post-meta-box.php:554
+#: includes/class-euaiactready-post-meta-box.php:691
 msgid "Invalid action."
 msgstr "Ungültige Aktion."
 
-#: includes/class-euaiactready-post-meta-box.php:547
+#: includes/class-euaiactready-post-meta-box.php:684
 msgid "Unmarked as AI content."
 msgstr "Als KI-Inhalt demarkiert."
 
-#: includes/class-euaiactready-post-meta-box.php:539
+#: includes/class-euaiactready-post-meta-box.php:676
 msgid "Marked as AI content."
 msgstr "Als KI-Inhalt markiert."
 
-#: includes/class-euaiactready-post-meta-box.php:523
+#: includes/class-euaiactready-post-meta-box.php:658
 msgid "Permission denied."
 msgstr "Zugriff verweigert."
 
-#: includes/class-euaiactready-media-transparency.php:1318
-#: includes/class-euaiactready-post-meta-box.php:514
+#: includes/class-euaiactready-media-transparency.php:1656
+#: includes/class-euaiactready-post-meta-box.php:648
 msgid "Invalid request."
 msgstr "Ungültige Anfrage."
 
-#: includes/class-euaiactready-content-transparency.php:98
-#: includes/class-euaiactready-media-transparency.php:1060
-#: includes/class-euaiactready-media-transparency.php:1078
-#: includes/class-euaiactready-post-meta-box.php:187
+#: includes/class-euaiactready-content-transparency.php:212
+#: includes/class-euaiactready-media-transparency.php:1388
+#: includes/class-euaiactready-media-transparency.php:1406
+#: includes/class-euaiactready-post-meta-box.php:273
 msgid "AI"
 msgstr "KI"
 
-#: includes/class-euaiactready-post-meta-box.php:189
-msgid "Not marked as AI content"
-msgstr "Nicht als KI-Inhalt markiert"
-
-#: includes/class-euaiactready-post-meta-box.php:186
-msgid "Marked as AI-generated/modified"
-msgstr "Als KI-generiert/modifiziert markiert"
-
-#: includes/class-euaiactready-post-meta-box.php:327
-#: includes/class-euaiactready-post-meta-box.php:484
+#: includes/class-euaiactready-post-meta-box.php:443
+#: includes/class-euaiactready-post-meta-box.php:618
 msgid "Unmark as AI Content"
 msgstr "KI-Inhalt-Markierung entfernen"
 
-#: includes/class-euaiactready-post-meta-box.php:326
-#: includes/class-euaiactready-post-meta-box.php:492
+#: includes/class-euaiactready-post-meta-box.php:442
+#: includes/class-euaiactready-post-meta-box.php:626
 msgid "Mark as AI Content"
 msgstr "Als KI-Inhalt markieren"
 
-#: includes/class-euaiactready-post-meta-box.php:69
+#: includes/class-euaiactready-post-meta-box.php:119
+#: includes/class-euaiactready-post-meta-box.php:147
 msgid "AI Content Disclosure"
 msgstr "KI-Inhalts-Offenlegung"
 
@@ -481,663 +460,665 @@ msgstr "Synchronisierter Datensatz"
 msgid "Updating information from last scan..."
 msgstr "Informationen vom letzten Scan werden aktualisiert..."
 
-#: admin/partials/dashboard.php:286
+#: admin/partials/dashboard.php:418
 msgid "Use Caption or Badge style for best visibility."
 msgstr "Verwenden Sie den Untertitel- oder Badge-Stil für beste Sichtbarkeit."
 
-#: admin/partials/dashboard.php:285
+#: admin/partials/dashboard.php:417
 msgid "Manually mark images in the Media Library editor."
 msgstr "Markieren Sie Bilder manuell im Mediathek-Editor."
 
-#: admin/partials/dashboard.php:284
+#: admin/partials/dashboard.php:416
 msgid "Add AI tool names to alt text or captions."
 msgstr "Fügen Sie KI-Tool-Namen zu Alt-Text oder Bildunterschriften hinzu."
 
-#: admin/partials/dashboard.php:283
+#: admin/partials/dashboard.php:415
 msgid "When possible, name AI images with tool names (for example, \"sunset-midjourney.jpg\")."
 msgstr "Wenn möglich, benennen Sie KI-Bilder mit Tool-Namen (zum Beispiel „sunset-midjourney.jpg“)."
 
-#: admin/partials/dashboard.php:281
+#: admin/partials/dashboard.php:413
 msgid "Tips for Best Results:"
 msgstr "Tipps für beste Ergebnisse:"
 
-#: admin/partials/dashboard.php:277
+#: admin/partials/dashboard.php:409
 msgid "Only labels images meeting your confidence threshold."
 msgstr "Kennzeichnet nur Bilder, die Ihren Konfidenzschwellenwert erfüllen."
 
-#: admin/partials/dashboard.php:277
+#: admin/partials/dashboard.php:409
 msgid "Smart Labeling:"
 msgstr "Intelligente Kennzeichnung:"
 
-#: admin/partials/dashboard.php:276
+#: admin/partials/dashboard.php:408
 msgid "Manually mark any image as AI-generated in the Media Library (manual override)"
 msgstr "Markieren Sie jedes Bild manuell als KI-generiert in der Mediathek (manuelle Überschreibung)"
 
-#: admin/partials/dashboard.php:276
+#: admin/partials/dashboard.php:408
 msgid "Manual Override:"
 msgstr "Manuelle Überschreibung:"
 
-#: admin/partials/dashboard.php:275
+#: admin/partials/dashboard.php:407
 msgid "Identifies common filename patterns such as hashes, UUIDs, or generic names."
 msgstr "Erkennt gängige Dateinamen-Muster wie Hashes, UUIDs oder generische Namen."
 
-#: admin/partials/dashboard.php:275
+#: admin/partials/dashboard.php:407
 msgid "Filename Patterns:"
 msgstr "Dateinamen-Muster:"
 
-#: admin/partials/dashboard.php:274
+#: admin/partials/dashboard.php:406
 msgid "Analyzes EXIF metadata for software indicators or missing camera information commonly found in AI-generated images."
 msgstr "Analysiert EXIF-Metadaten auf Software-Indikatoren oder fehlende Kamerainformationen, die häufig in KI-generierten Bildern vorkommen."
 
-#: admin/partials/dashboard.php:274
+#: admin/partials/dashboard.php:406
 msgid "EXIF Markers:"
 msgstr "EXIF-Marker:"
 
-#: admin/partials/dashboard.php:273
+#: admin/partials/dashboard.php:405
 msgid "Analyzes common technical patterns such as image dimensions, file sizes, and compression ratios."
 msgstr "Analysiert gängige technische Muster wie Bildabmessungen, Dateigrößen und Komprimierungsverhältnisse."
 
-#: admin/partials/dashboard.php:273
+#: admin/partials/dashboard.php:405
 msgid "Technical Patterns:"
 msgstr "Technische Muster:"
 
-#: admin/partials/dashboard.php:272
+#: admin/partials/dashboard.php:404
 msgid "Checks filename, title, alt text, caption, description, and EXIF data."
 msgstr "Prüft Dateiname, Titel, Alt-Text, Bildunterschrift, Beschreibung und EXIF-Daten."
 
-#: admin/partials/dashboard.php:272
+#: admin/partials/dashboard.php:404
 msgid "Metadata Analysis:"
 msgstr "Metadaten-Analyse:"
 
-#: admin/partials/dashboard.php:271
+#: admin/partials/dashboard.php:403
 msgid "Scans filenames and metadata for known AI tool names (e.g. DALL-E, Midjourney, Stable Diffusion)."
 msgstr "Durchsucht Dateinamen und Metadaten nach bekannten KI-Tool-Namen (z. B. DALL-E, Midjourney, Stable Diffusion)."
 
-#: admin/partials/dashboard.php:271
+#: admin/partials/dashboard.php:403
 msgid "AI Tool Names:"
 msgstr "KI-Tool-Namen:"
 
-#: admin/partials/dashboard.php:269
+#: admin/partials/dashboard.php:401
 msgid "The plugin uses multiple heuristic signals combined into a confidence scoring system:"
 msgstr "Das Plugin verwendet mehrere heuristische Signale, die zu einem Konfidenzbewertungssystem kombiniert werden:"
 
-#: admin/partials/dashboard.php:268
+#: admin/partials/dashboard.php:400
 msgid "How AI Image Analysis Works"
 msgstr "Wie die KI-Bildanalyse funktioniert"
 
-#: admin/partials/dashboard.php:231
+#: admin/partials/dashboard.php:349
+#: admin/partials/report.php:212
+#: admin/partials/settings.php:156
+#: admin/partials/settings.php:198
 msgid "Content Transparency"
 msgstr "Inhalts-Transparenz"
 
-#: admin/partials/dashboard.php:216
+#: admin/partials/dashboard.php:334
 msgid "The plugin is installed and running, but no transparency notices will appear on your website's frontend until you enable at least one feature below. Visit Settings to activate the transparency features you need."
 msgstr "Das Plugin ist installiert und aktiv, aber es werden keine Transparenzhinweise im Frontend Ihrer Website angezeigt, bis Sie mindestens eine der folgenden Funktionen aktivieren. Besuchen Sie die Einstellungen, um die benötigten Transparenzfunktionen zu aktivieren. "
 
-#: admin/partials/dashboard.php:215
+#: admin/partials/dashboard.php:333
 msgid "EU AI Act Ready Plugin is Active, but Transparency Notices are Disabled"
 msgstr "EU AI Act Ready Plugin ist aktiv, aber Transparenzhinweise sind deaktiviert"
 
-#: admin/partials/dashboard.php:202
+#: admin/partials/dashboard.php:319
 msgid "Transparency Status"
 msgstr "Transparenzstatus"
 
-#: admin/partials/dashboard.php:187
+#: admin/partials/dashboard.php:301
 msgid "Manually Unmarked"
 msgstr "Manuell entmarkiert"
 
-#: admin/partials/dashboard.php:175
+#: admin/partials/dashboard.php:274
 msgid "AI Images Detected"
 msgstr "KI-Bilder erkannt"
 
-#: admin/partials/dashboard.php:163
+#: admin/partials/dashboard.php:248
 msgid "AI Pages Detected"
 msgstr "KI-Seiten erkannt"
 
-#: admin/partials/dashboard.php:151
+#: admin/partials/dashboard.php:236
 msgid "AI Posts Detected"
 msgstr "KI-Beiträge erkannt"
 
-#: admin/partials/dashboard.php:139
+#: admin/partials/dashboard.php:224
 msgid "Total AI Content Detected"
 msgstr "Gesamt erkannte KI-Inhalte"
 
-#: admin/partials/dashboard.php:119
+#: admin/partials/dashboard.php:204
 msgid "Do not refresh or leave this page until the scan is complete. If you interrupt it, scanned images are saved and you can restart anytime to continue."
 msgstr "Aktualisieren oder verlassen Sie diese Seite nicht, bis der Scan abgeschlossen ist. Wenn Sie ihn unterbrechen, werden gescannte Bilder gespeichert und Sie können jederzeit neu starten, um fortzufahren. "
 
-#: admin/partials/dashboard.php:119
+#: admin/partials/dashboard.php:204
 msgid "Warning:"
 msgstr "Warnung:"
 
-#: admin/partials/dashboard.php:115
+#: admin/partials/dashboard.php:200
 msgid "SCANNING"
 msgstr "SCANVORGANG LÄUFT"
 
-#: admin/partials/dashboard.php:114
+#: admin/partials/dashboard.php:199
 msgid "Image scan"
 msgstr "Bilder-Scan"
 
-#: admin/partials/dashboard.php:105
+#: admin/partials/dashboard.php:190
 msgid "This may take a few minutes depending on library size"
 msgstr "Dies kann je nach Größe der Mediathek einige Minuten dauern"
 
-#: admin/partials/dashboard.php:103
+#: admin/partials/dashboard.php:188
 msgid "Start Scan Now"
 msgstr "Scan jetzt starten"
 
-#: admin/partials/dashboard.php:97
+#: admin/partials/dashboard.php:182
 msgid "Automatically detect AI-generated images in your WordPress media library to ensure compliance with transparency regulations."
 msgstr "Erkennen Sie automatisch KI-generierte Bilder in Ihrer WordPress-Mediathek, um die Einhaltung von Transparenzvorschriften sicherzustellen."
 
-#: admin/partials/dashboard.php:96
+#: admin/partials/dashboard.php:181
 msgid "Scan Your Media Library"
 msgstr "Scannen Sie Ihre Mediathek"
 
-#: admin/partials/dashboard.php:229
-#: admin/partials/dashboard.php:243
-#: admin/partials/dashboard.php:257
+#: admin/partials/dashboard.php:347
+#: admin/partials/dashboard.php:361
+#: admin/partials/dashboard.php:375
+#: admin/partials/dashboard.php:389
 msgid "Deactivated"
 msgstr "Deaktiviert"
 
-#: admin/partials/dashboard.php:229
-#: admin/partials/dashboard.php:243
-#: admin/partials/dashboard.php:257
+#: admin/partials/dashboard.php:347
+#: admin/partials/dashboard.php:361
+#: admin/partials/dashboard.php:375
+#: admin/partials/dashboard.php:389
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: admin/partials/ai-content.php:94
+#: admin/partials/ai-content.php:110
 msgid "Unmark as AI content"
 msgstr "KI-Inhalt-Markierung entfernen"
 
-#: admin/partials/ai-content.php:68
+#: admin/partials/ai-content.php:79
 msgid "Marked Date"
 msgstr "Markierungsdatum"
 
-#: admin/partials/ai-content.php:67
+#: admin/partials/ai-content.php:77
 msgid "Author"
 msgstr "Autor"
 
-#: admin/partials/ai-content.php:66
+#: admin/partials/ai-content.php:76
+#: admin/partials/report.php:207
 msgid "Status"
 msgstr "Status"
 
-#: admin/partials/ai-content.php:65
+#: admin/partials/ai-content.php:75
 msgid "Type"
 msgstr "Typ"
 
-#: admin/partials/ai-content.php:64
+#: admin/partials/ai-content.php:74
 msgid "Title"
 msgstr "Titel"
 
-#: admin/partials/ai-content.php:47
+#: admin/partials/ai-content.php:57
 msgid "You can set the disclosure level in the editor sidebar when editing any content."
 msgstr "Sie können die Offenlegungsstufe in der Editor-Seitenleiste beim Bearbeiten beliebiger Inhalte festlegen."
 
-#: admin/partials/ai-content.php:45
-msgid "No content has been manually marked as AI-generated yet."
-msgstr "Es wurden noch keine Inhalte manuell als KI-generiert markiert."
-
-#: admin/partials/ai-content.php:38
+#: admin/partials/ai-content.php:48
 msgid "Manage content that has been marked with an AI disclosure level."
 msgstr "Verwalten Sie Inhalte, die mit einem KI-Offenlegungsgrad markiert wurden."
 
-#: admin/partials/ai-content.php:116
+#: admin/partials/ai-content.php:146
 msgid "Not set"
 msgstr "Nicht festgelegt"
 
-#: admin/partials/settings.php:550
+#: admin/partials/settings.php:775
 msgid "Tooltip (Hover):"
 msgstr "Tooltipp (Hover):"
 
-#: admin/partials/settings.php:522
+#: admin/partials/settings.php:747
 msgid "Badge (Recommended):"
 msgstr "Badge (Empfohlen):"
 
-#: admin/partials/settings.php:506
+#: admin/partials/settings.php:731
 msgid "Inline Message:"
 msgstr "Inline-Nachricht:"
 
-#: admin/partials/settings.php:487
+#: admin/partials/settings.php:712
 msgid "Banner (Prominent):"
 msgstr "Banner (Auffällig):"
 
-#: admin/partials/settings.php:481
+#: admin/partials/settings.php:706
 msgid "Chatbot Notice Style Examples"
 msgstr "Beispiele für Chatbot-Hinweisstile"
 
-#: admin/partials/settings.php:470
+#: admin/partials/settings.php:695
 msgid "Default: \"This chat uses AI assistance.\""
 msgstr "Standard: „Dieser Chat nutzt KI-Unterstützung.“"
 
-#: admin/partials/settings.php:466
+#: admin/partials/settings.php:691
 msgid "Custom Chatbot Message"
 msgstr "Benutzerdefinierte Chatbot-Nachricht"
 
-#: admin/partials/settings.php:460
+#: admin/partials/settings.php:685
 msgid "Badge style is recommended for chatbots as it's subtle yet visible."
 msgstr "Der Badge-Stil wird für Chatbots empfohlen, da er dezent, aber sichtbar ist."
 
-#: admin/partials/settings.php:458
+#: admin/partials/settings.php:683
 msgid "Tooltip (Hover)"
 msgstr "Tooltipp (Hover)"
 
-#: admin/partials/settings.php:456
+#: admin/partials/settings.php:681
 msgid "Badge (Recommended)"
 msgstr "Badge (Empfohlen)"
 
-#: admin/partials/settings.php:455
+#: admin/partials/settings.php:680
 msgid "Inline Message"
 msgstr "Inline-Nachricht"
 
-#: admin/partials/settings.php:454
+#: admin/partials/settings.php:679
 msgid "Banner (Prominent)"
 msgstr "Banner (Auffällig)"
 
-#: admin/partials/settings.php:450
+#: admin/partials/settings.php:675
 msgid "Chatbot Notice Style"
 msgstr "Chatbot-Hinweisstil"
 
-#: admin/partials/settings.php:444
-msgid "Select your chatbot platform. The plugin will automatically detect and position the notice."
-msgstr "Wählen Sie Ihre Chatbot-Plattform aus. Das Plugin erkennt den Hinweis automatisch und positioniert ihn. "
-
-#: admin/partials/settings.php:429
+#: admin/partials/settings.php:645
 msgid "Chatbot Platform"
 msgstr "Chatbot-Plattform"
 
-#: admin/partials/settings.php:422
+#: admin/partials/settings.php:638
 msgid "Only enable this if you have an active chatbot plugin installed. Selecting a platform without having the chatbot will load unnecessary JavaScript."
 msgstr "Aktivieren Sie dies nur, wenn Sie ein aktives Chatbot-Plugin installiert haben. Wenn Sie eine Plattform auswählen, ohne den Chatbot zu haben, wird unnötiges JavaScript geladen. "
 
-#: admin/partials/settings.php:421
+#: admin/partials/settings.php:637
 msgid "Display transparency notices when users interact with AI-powered chatbots."
 msgstr "Transparenzhinweise anzeigen, wenn Nutzer mit KI-gestützten Chatbots interagieren."
 
-#: admin/partials/settings.php:416
+#: admin/partials/settings.php:632
 msgid "Enable Chatbot Transparency"
 msgstr "Chatbot-Transparenz aktivieren"
 
-#: admin/partials/settings.php:409
+#: admin/partials/settings.php:625
 msgid "The notice relies on the chatbot loading correctly. If you don't see it, try clearing your cache or checking the browser console."
 msgstr "Der Hinweis setzt voraus, dass der Chatbot korrekt lädt. Wenn Sie ihn nicht sehen, leeren Sie den Cache oder prüfen Sie die Browser-Konsole. "
 
-#: admin/partials/settings.php:405
+#: admin/partials/settings.php:621
 msgid "The plugin detects the chat widget on the frontend and appends the compliance notice."
 msgstr "Das Plugin erkennt das Chat-Widget im Frontend und fügt den Compliance-Hinweis hinzu."
 
-#: admin/partials/settings.php:405
+#: admin/partials/settings.php:621
 msgid "Auto-Insertion:"
 msgstr "Automatisches Einfügen:"
 
-#: admin/partials/settings.php:404
+#: admin/partials/settings.php:620
 msgid "Pick a notice style (Badge, Banner, etc.) that matches your site design."
 msgstr "Wählen Sie einen Hinweisstil (Badge, Banner usw.), der zu Ihrem Site-Design passt."
 
-#: admin/partials/settings.php:404
+#: admin/partials/settings.php:620
 msgid "Choose Style:"
 msgstr "Stil wählen:"
 
-#: admin/partials/settings.php:403
+#: admin/partials/settings.php:619
 msgid "Choose your chatbot provider (e.g., Formilla, Intercom) from the list below."
 msgstr "Wählen Sie Ihren Chatbot-Anbieter (z. B. Formilla, Intercom) aus der Liste unten."
 
-#: admin/partials/settings.php:403
+#: admin/partials/settings.php:619
 msgid "Select Platform:"
 msgstr "Plattform auswählen:"
 
-#: admin/partials/settings.php:401
+#: admin/partials/settings.php:617
 msgid "The plugin detects supported AI chatbot widgets and adds transparency notices to ensure compliance."
 msgstr "Das Plugin erkennt unterstützte KI-Chatbot-Widgets und fügt Transparenzhinweise hinzu, um die Compliance sicherzustellen."
 
-#: admin/partials/settings.php:396
+#: admin/partials/settings.php:612
 msgid "Configure transparency notices for AI-powered chatbots on your website (Formilla, Intercom, Drift, etc.)."
 msgstr "Konfigurieren Sie Transparenzhinweise für KI-gestützte Chatbots auf Ihrer Website (Formilla, Intercom, Drift usw.)."
 
-#: admin/partials/settings.php:395
+#: admin/partials/settings.php:611
 msgid "Chatbot AI Transparency Settings"
 msgstr "Einstellungen zur KI-Transparenz für Chatbots"
 
-#: admin/partials/settings.php:375
+#: admin/partials/settings.php:591
 msgid "Border Style:"
 msgstr "Rahmenstil:"
 
-#: admin/partials/settings.php:358
+#: admin/partials/settings.php:574
 msgid "Overlay Style:"
 msgstr "Overlay-Stil:"
 
-#: admin/partials/settings.php:344
+#: admin/partials/settings.php:560
 msgid "Badge Style:"
 msgstr "Badge-Stil:"
 
-#: admin/partials/settings.php:336
-#: admin/partials/settings.php:350
-#: admin/partials/settings.php:367
-#: admin/partials/settings.php:383
-#: includes/class-euaiactready-media-transparency.php:1013
+#: admin/partials/settings.php:552
+#: admin/partials/settings.php:566
+#: admin/partials/settings.php:583
+#: admin/partials/settings.php:599
+#: includes/class-euaiactready-media-transparency.php:1340
 msgid "AI-Generated Image"
 msgstr "KI-generiertes Bild"
 
-#: admin/partials/settings.php:331
-#: admin/partials/settings.php:347
-#: admin/partials/settings.php:361
-#: admin/partials/settings.php:379
+#: admin/partials/settings.php:547
+#: admin/partials/settings.php:563
+#: admin/partials/settings.php:577
+#: admin/partials/settings.php:595
 msgid "Sample Image"
 msgstr "Beispielbild"
 
-#: admin/partials/settings.php:328
+#: admin/partials/settings.php:544
 msgid "Caption Style (Recommended):"
 msgstr "Beschriftungsstil (Empfohlen):"
 
-#: admin/partials/settings.php:322
+#: admin/partials/settings.php:538
 msgid "Label Style Examples"
 msgstr "Beispiele für Label-Stile"
 
-#: admin/partials/settings.php:308
+#: admin/partials/settings.php:524
 msgid "Only very confident detections, may miss some AI images"
 msgstr "Nur sehr sichere Erkennungen, kann einige KI-Bilder übersehen"
 
-#: admin/partials/settings.php:308
+#: admin/partials/settings.php:524
 msgid "Higher values:"
 msgstr "Höhere Werte:"
 
-#: admin/partials/settings.php:307
+#: admin/partials/settings.php:523
 msgid "More images flagged, possible false positives"
 msgstr "Mehr Bilder markiert, mögliche Fehlalarme"
 
-#: admin/partials/settings.php:307
+#: admin/partials/settings.php:523
 msgid "Lower values:"
 msgstr "Niedrigere Werte:"
 
-#: admin/partials/settings.php:306
+#: admin/partials/settings.php:522
 msgid "Controls how confident the system needs to be before flagging an image as AI-generated."
 msgstr "Legt fest, wie sicher sich das System sein muss, bevor ein Bild als KI-generiert markiert wird."
 
-#: admin/partials/settings.php:303
+#: admin/partials/settings.php:519
 msgid "Strict (70% confidence)"
 msgstr "Streng (70 % Sicherheit)"
 
-#: admin/partials/settings.php:302
+#: admin/partials/settings.php:518
 msgid "Very Conservative (50% confidence)"
 msgstr "Sehr konservativ (50 % Sicherheit)"
 
-#: admin/partials/settings.php:301
+#: admin/partials/settings.php:517
 msgid "Conservative (40% confidence) - Recommended"
 msgstr "Konservativ (40 % Konfidenz) – Empfohlen"
 
-#: admin/partials/settings.php:300
+#: admin/partials/settings.php:516
 msgid "Balanced (30% confidence)"
 msgstr "Ausgewogen (30 % Konfidenz)"
 
-#: admin/partials/settings.php:299
+#: admin/partials/settings.php:515
 msgid "Aggressive (25% confidence)"
 msgstr "Aggressiv (25 % Konfidenz)"
 
-#: admin/partials/settings.php:298
+#: admin/partials/settings.php:514
 msgid "Very Aggressive (15% confidence)"
 msgstr "Sehr aggressiv (15 % Konfidenz)"
 
-#: admin/partials/settings.php:294
+#: admin/partials/settings.php:510
 msgid "Detection Sensitivity"
 msgstr "Erkennungsempfindlichkeit"
 
-#: admin/partials/settings.php:288
+#: admin/partials/settings.php:444
 msgid "Choose how AI labels appear on images."
 msgstr "Wählen Sie, wie KI-Labels auf Bildern angezeigt werden."
 
-#: admin/partials/settings.php:286
+#: admin/partials/settings.php:442
 msgid "Border"
 msgstr "Rahmen"
 
-#: admin/partials/settings.php:285
+#: admin/partials/settings.php:441
 msgid "Overlay"
 msgstr "Overlay"
 
-#: admin/partials/settings.php:284
+#: admin/partials/settings.php:440
 msgid "Badge"
 msgstr "Badge"
 
-#: admin/partials/settings.php:283
+#: admin/partials/settings.php:439
 msgid "Caption"
 msgstr "Bildunterschrift"
 
-#: admin/partials/settings.php:279
+#: admin/partials/settings.php:435
 msgid "Label Style"
 msgstr "Label-Stil"
 
-#: admin/partials/settings.php:273
+#: admin/partials/settings.php:407
 msgid "Automatically add labels to AI-generated images and media in posts."
 msgstr "Labels automatisch zu KI-generierten Bildern und Medien in Beiträgen hinzufügen."
 
-#: admin/partials/settings.php:269
+#: admin/partials/settings.php:403
 msgid "Enable Media Transparency"
 msgstr "Medientransparenz aktivieren"
 
-#: admin/partials/settings.php:262
+#: admin/partials/settings.php:396
 msgid "Detection is automatic but not perfect and may produce false positives or misses.. For best results, use consistent naming (e.g., \"midjourney\", \"dall-e\") or manually mark images."
 msgstr "Die Erkennung erfolgt automatisch, ist aber nicht perfekt und kann falsch-positive Ergebnisse liefern oder Treffer verpassen. Für beste Ergebnisse verwenden Sie eine konsistente Benennung (z. B. „midjourney“, „dall-e“) oder markieren Sie Bilder manuell."
 
-#: admin/partials/settings.php:262
-#: admin/partials/settings.php:409
-#: admin/partials/settings.php:422
-#: includes/class-euaiactready-media-transparency.php:1223
+#: admin/partials/ai-literacy.php:113
+#: admin/partials/settings.php:396
+#: admin/partials/settings.php:625
+#: admin/partials/settings.php:638
+#: admin/partials/settings.php:798
+#: admin/partials/settings.php:886
+#: includes/class-euaiactready-media-transparency.php:1557
 msgid "Note:"
 msgstr "Hinweis:"
 
-#: admin/partials/settings.php:258
+#: admin/partials/settings.php:392
 msgid "Labels will appear on images identified or manually marked as AI-generated, based on your settings below."
 msgstr "Labels werden auf Bildern angezeigt, die als KI-generiert erkannt oder manuell als KI-generiert markiert wurden – basierend auf Ihren Einstellungen unten."
 
-#: admin/partials/settings.php:257
+#: admin/partials/settings.php:391
 msgid "Use the \"AI Meta Box\" when editing an image to manually mark/unmark if detection is incorrect."
 msgstr "Verwenden Sie beim Bearbeiten eines Bildes die „AI Meta Box“, um es manuell zu markieren/entmarkieren, wenn die Erkennung falsch ist."
 
-#: admin/partials/settings.php:257
+#: admin/partials/settings.php:391
 msgid "Manual Control:"
 msgstr "Manuelle Steuerung:"
 
-#: admin/partials/settings.php:256
+#: admin/partials/settings.php:390
 msgid "Check the \"AI\" column in the Media Library for confidence scores or status."
 msgstr "Prüfen Sie in der Mediathek die Spalte „AI“ auf Konfidenzwerte oder Status."
 
-#: admin/partials/settings.php:256
+#: admin/partials/settings.php:390
 msgid "Review Detection:"
 msgstr "Erkennung prüfen:"
 
-#: admin/partials/settings.php:255
+#: admin/partials/settings.php:389
 msgid "Upload new images (auto-scanned) or use the Dashboard scan for existing detection."
 msgstr "Laden Sie neue Bilder hoch (automatisch gescannt) oder nutzen Sie den Dashboard-Scan für die Erkennung bei bestehenden Inhalten."
 
-#: admin/partials/settings.php:255
+#: admin/partials/settings.php:389
 msgid "Upload or Scan:"
 msgstr "Hochladen oder scannen:"
 
-#: admin/partials/settings.php:253
+#: admin/partials/settings.php:387
 msgid "To manage EU AI Act Ready for images, the plugin integrates directly with your Media Library."
 msgstr "Zur Verwaltung von „EU AI Act Ready“ für Bilder integriert sich das Plugin direkt in Ihre Mediathek."
 
-#: admin/partials/settings.php:248
+#: admin/partials/settings.php:382
 msgid "Automatically detect and label AI-generated images, photos, and media in your posts."
 msgstr "KI-generierte Bilder, Fotos und Medien in Ihren Beiträgen automatisch erkennen und kennzeichnen."
 
-#: admin/partials/settings.php:247
+#: admin/partials/settings.php:381
 msgid "AI Media & Image Transparency"
 msgstr "KI-Medien- &amp; Bildtransparenz"
 
-#: admin/partials/settings.php:232
-#: admin/partials/settings.php:536
+#: admin/partials/settings.php:366
+#: admin/partials/settings.php:761
 msgid "Modal (Click to View):"
 msgstr "Modal (zum Anzeigen klicken):"
 
-#: admin/partials/settings.php:225
-#: admin/partials/settings.php:236
-#: admin/partials/settings.php:528
-#: admin/partials/settings.php:542
+#: admin/partials/settings.php:359
+#: admin/partials/settings.php:370
+#: admin/partials/settings.php:753
+#: admin/partials/settings.php:767
 #: includes/class-euaiactready-chatbot-transparency.php:155
 #: includes/class-euaiactready-chatbot-transparency.php:163
-#: includes/class-euaiactready-content-transparency.php:188
-#: includes/class-euaiactready-content-transparency.php:202
-#: includes/class-euaiactready-content-transparency.php:222
+#: includes/class-euaiactready-content-transparency.php:518
+#: includes/class-euaiactready-content-transparency.php:532
+#: includes/class-euaiactready-content-transparency.php:552
 msgid "AI Disclosure"
 msgstr "KI-Offenlegung"
 
-#: admin/partials/settings.php:221
+#: admin/partials/settings.php:355
 msgid "Badge (Minimal):"
 msgstr "Badge (minimal):"
 
-#: admin/partials/settings.php:208
+#: admin/partials/settings.php:342
 msgid "Inline (Subtle):"
 msgstr "Inline (dezent):"
 
-#: admin/partials/settings.php:201
-#: admin/partials/settings.php:214
-#: includes/class-euaiactready-content-transparency.php:149
-#: includes/class-euaiactready-content-transparency.php:168
+#: admin/partials/settings.php:335
+#: admin/partials/settings.php:348
+#: includes/class-euaiactready-content-transparency.php:479
+#: includes/class-euaiactready-content-transparency.php:498
 msgid "AI Disclosure:"
 msgstr "KI-Offenlegung:"
 
-#: admin/partials/settings.php:195
+#: admin/partials/settings.php:329
 msgid "Banner (Full Width):"
 msgstr "Banner (volle Breite):"
 
-#: admin/partials/settings.php:189
+#: admin/partials/settings.php:323
 msgid "Notice Style Examples"
 msgstr "Beispiele für Hinweisstile"
 
-#: admin/partials/settings.php:183
-#: admin/partials/settings.php:316
-#: admin/partials/settings.php:477
+#: admin/partials/euaiactready-admin-ai-tools.php:176
+#: admin/partials/settings.php:317
+#: admin/partials/settings.php:532
+#: admin/partials/settings.php:702
+#: admin/partials/settings.php:826
 msgid "Save Settings"
 msgstr "Einstellungen speichern"
 
-#: admin/partials/settings.php:176
+#: admin/partials/settings.php:272
 msgid "Add AI badge to post excerpts (archives, search results)."
 msgstr "KI-Badge zu Beitragsauszügen hinzufügen (Archive, Suchergebnisse)."
 
-#: admin/partials/settings.php:172
+#: admin/partials/settings.php:268
 msgid "Show in Excerpts"
 msgstr "In Auszügen anzeigen"
 
-#: admin/partials/settings.php:166
+#: admin/partials/settings.php:262
 msgid "Leave empty to use the default message. You can customize the transparency notice text."
 msgstr "Leer lassen, um die Standardmeldung zu verwenden. Sie können den Text des Transparenzhinweises anpassen. "
 
-#: admin/partials/settings.php:162
+#: admin/partials/settings.php:258
 msgid "Custom Notice Message"
 msgstr "Benutzerdefinierte Hinweismeldung"
 
-#: admin/partials/settings.php:156
+#: admin/partials/settings.php:238
 msgid "Choose how transparency notices are displayed."
 msgstr "Wählen Sie, wie Transparenzhinweise angezeigt werden."
 
-#: admin/partials/settings.php:154
-#: admin/partials/settings.php:457
+#: admin/partials/settings.php:236
+#: admin/partials/settings.php:682
 msgid "Modal (Click to View)"
 msgstr "Modal (zum Anzeigen klicken)"
 
-#: admin/partials/settings.php:153
+#: admin/partials/settings.php:235
 msgid "Badge (Minimal)"
 msgstr "Badge (minimal)"
 
-#: admin/partials/settings.php:152
+#: admin/partials/settings.php:234
 msgid "Inline (Subtle)"
 msgstr "Inline (dezent)"
 
-#: admin/partials/settings.php:151
+#: admin/partials/settings.php:233
 msgid "Banner (Full Width)"
 msgstr "Banner (volle Breite)"
 
-#: admin/partials/settings.php:147
+#: admin/partials/settings.php:229
 msgid "Notice Style"
 msgstr "Hinweisstil"
 
-#: admin/partials/settings.php:141
+#: admin/partials/settings.php:223
 msgid "Automatically display transparency notices on content marked as AI-generated."
 msgstr "Transparenzhinweise automatisch bei als KI-generiert markierten Inhalten anzeigen."
 
-#: admin/partials/settings.php:137
+#: admin/partials/settings.php:219
 msgid "Enable Transparency Notices"
 msgstr "Transparenzhinweise aktivieren"
 
-#: admin/partials/settings.php:130
+#: admin/partials/settings.php:212
 msgid "Notices only appear on content explicitly marked as AI. They do not appear automatically."
 msgstr "Hinweise erscheinen nur bei Inhalten, die ausdrücklich als KI markiert sind. Sie erscheinen nicht automatisch. "
 
-#: admin/partials/settings.php:130
+#: admin/partials/settings.php:212
 msgid "Important:"
 msgstr "Wichtig:"
 
-#: admin/partials/settings.php:126
+#: admin/partials/settings.php:208
 msgid "The transparency notice/badge will now appear on that specific content item."
 msgstr "Der Transparenzhinweis/das Badge wird nun bei diesem spezifischen Inhalt angezeigt."
 
-#: admin/partials/settings.php:126
-#: admin/partials/settings.php:258
+#: admin/partials/settings.php:208
+#: admin/partials/settings.php:392
 msgid "Frontend Display:"
 msgstr "Frontend-Anzeige:"
 
-#: admin/partials/settings.php:125
+#: admin/partials/settings.php:207
 msgid "Look for the \"EU AI Act Ready\" box in the sidebar (or use Quick Edit) and check \"Mark as AI-Generated\"."
 msgstr "Suchen Sie in der Seitenleiste (oder per Quick Edit) nach der Box „EU AI Act Ready“ und aktivieren Sie „Als KI-generiert markieren“."
 
-#: admin/partials/settings.php:125
+#: admin/partials/settings.php:207
 msgid "Mark as AI:"
 msgstr "Als KI markieren:"
 
-#: admin/partials/settings.php:124
+#: admin/partials/settings.php:206
 msgid "Open the content item you want to label in the WordPress editor."
 msgstr "Öffnen Sie den Inhalt, den Sie im WordPress-Editor kennzeichnen möchten."
 
-#: admin/partials/settings.php:124
+#: admin/partials/settings.php:206
 msgid "Edit Content:"
 msgstr "Inhalt bearbeiten:"
 
-#: admin/partials/settings.php:122
+#: admin/partials/settings.php:204
 msgid "To display transparency notices, you must manually mark your content as AI-generated:"
 msgstr "Um Transparenzhinweise anzuzeigen, müssen Sie Ihre Inhalte manuell als KI-generiert kennzeichnen:"
 
-#: admin/partials/settings.php:121
-#: admin/partials/settings.php:252
-#: admin/partials/settings.php:400
+#: admin/partials/settings.php:203
+#: admin/partials/settings.php:386
+#: admin/partials/settings.php:616
+#: admin/partials/settings.php:795
 msgid "How It Works"
 msgstr "So funktioniert’s"
 
-#: admin/partials/settings.php:117
+#: admin/partials/settings.php:199
 msgid "Display transparency notices on any content marked as AI-generated."
 msgstr "Zeigen Sie Transparenzhinweise auf beliebigen als KI-generiert markierten Inhalten an."
 
-#: admin/partials/settings.php:87
+#: admin/partials/settings.php:169
 msgid "Settings saved successfully!"
 msgstr "Einstellungen erfolgreich gespeichert!"
 
-#: admin/partials/settings.php:496
-#: admin/partials/settings.php:514
-#: admin/partials/settings.php:554
+#: admin/partials/settings.php:721
+#: admin/partials/settings.php:739
+#: admin/partials/settings.php:779
 #: includes/class-euaiactready-chatbot-transparency.php:96
+#: includes/class-euaiactready-shortcode.php:94
 msgid "This chat uses AI assistance."
 msgstr "Dieser Chat nutzt KI-Unterstützung."
 
-#: admin/partials/settings.php:201
-#: admin/partials/settings.php:214
-#: admin/partials/settings.php:583
-#: includes/class-euaiactready-content-transparency.php:96
-#: includes/class-euaiactready-content-transparency.php:114
+#: admin/partials/settings.php:335
+#: admin/partials/settings.php:348
+#: admin/partials/settings.php:909
+#: includes/class-euaiactready-content-transparency.php:231
+#: includes/class-euaiactready-content-transparency.php:438
+#: includes/class-euaiactready-shortcode.php:107
 msgid "This content includes AI-generated text."
 msgstr "Dieser Inhalt enthält KI-generierten Text."
 
-#: admin/partials/dashboard.php:245
-#: admin/partials/settings.php:78
+#: admin/partials/dashboard.php:363
+#: admin/partials/report.php:218
+#: admin/partials/settings.php:158
 msgid "Chatbot Transparency"
 msgstr "Chatbot-Transparenz"
 
-#: admin/partials/dashboard.php:259
-#: admin/partials/settings.php:77
+#: admin/partials/dashboard.php:377
+#: admin/partials/settings.php:157
 msgid "Media/Image Labels"
 msgstr "Medien-/Bildkennzeichnungen"
-
-#: admin/partials/settings.php:76
-#: admin/partials/settings.php:116
-msgid "Content Transparency"
-msgstr "Inhalts-Transparenz"
 
 #: admin/partials/ai-images.php:224
 msgid "Actions"
@@ -1151,9 +1132,11 @@ msgstr "Datum nicht gekennzeichnet"
 msgid "Image"
 msgstr "Bild"
 
+#: admin/class-euaiactready-admin.php:98
 #: admin/partials/ai-images.php:211
 #: admin/partials/ai-images.php:258
 #: admin/partials/ai-images.php:305
+#: admin/partials/euaiactready-admin-ai-tools.php:367
 msgid "Mark as AI"
 msgstr "Als KI markieren"
 
@@ -1171,13 +1154,13 @@ msgstr "Bilder, deren Kennzeichnung Sie entfernen, werden hier angezeigt."
 msgid "No content currently unmarked."
 msgstr "Derzeit sind keine Inhalte ohne Kennzeichnung vorhanden."
 
-#: admin/partials/ai-content.php:91
+#: admin/partials/ai-content.php:107
 #: admin/partials/ai-images.php:157
 #: admin/partials/ai-images.php:254
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: admin/partials/ai-content.php:89
+#: admin/partials/ai-content.php:105
 #: admin/partials/ai-images.php:155
 #: admin/partials/ai-images.php:252
 msgid "View"
@@ -1201,8 +1184,8 @@ msgstr "Format"
 msgid "Filename"
 msgstr "Dateiname"
 
-#: admin/partials/ai-content.php:57
-#: admin/partials/ai-content.php:133
+#: admin/partials/ai-content.php:67
+#: admin/partials/ai-content.php:163
 #: admin/partials/ai-images.php:113
 #: admin/partials/ai-images.php:189
 #: admin/partials/ai-images.php:213
@@ -1210,16 +1193,16 @@ msgstr "Dateiname"
 msgid "Apply"
 msgstr "Anwenden"
 
-#: admin/partials/ai-content.php:55
-#: admin/partials/ai-content.php:131
+#: admin/partials/ai-content.php:65
+#: admin/partials/ai-content.php:161
 #: admin/partials/ai-images.php:111
 #: admin/partials/ai-images.php:160
 #: admin/partials/ai-images.php:187
 msgid "Unmark as AI"
 msgstr "KI-Kennzeichnung entfernen"
 
-#: admin/partials/ai-content.php:54
-#: admin/partials/ai-content.php:130
+#: admin/partials/ai-content.php:64
+#: admin/partials/ai-content.php:160
 #: admin/partials/ai-images.php:110
 #: admin/partials/ai-images.php:186
 #: admin/partials/ai-images.php:209
@@ -1252,178 +1235,186 @@ msgid "View image"
 msgstr "Bild ansehen"
 
 #. translators: %d is the number of processed items.
-#: admin/class-euaiactready-admin.php:737
+#: admin/class-euaiactready-admin.php:898
 #, php-format
 msgid "%d items processed successfully."
 msgstr "%d Elemente erfolgreich verarbeitet."
 
-#: admin/class-euaiactready-admin.php:673
+#: admin/class-euaiactready-admin.php:834
 msgid "Invalid request"
 msgstr "Ungültige Anfrage"
 
-#: admin/class-euaiactready-admin.php:646
+#: admin/class-euaiactready-admin.php:807
 msgid "Image marked as AI successfully"
 msgstr "Bild erfolgreich als KI markiert"
 
-#: admin/class-euaiactready-admin.php:598
+#: admin/class-euaiactready-admin.php:759
 msgid "Image restored to scan queue successfully"
 msgstr "Bild erfolgreich zur Scan-Warteschlange wiederhergestellt"
 
-#: admin/class-euaiactready-admin.php:551
+#: admin/class-euaiactready-admin.php:712
 msgid "Image unmarked successfully"
 msgstr "Bildkennzeichnung erfolgreich entfernt"
 
-#: admin/class-euaiactready-admin.php:537
-#: admin/class-euaiactready-admin.php:585
-#: admin/class-euaiactready-admin.php:632
+#: admin/class-euaiactready-admin.php:698
+#: admin/class-euaiactready-admin.php:746
+#: admin/class-euaiactready-admin.php:793
 msgid "You do not have permission to edit this attachment"
 msgstr "Sie haben keine Berechtigung, diesen Anhang zu bearbeiten"
 
-#: admin/class-euaiactready-admin.php:527
-#: admin/class-euaiactready-admin.php:576
-#: admin/class-euaiactready-admin.php:623
+#: admin/class-euaiactready-admin.php:688
+#: admin/class-euaiactready-admin.php:737
+#: admin/class-euaiactready-admin.php:784
 msgid "Invalid attachment ID"
 msgstr "Ungültige Anhang-ID"
 
-#: admin/class-euaiactready-admin.php:501
+#: admin/class-euaiactready-admin.php:662
 msgid "Failed to unmark content"
 msgstr "Kennzeichnung konnte nicht entfernt werden"
 
-#: admin/class-euaiactready-admin.php:495
+#: admin/class-euaiactready-admin.php:656
 msgid "Content unmarked successfully"
 msgstr "Kennzeichnung erfolgreich entfernt"
 
-#: admin/class-euaiactready-admin.php:483
+#: admin/class-euaiactready-admin.php:644
 msgid "You do not have permission to edit this post"
 msgstr "Sie haben keine Berechtigung, diesen Beitrag zu bearbeiten"
 
-#: admin/class-euaiactready-admin.php:473
+#: admin/class-euaiactready-admin.php:634
 msgid "Invalid post ID"
 msgstr "Ungültige Beitrags-ID"
 
 #. translators: %s is the scan error message.
-#: admin/class-euaiactready-admin.php:444
+#: admin/class-euaiactready-admin.php:605
 #, php-format
 msgid "Scan error: %s"
 msgstr "Scan-Fehler: %s"
 
 #. translators: 1: Number of processed images, 2: Total images, 3: Percent complete.
-#: admin/class-euaiactready-admin.php:429
+#: admin/class-euaiactready-admin.php:590
 #, php-format
 msgid "Processing... %1$d/%2$d images (%3$d%%)"
 msgstr "Wird verarbeitet... %1$d/%2$d Bilder (%3$d%%)"
 
-#: admin/class-euaiactready-admin.php:376
+#: admin/class-euaiactready-admin.php:537
 msgid "Scan complete!"
 msgstr "Scan abgeschlossen!"
 
-#: admin/class-euaiactready-admin.php:349
+#: admin/class-euaiactready-admin.php:510
 msgid "Scan session expired. Please start again."
 msgstr "Scan-Sitzung abgelaufen. Bitte starten Sie erneut. "
 
-#: admin/class-euaiactready-admin.php:209
-#: admin/class-euaiactready-admin.php:232
-#: admin/class-euaiactready-admin.php:261
-#: admin/class-euaiactready-admin.php:285
-#: admin/class-euaiactready-admin.php:462
-#: admin/class-euaiactready-admin.php:516
-#: admin/class-euaiactready-admin.php:565
-#: admin/class-euaiactready-admin.php:612
-#: admin/class-euaiactready-admin.php:660
+#: admin/class-euaiactready-admin.php:370
+#: admin/class-euaiactready-admin.php:393
+#: admin/class-euaiactready-admin.php:422
+#: admin/class-euaiactready-admin.php:446
+#: admin/class-euaiactready-admin.php:623
+#: admin/class-euaiactready-admin.php:677
+#: admin/class-euaiactready-admin.php:726
+#: admin/class-euaiactready-admin.php:773
+#: admin/class-euaiactready-admin.php:821
+#: includes/class-euaiactready-ai-tools.php:140
+#: includes/class-euaiactready-ai-tools.php:186
+#: includes/class-euaiactready-ai-tools.php:214
+#: includes/class-euaiactready-ai-tools.php:244
 msgid "Unauthorized"
 msgstr "Nicht autorisiert"
 
-#: admin/class-euaiactready-admin.php:152
-#: admin/class-euaiactready-admin.php:153
-#: admin/class-euaiactready-admin.php:167
+#: admin/class-euaiactready-admin.php:203
+#: admin/class-euaiactready-admin.php:204
+#: admin/class-euaiactready-admin.php:219
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: admin/class-euaiactready-admin.php:143
-#: admin/class-euaiactready-admin.php:144
+#: admin/class-euaiactready-admin.php:185
+#: admin/class-euaiactready-admin.php:186
 #: admin/partials/ai-images.php:80
 msgid "AI Images"
 msgstr "KI-Bilder"
 
-#: admin/class-euaiactready-admin.php:134
-#: admin/class-euaiactready-admin.php:135
-#: includes/class-euaiactready-post-meta-box.php:168
-#: includes/class-euaiactready-post-meta-box.php:250
-#: includes/class-euaiactready-post-meta-box.php:410
+#: admin/class-euaiactready-admin.php:176
+#: admin/class-euaiactready-admin.php:177
+#: admin/class-euaiactready-admin.php:347
+#: includes/class-euaiactready-content-transparency.php:421
+#: includes/class-euaiactready-post-meta-box.php:244
+#: includes/class-euaiactready-post-meta-box.php:527
 msgid "AI Content"
 msgstr "KI-Inhalte"
 
-#: admin/class-euaiactready-admin.php:125
-#: admin/class-euaiactready-admin.php:126
+#: admin/class-euaiactready-admin.php:149
+#: admin/class-euaiactready-admin.php:150
+#: admin/class-euaiactready-admin.php:351
 msgid "Dashboard"
 msgstr "Dashboard"
 
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: eu-ai-act-ready.php
-#: admin/class-euaiactready-admin.php:114
-#: admin/class-euaiactready-admin.php:115
+#: admin/class-euaiactready-admin.php:138
+#: admin/class-euaiactready-admin.php:139
 msgid "EU AI Act Ready"
 msgstr ""
 
-#: admin/class-euaiactready-admin.php:104
+#: admin/class-euaiactready-admin.php:128
 msgid "Previous scan results cleared."
 msgstr "Vorherige Scanergebnisse gelöscht."
 
-#: admin/class-euaiactready-admin.php:103
+#: admin/class-euaiactready-admin.php:127
 msgid "Saved scan results."
 msgstr "Scanergebnisse gespeichert."
 
-#: admin/class-euaiactready-admin.php:102
+#: admin/class-euaiactready-admin.php:126
 msgid "Discarding results..."
 msgstr "Ergebnisse werden verworfen..."
 
-#: admin/class-euaiactready-admin.php:101
+#: admin/class-euaiactready-admin.php:125
 msgid "Saving results..."
 msgstr "Ergebnisse werden gespeichert..."
 
-#: admin/class-euaiactready-admin.php:100
+#: admin/class-euaiactready-admin.php:124
 msgid "Do Nothing"
 msgstr "Nichts tun"
 
-#: admin/class-euaiactready-admin.php:99
+#: admin/class-euaiactready-admin.php:123
 msgid "Start New Scan"
 msgstr "Neuen Scan starten"
 
-#: admin/class-euaiactready-admin.php:98
+#: admin/class-euaiactready-admin.php:122
 msgid "Save Results"
 msgstr "Ergebnisse speichern"
 
-#: admin/class-euaiactready-admin.php:97
+#: admin/class-euaiactready-admin.php:121
 msgid "We found a partially completed media scan. What would you like to do?"
 msgstr "Wir haben einen teilweise abgeschlossenen Medienscan gefunden. Was möchten Sie tun? "
 
-#: admin/class-euaiactready-admin.php:96
+#: admin/class-euaiactready-admin.php:120
 #: admin/partials/bulk-scan-modal.php:21
 msgid "Scan Interrupted"
 msgstr "Scan unterbrochen"
 
-#: admin/class-euaiactready-admin.php:95
+#: admin/class-euaiactready-admin.php:96
+#: admin/class-euaiactready-admin.php:119
 msgid "An error occurred. Please try again."
 msgstr "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut. "
 
-#: admin/class-euaiactready-admin.php:94
+#: admin/class-euaiactready-admin.php:118
 msgid "Failed to unmark content."
 msgstr "Inhalt konnte nicht als KI-generiert aufgehoben werden."
 
-#: admin/class-euaiactready-admin.php:93
+#: admin/class-euaiactready-admin.php:117
 msgid "Unmark"
 msgstr "Markierung aufheben"
 
-#: admin/class-euaiactready-admin.php:92
+#: admin/class-euaiactready-admin.php:116
 msgid "Unmarking..."
 msgstr "Markierung wird aufgehoben..."
 
-#: admin/class-euaiactready-admin.php:91
+#: admin/class-euaiactready-admin.php:115
 msgid "Are you sure you want to unmark this content as AI-generated?"
 msgstr "Möchten Sie die Markierung dieses Inhalts als KI-generiert wirklich aufheben?"
 
 #. Plugin URI of the plugin
+#. Author URI of the plugin
 #: eu-ai-act-ready.php
 msgid "https://eu-ai-act-ready.com/"
 msgstr ""
@@ -1433,126 +1424,114 @@ msgstr ""
 msgid "Disclose AI-generated content, media, and chatbots with transparent visitor notices, supporting transparency under Article 50 of the EU AI Act."
 msgstr ""
 
-#: admin/partials/settings.php:338
+#: admin/partials/settings.php:424
 msgid "Label Background Images (Bricks)"
 msgstr "Hintergrundbilder kennzeichnen (Bricks)"
 
-#: admin/partials/settings.php:342
+#: admin/partials/settings.php:428
 msgid "Also label AI-generated images used as CSS background images in Bricks Builder. The badge is placed inside the element, which makes that element a positioning context."
 msgstr "Kennzeichnet auch KI-generierte Bilder, die in Bricks Builder als CSS-Hintergrundbild eingesetzt werden. Das Abzeichen wird im Element platziert, wodurch dieses Element zum Positionierungskontext wird."
 
-#: includes/class-euaiactready-media-transparency.php:1059
+#: includes/class-euaiactready-media-transparency.php:1212
 msgid "Top left"
 msgstr "Oben links"
 
-#: includes/class-euaiactready-media-transparency.php:1060
+#: includes/class-euaiactready-media-transparency.php:1213
 msgid "Top right"
 msgstr "Oben rechts"
 
-#: includes/class-euaiactready-media-transparency.php:1061
+#: includes/class-euaiactready-media-transparency.php:1214
 msgid "Bottom left"
 msgstr "Unten links"
 
-#: includes/class-euaiactready-media-transparency.php:1062
+#: includes/class-euaiactready-media-transparency.php:1215
 msgid "Bottom right"
 msgstr "Unten rechts"
 
-#: includes/class-euaiactready-media-transparency.php:1121
+#: includes/class-euaiactready-media-transparency.php:1230
 msgid "Label and detection source"
 msgstr "Kennzeichnung und Erkennungsquelle"
 
-#: includes/class-euaiactready-media-transparency.php:1122
+#: includes/class-euaiactready-media-transparency.php:1231
 msgid "Label only"
 msgstr "Nur Kennzeichnung"
 
-#: includes/class-euaiactready-media-transparency.php:1123
+#: includes/class-euaiactready-media-transparency.php:1232
 msgid "No tooltip"
 msgstr "Kein Tooltip"
 
-#: includes/class-euaiactready-media-transparency.php:1134
+#: includes/class-euaiactready-media-transparency.php:1243
 msgid "Normal"
 msgstr "Normal"
 
-#: includes/class-euaiactready-media-transparency.php:1135
+#: includes/class-euaiactready-media-transparency.php:1244
 msgid "Compact"
 msgstr "Kompakt"
 
-#: admin/partials/settings.php:413
+#: admin/partials/settings.php:450
 msgid "Label Size"
 msgstr "Größe der Kennzeichnung"
 
-#: admin/partials/settings.php:421
-msgid ""
-"Compact renders a smaller, translucent label that sits over the image rather "
-"than on top of it."
-msgstr ""
-"Kompakt zeigt eine kleinere, transparente Kennzeichnung, die über dem Bild "
-"liegt statt darauf zu kleben."
+#: admin/partials/settings.php:458
+msgid "Compact renders a smaller, translucent label that sits over the image rather than on top of it."
+msgstr "Kompakt zeigt eine kleinere, transparente Kennzeichnung, die über dem Bild liegt statt darauf zu kleben."
 
-#: admin/partials/settings.php:427
+#: admin/partials/settings.php:464
 msgid "Hover Tooltip"
 msgstr "Tooltip beim Überfahren"
 
-#: admin/partials/settings.php:436
-msgid ""
-"What the browser shows when a visitor hovers the label. The label itself "
-"stays visible either way."
-msgstr ""
-"Was der Browser anzeigt, wenn Besucher die Kennzeichnung überfahren. Die "
-"Kennzeichnung selbst bleibt in jedem Fall sichtbar."
+#: admin/partials/settings.php:473
+msgid "What the browser shows when a visitor hovers the label. The label itself stays visible either way."
+msgstr "Was der Browser anzeigt, wenn Besucher die Kennzeichnung überfahren. Die Kennzeichnung selbst bleibt in jedem Fall sichtbar."
 
-#: admin/partials/settings.php:437
-msgid ""
-"The detection source is only ever carried by the tooltip, so hiding it also "
-"hides that detail from screen readers."
-msgstr ""
-"Die Erkennungsquelle steht ausschließlich im Tooltip. Wird er ausgeblendet, "
-"ist diese Angabe auch für Screenreader nicht mehr verfügbar."
+#: admin/partials/settings.php:474
+msgid "The detection source is only ever carried by the tooltip, so hiding it also hides that detail from screen readers."
+msgstr "Die Erkennungsquelle steht ausschließlich im Tooltip. Wird er ausgeblendet, ist diese Angabe auch für Screenreader nicht mehr verfügbar."
 
-#: admin/partials/settings.php:369
+#: admin/partials/settings.php:481
 msgid "Badge Placement (Images)"
 msgstr "Badge-Platzierung (Bilder)"
 
-#: admin/partials/settings.php:373
+#: admin/partials/settings.php:485
 msgid "Unchanged (Badge top right, Overlay top left, Border top centre)"
 msgstr "Unverändert (Badge oben rechts, Overlay oben links, Rahmen oben mittig)"
 
-#: admin/partials/settings.php:379
-msgid "Where the badge sits on an image. Applies to the Badge, Overlay and Border styles; the Caption style always sits below the image. Elements with a background image are set separately below."
-msgstr "Wo das Badge auf einem Bild sitzt. Gilt für die Stile Badge, Overlay und Rahmen; der Stil Beschriftung sitzt immer unter dem Bild. Elemente mit Hintergrundbild werden weiter unten separat eingestellt."
-
-#: admin/partials/settings.php:387
+#: admin/partials/settings.php:496
 msgid "Badge Placement (Background Images)"
 msgstr "Badge-Platzierung (Hintergrundbilder)"
 
-#: admin/partials/settings.php:394
+#: admin/partials/settings.php:504
 msgid "Where the badge sits on an element with an AI-generated background image."
 msgstr "Wo das Badge auf einem Element mit KI-generiertem Hintergrundbild sitzt."
 
-#: includes/class-euaiactready-content-transparency.php:139
-#: includes/class-euaiactready-content-transparency.php:346
+#: includes/class-euaiactready-content-transparency.php:230
+#: includes/class-euaiactready-content-transparency.php:437
 msgid "This content was created with AI assistance."
 msgstr "Dieser Inhalt wurde mit KI-Unterstützung erstellt."
 
-#: includes/class-euaiactready-content-transparency.php:141
-#: includes/class-euaiactready-content-transparency.php:348
+#: includes/class-euaiactready-content-transparency.php:232
+#: includes/class-euaiactready-content-transparency.php:439
 msgid "This content was AI-generated and reviewed by a human editor."
 msgstr "Dieser Inhalt wurde KI-generiert und redaktionell von einem Menschen geprüft."
 
-#: includes/class-euaiactready-content-transparency.php:175
-#: includes/class-euaiactready-content-transparency.php:211
+#. translators: %s: comma-separated list of AI tool names.
+#: includes/class-euaiactready-content-transparency.php:266
+#: includes/class-euaiactready-content-transparency.php:302
+#, php-format
 msgid "AI tools in use on this site: %s."
 msgstr "Auf dieser Website eingesetzte KI-Werkzeuge: %s."
 
-#: includes/class-euaiactready-content-transparency.php:182
+#. translators: %s: AI disclosure message.
+#: includes/class-euaiactready-content-transparency.php:273
+#, php-format
 msgid "- AI Disclosure: %s"
 msgstr "- KI-Offenlegung: %s"
 
-#: includes/class-euaiactready-content-transparency.php:491
+#: includes/class-euaiactready-content-transparency.php:582
 msgid "AI Content Marked"
 msgstr "KI-Inhalt markiert"
 
-#: includes/class-euaiactready-content-transparency.php:493
+#: includes/class-euaiactready-content-transparency.php:584
 msgid "- a transparency notice will be displayed to visitors."
 msgstr "- Besuchern wird ein Transparenzhinweis angezeigt."
 
@@ -1568,7 +1547,9 @@ msgstr "KI-Transparenz: Diese Website nutzt KI-gestützte Werkzeuge und Dienste.
 msgid "Please wait a moment before syncing again."
 msgstr "Bitte warten Sie einen Moment, bevor Sie erneut synchronisieren."
 
+#. translators: 1: total tools in registry, 2: detected tool count
 #: includes/class-euaiactready-ai-tools.php:169
+#, php-format
 msgid "Registry refreshed: %1$d tools, %2$d detected on this site."
 msgstr "Verzeichnis aktualisiert: %1$d Werkzeuge, %2$d auf dieser Website erkannt."
 
@@ -1589,7 +1570,7 @@ msgstr "Werkzeug hinzugefügt und Scan aktualisiert."
 msgid "Tool removed."
 msgstr "Werkzeug entfernt."
 
-#: admin/partials/settings.php:240
+#: admin/partials/settings.php:244
 msgid "Notice Position"
 msgstr "Position des Hinweises"
 
@@ -1605,6 +1586,1068 @@ msgstr "Unter dem Inhalt"
 msgid "Above and below the content"
 msgstr "Über und unter dem Inhalt"
 
-#: admin/partials/settings.php:248
+#: admin/partials/settings.php:252
 msgid "Choose whether the notice appears above the content, below it, or in both places."
 msgstr "Legt fest, ob der Hinweis über dem Inhalt, unter dem Inhalt oder an beiden Stellen erscheint."
+
+#: admin/class-euaiactready-admin.php:97
+msgid "Saving..."
+msgstr ""
+
+#: admin/class-euaiactready-admin.php:99
+msgid "Remove this manual AI tool declaration?"
+msgstr ""
+
+#: admin/class-euaiactready-admin.php:158
+#: admin/class-euaiactready-admin.php:159
+#: admin/class-euaiactready-admin.php:355
+msgid "Assessment"
+msgstr ""
+
+#: admin/class-euaiactready-admin.php:167
+#: admin/class-euaiactready-admin.php:168
+#: admin/class-euaiactready-admin.php:343
+#: admin/class-euaiactready-admin.php:353
+#: admin/partials/euaiactready-admin-ai-tools.php:76
+msgid "AI Systems"
+msgstr ""
+
+#: admin/class-euaiactready-admin.php:194
+#: admin/class-euaiactready-admin.php:195
+#: admin/partials/ai-literacy.php:42
+msgid "AI Literacy"
+msgstr ""
+
+#: admin/class-euaiactready-admin.php:279
+#: admin/partials/ai-literacy.php:19
+#: admin/partials/assessment.php:19
+#: admin/partials/report.php:22
+msgid "Unauthorized."
+msgstr ""
+
+#: admin/class-euaiactready-admin.php:296
+msgid "EU AI Act Readiness"
+msgstr ""
+
+#: admin/class-euaiactready-admin.php:337
+msgid "Compliance Readiness"
+msgstr ""
+
+#: admin/partials/ai-content.php:55
+msgid "No content has been marked with an AI disclosure level yet."
+msgstr ""
+
+#: admin/partials/ai-content.php:78
+msgid "Disclosure Level"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:30
+msgid "Literacy checklist saved."
+msgstr ""
+
+#: admin/partials/ai-literacy.php:50
+msgid "Article 4 - AI Literacy Obligations"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:52
+msgid "Article 4 of the EU AI Act requires deployers of AI systems to ensure that their staff possess sufficient AI literacy to understand and oversee AI tools in use. Use this checklist to track your compliance with these obligations."
+msgstr ""
+
+#: admin/partials/ai-literacy.php:61
+#: admin/partials/ai-literacy.php:152
+msgid "Complete"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:61
+#: admin/partials/ai-literacy.php:153
+msgid "In progress"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:68
+msgid "Compliance Checklist"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:70
+msgid "Check each item when the obligation has been addressed for your organisation. Your answers are saved to this site only and are not transmitted externally."
+msgstr ""
+
+#: admin/partials/ai-literacy.php:93
+msgid "Save Checklist"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:99
+msgid "What Article 4 Requires"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:101
+msgid "Article 4 of the EU AI Act applies to providers and deployers of AI systems. As a website operator using AI tools, you are considered a deployer. The Article requires you to take reasonable steps to ensure that staff and relevant stakeholders have sufficient AI literacy."
+msgstr ""
+
+#: admin/partials/ai-literacy.php:104
+msgid "This means ensuring that people who work with or are affected by AI tools understand:"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:107
+msgid "What AI systems are in use and what they do"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:108
+msgid "The capabilities and limitations of those AI systems"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:109
+msgid "The impact those systems may have on individuals and decisions"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:110
+msgid "How to identify and escalate concerns about AI behaviour"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:114
+msgid "This plugin provides tools to support AI literacy obligations. It does not provide legal advice and cannot guarantee compliance. Consult a legal professional for formal compliance assessment."
+msgstr ""
+
+#: admin/partials/ai-literacy.php:117
+msgid "Creating a dated record:"
+msgstr ""
+
+#: admin/partials/ai-literacy.php:118
+msgid "To generate a dated compliance document that includes your AI literacy status alongside your readiness score and AI systems, use the Export Report button on the Dashboard."
+msgstr ""
+
+#: admin/partials/ai-literacy.php:120
+msgid "Go to Dashboard"
+msgstr ""
+
+#: admin/partials/assessment.php:34
+msgid "Assessment saved."
+msgstr ""
+
+#: admin/partials/assessment.php:56
+#: admin/partials/report.php:260
+msgid "Compliance Assessment"
+msgstr ""
+
+#: admin/partials/assessment.php:62
+msgid "EU AI Act Self-Assessment"
+msgstr ""
+
+#: admin/partials/assessment.php:64
+msgid "Answer the questions below to identify which EU AI Act transparency obligations apply to your site. Your answers are used to tailor the readiness score and recommended actions."
+msgstr ""
+
+#: admin/partials/assessment.php:69
+msgid "Assessment complete. You can update your answers at any time."
+msgstr ""
+
+#: admin/partials/assessment.php:79
+msgid "Your Results"
+msgstr ""
+
+#: admin/partials/assessment.php:83
+msgid "Update Answers"
+msgstr ""
+
+#: admin/partials/assessment.php:90
+#: admin/partials/assessment.php:203
+msgid "Your Applicable Obligations"
+msgstr ""
+
+#: admin/partials/assessment.php:103
+#: admin/partials/assessment.php:256
+msgid "Configure"
+msgstr ""
+
+#: admin/partials/assessment.php:110
+msgid "Based on your current answers, no specific Article 50 obligations were flagged. Your answers are saved for reference."
+msgstr ""
+
+#. translators: %d: question number
+#: admin/partials/assessment.php:153
+#, php-format
+msgid "Question %d"
+msgstr ""
+
+#: admin/partials/assessment.php:162
+#: admin/partials/report.php:282
+msgid "Sometimes"
+msgstr ""
+
+#: admin/partials/assessment.php:188
+#: admin/partials/assessment.php:215
+msgid "Back"
+msgstr ""
+
+#: admin/partials/assessment.php:193
+#: admin/partials/assessment.php:224
+msgid "Save Assessment"
+msgstr ""
+
+#: admin/partials/assessment.php:199
+msgid "These results are not yet saved. Click Save Assessment to record them, or click Configure on any obligation below - both will save your assessment automatically."
+msgstr ""
+
+#: admin/partials/assessment.php:204
+msgid "Based on your answers, here are the EU AI Act obligations that apply to your site. Save the assessment to record these results and update your readiness score."
+msgstr ""
+
+#: admin/partials/assessment.php:206
+msgid "Calculating your obligations..."
+msgstr ""
+
+#: admin/partials/assessment.php:219
+msgid "Next"
+msgstr ""
+
+#. translators: %1$d: current step number, %2$d: total number of steps
+#: admin/partials/assessment.php:238
+#, php-format
+msgid "Step %1$d of %2$d"
+msgstr ""
+
+#: admin/partials/assessment.php:254
+msgid "Based on your current answers, no specific Article 50 obligations were flagged. Save your answers to record them for reference."
+msgstr ""
+
+#: admin/partials/assessment.php:255
+msgid "Based on your answers, the following EU AI Act obligations apply to your site:"
+msgstr ""
+
+#: admin/partials/assessment.php:258
+msgid "Results"
+msgstr ""
+
+#: admin/partials/dashboard.php:130
+msgid "Compliance Readiness Score"
+msgstr ""
+
+#: admin/partials/dashboard.php:135
+msgid "Each factor represents a key EU AI Act obligation. Address all six to reach 100."
+msgstr ""
+
+#: admin/partials/dashboard.php:140
+msgid "Export Report"
+msgstr ""
+
+#: admin/partials/dashboard.php:147
+msgid "Items to address:"
+msgstr ""
+
+#: admin/partials/dashboard.php:261
+msgid "AI Custom Post Types Detected"
+msgstr ""
+
+#: admin/partials/dashboard.php:289
+msgid "AI Systems Detected"
+msgstr ""
+
+#: admin/partials/dashboard.php:391
+#: admin/partials/report.php:230
+msgid "AI Systems Notice"
+msgstr ""
+
+#: admin/partials/dashboard.php:427
+msgid "EU AI Act Enforcement Timeline"
+msgstr ""
+
+#: admin/partials/dashboard.php:430
+msgid "Key dates for EU AI Act enforcement. Dates shown in green are already in effect."
+msgstr ""
+
+#: admin/partials/dashboard.php:437
+msgid "February 2025"
+msgstr ""
+
+#: admin/partials/dashboard.php:438
+msgid "Prohibited AI practices banned"
+msgstr ""
+
+#: admin/partials/dashboard.php:439
+msgid "Ban on unacceptable-risk AI systems: subliminal manipulation, social scoring by governments, and real-time remote biometric surveillance."
+msgstr ""
+
+#: admin/partials/dashboard.php:443
+msgid "August 2025"
+msgstr ""
+
+#: admin/partials/dashboard.php:444
+msgid "Transparency obligations now in force (Article 50)"
+msgstr ""
+
+#: admin/partials/dashboard.php:445
+msgid "Chatbot disclosure, deepfake labeling, AI-generated content transparency. This is what this plugin helps you address."
+msgstr ""
+
+#: admin/partials/dashboard.php:449
+msgid "August 2026"
+msgstr ""
+
+#: admin/partials/dashboard.php:450
+msgid "Full Act enforceable - GPAI model obligations"
+msgstr ""
+
+#: admin/partials/dashboard.php:451
+msgid "General Purpose AI (GPAI) model providers must comply with transparency, copyright, and systemic risk requirements."
+msgstr ""
+
+#: admin/partials/dashboard.php:455
+msgid "August 2027"
+msgstr ""
+
+#: admin/partials/dashboard.php:456
+msgid "High-risk AI obligations extended"
+msgstr ""
+
+#: admin/partials/dashboard.php:457
+msgid "Additional requirements for high-risk AI systems in areas such as critical infrastructure, education, employment, and essential services."
+msgstr ""
+
+#. translators: %d: number of months until the deadline
+#: admin/partials/dashboard.php:480
+#, php-format
+msgid "%d month away"
+msgid_plural "%d months away"
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/partials/dashboard.php:484
+msgid "This month"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:32
+msgid "Content AI"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:33
+msgid "SEO AI"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:34
+msgid "Image AI"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:35
+msgid "Chatbot"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:36
+msgid "Video / Media AI"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:37
+msgid "Translation AI"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:38
+msgid "AI Search"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:39
+msgid "Personalisation AI"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:40
+msgid "Commerce AI"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:41
+msgid "Security AI"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:42
+msgid "Voice AI"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:43
+msgid "Other"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:83
+msgid "AI Systems Registry"
+msgstr ""
+
+#. translators: %d is the number of tools in the registry
+#: admin/partials/euaiactready-admin-ai-tools.php:90
+#, php-format
+msgid "%d known AI systems"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:100
+msgid "Up to date"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:103
+msgid "Sync failed"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:106
+msgid "Never synced"
+msgstr ""
+
+#. translators: %s is a human-readable time ago string
+#: admin/partials/euaiactready-admin-ai-tools.php:116
+#, php-format
+msgid "Last synced %s ago"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:128
+msgid "Sync AI Systems"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:136
+msgid "Frontend Disclosure Notice"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:138
+msgid "When enabled, a disclosure notice listing your AI tools is added to the footer of every page on your site. Only tools with \"Show in notice\" toggled on below will appear in it."
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:145
+msgid "Enable notice"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:148
+#: admin/partials/euaiactready-admin-ai-tools.php:157
+msgid "Show AI Tools disclosure notice on the frontend"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:162
+msgid "Notice style"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:166
+msgid "Floating badge — bottom-right corner (Recommended)"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:167
+msgid "Banner — full-width bar at bottom"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:168
+msgid "Badge — compact inline chip"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:169
+msgid "Inline — text block in content flow"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:170
+msgid "Modal — click a button to open"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:172
+msgid "Matches the styles used by Content and Chatbot transparency notices."
+msgstr ""
+
+#. translators: %d is the number of detected tools
+#: admin/partials/euaiactready-admin-ai-tools.php:186
+#, php-format
+msgid "Detected AI Tools (%d)"
+msgstr ""
+
+#. translators: %s is a human-readable time ago string
+#: admin/partials/euaiactready-admin-ai-tools.php:195
+#, php-format
+msgid "last scanned %s ago"
+msgstr ""
+
+#. translators: %s is a human-readable time ago string
+#: admin/partials/euaiactready-admin-ai-tools.php:207
+#, php-format
+msgid "Live page scan (JS signatures): last run %s ago. Tools detected this way are shown with a \"Script\" source tag."
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:218
+msgid "No AI tools detected on this site yet."
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:220
+msgid "Click \"Refresh Registry\" above to download the tool list and run the first scan."
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:222
+msgid "This means none of your installed plugins match the registry. You can manually declare tools below."
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:230
+msgid "Tool"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:231
+#: admin/partials/euaiactready-admin-ai-tools.php:337
+#: admin/partials/euaiactready-admin-ai-tools.php:355
+#: admin/partials/report.php:244
+msgid "Category"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:232
+msgid "EU AI Act"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:233
+msgid "Source"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:234
+msgid "Show in notice"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:268
+msgid "No disclosure required"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:273
+msgid "Manual"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:274
+msgid "Remove manual declaration"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:275
+msgid "Remove"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:278
+msgid "Script"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:280
+msgid "Registry"
+msgstr ""
+
+#. translators: %s: AI tool name
+#: admin/partials/euaiactready-admin-ai-tools.php:286
+#, php-format
+msgid "Show %s in frontend notice"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:295
+msgid "This tool has no Article 50 disclosure requirement but can still be disclosed voluntarily."
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:310
+msgid "Manually Declare an AI Tool"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:312
+msgid "The plugins listed below are active on your site but were not recognised by the registry. Most of them are not AI tools - they simply have not been reviewed yet. Do not mark a plugin unless you know it actually uses AI."
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:318
+msgid "Possible AI tools detected:"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:319
+msgid "Some plugins below have names or descriptions that suggest they may use AI (highlighted with a badge). Review them carefully and mark any that do."
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:325
+msgid "How to use this section:"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:326
+msgid "If you recognise a plugin that uses AI, choose the correct category from its dropdown, then click \"Mark as AI\". Leave the rest - they are just plugins not yet in our database."
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:331
+msgid "All active plugins are already in the registry. No unknown plugins to declare."
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:336
+msgid "Plugin"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:338
+msgid "Action"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:348
+msgid "Name or description suggests this plugin may use AI"
+msgstr ""
+
+#: admin/partials/euaiactready-admin-ai-tools.php:349
+msgid "Possibly AI"
+msgstr ""
+
+#. translators: %s: website name
+#: admin/partials/report.php:91
+#, php-format
+msgid "EU AI Act Compliance Report - %s"
+msgstr ""
+
+#: admin/partials/report.php:147
+msgid "Print / Save PDF"
+msgstr ""
+
+#: admin/partials/report.php:149
+msgid "EU AI Act Compliance Report"
+msgstr ""
+
+#: admin/partials/report.php:156
+msgid "This report summarises the AI transparency and compliance measures active on this site as of the date shown above. It covers the readiness score, registered AI systems, self-assessment answers, and AI literacy obligations under the EU AI Act. It is provided for informational purposes and does not constitute legal advice."
+msgstr ""
+
+#: admin/partials/report.php:159
+msgid "Readiness Score"
+msgstr ""
+
+#: admin/partials/report.php:167
+msgid "Score based on completed transparency obligations."
+msgstr ""
+
+#: admin/partials/report.php:186
+msgid "AI Content Statistics"
+msgstr ""
+
+#: admin/partials/report.php:190
+msgid "AI Systems registered"
+msgstr ""
+
+#: admin/partials/report.php:194
+msgid "AI content items"
+msgstr ""
+
+#: admin/partials/report.php:198
+msgid "AI images"
+msgstr ""
+
+#: admin/partials/report.php:202
+msgid "Disclosure Notices"
+msgstr ""
+
+#: admin/partials/report.php:206
+msgid "Notice"
+msgstr ""
+
+#: admin/partials/report.php:214
+#: admin/partials/report.php:220
+#: admin/partials/report.php:226
+#: admin/partials/report.php:232
+msgid "&#10003; Enabled"
+msgstr ""
+
+#: admin/partials/report.php:214
+#: admin/partials/report.php:220
+#: admin/partials/report.php:226
+#: admin/partials/report.php:232
+msgid "&#10007; Disabled"
+msgstr ""
+
+#: admin/partials/report.php:224
+msgid "Media / Image Labels"
+msgstr ""
+
+#: admin/partials/report.php:239
+msgid "Registered AI Systems"
+msgstr ""
+
+#: admin/partials/report.php:243
+msgid "Name"
+msgstr ""
+
+#: admin/partials/report.php:245
+msgid "Article"
+msgstr ""
+
+#: admin/partials/report.php:265
+msgid "Question"
+msgstr ""
+
+#: admin/partials/report.php:266
+msgid "Answer"
+msgstr ""
+
+#: admin/partials/report.php:291
+msgid "Applicable obligations:"
+msgstr ""
+
+#: admin/partials/report.php:305
+msgid "Assessment not yet completed."
+msgstr ""
+
+#: admin/partials/report.php:308
+msgid "AI Literacy Checklist (Article 4)"
+msgstr ""
+
+#: admin/partials/report.php:321
+msgid "Next Steps"
+msgstr ""
+
+#: admin/partials/report.php:322
+msgid "The following obligations have not yet been addressed. Completing these will improve your readiness score:"
+msgstr ""
+
+#: admin/partials/report.php:335
+msgid "Generated by"
+msgstr ""
+
+#: admin/partials/report.php:337
+msgid "This report is for informational purposes only and does not constitute legal advice or guarantee compliance with the EU AI Act."
+msgstr ""
+
+#: admin/partials/settings.php:159
+msgid "RSS &amp; Feeds"
+msgstr ""
+
+#: admin/partials/settings.php:160
+#: admin/partials/settings.php:833
+msgid "Shortcode"
+msgstr ""
+
+#: admin/partials/settings.php:277
+msgid "Content Types"
+msgstr ""
+
+#: admin/partials/settings.php:278
+msgid "Select which post types should have the AI Content Disclosure meta box, list column, and bulk actions."
+msgstr ""
+
+#: admin/partials/settings.php:288
+msgid "Enabled Post Types"
+msgstr ""
+
+#: admin/partials/settings.php:291
+msgid "No public post types found."
+msgstr ""
+
+#: admin/partials/settings.php:308
+msgid "Posts and pages are enabled by default. Custom post types from installed themes and plugins appear here once activated."
+msgstr ""
+
+#: admin/partials/settings.php:413
+msgid "Label Featured Images"
+msgstr ""
+
+#: admin/partials/settings.php:417
+msgid "Also add the AI label to a post's featured image, not just images inside the content."
+msgstr ""
+
+#: admin/partials/settings.php:490
+msgid "Where the badge sits on an image. Elements with a background image are set separately below."
+msgstr ""
+
+#: admin/partials/settings.php:649
+msgid "Auto-detect (Recommended)"
+msgstr ""
+
+#: admin/partials/settings.php:650
+msgid "Specific Platforms"
+msgstr ""
+
+#: admin/partials/settings.php:666
+msgid "Custom / Other"
+msgstr ""
+
+#: admin/partials/settings.php:669
+msgid "Auto-detect probes for all supported platforms automatically. Select a specific platform only if auto-detect gives incorrect results."
+msgstr ""
+
+#: admin/partials/settings.php:791
+msgid "RSS & Feed Disclosure"
+msgstr ""
+
+#: admin/partials/settings.php:792
+msgid "Append a plain-text AI disclosure note to RSS feed content and titles for posts marked as AI-generated."
+msgstr ""
+
+#: admin/partials/settings.php:796
+msgid "When enabled, a plain-text disclosure line is appended to the RSS content and excerpt for any post marked as AI-generated. Feed readers and aggregators will see the disclosure alongside the article."
+msgstr ""
+
+#: admin/partials/settings.php:798
+msgid "RSS disclosures are independent of the global transparency toggle and are controlled solely by the settings below."
+msgstr ""
+
+#: admin/partials/settings.php:805
+msgid "Enable RSS Disclosure"
+msgstr ""
+
+#: admin/partials/settings.php:809
+msgid "Append a plain-text \"- AI Disclosure: …\" line to RSS feed content and excerpts for AI-marked posts."
+msgstr ""
+
+#: admin/partials/settings.php:815
+msgid "Prefix Feed Titles"
+msgstr ""
+
+#: admin/partials/settings.php:819
+msgid "Add [AI Content] before the post title in RSS feeds for AI-marked posts."
+msgstr ""
+
+#: admin/partials/settings.php:834
+msgid "Use the [eu_ai_disclosure] shortcode to place an AI disclosure notice anywhere - inside posts, pages, widgets, or block templates."
+msgstr ""
+
+#: admin/partials/settings.php:836
+msgid "Basic Usage"
+msgstr ""
+
+#: admin/partials/settings.php:839
+msgid "Content notice"
+msgstr ""
+
+#: admin/partials/settings.php:842
+msgid "Displays the default content notice using your saved style and message from Content Transparency settings."
+msgstr ""
+
+#: admin/partials/settings.php:846
+msgid "Image notice"
+msgstr ""
+
+#: admin/partials/settings.php:849
+msgid "Displays an AI-generated image disclosure notice."
+msgstr ""
+
+#: admin/partials/settings.php:853
+msgid "Chatbot notice"
+msgstr ""
+
+#: admin/partials/settings.php:856
+msgid "Displays an AI chatbot disclosure notice using your saved chatbot style and message."
+msgstr ""
+
+#: admin/partials/settings.php:861
+msgid "Optional Attributes"
+msgstr ""
+
+#: admin/partials/settings.php:868
+msgid "Override the notice style for this instance. Accepted values:"
+msgstr ""
+
+#: admin/partials/settings.php:877
+msgid "Override the notice text for this instance only. Omit to use the saved message."
+msgstr ""
+
+#: admin/partials/settings.php:882
+msgid "Combined Example"
+msgstr ""
+
+#: admin/partials/settings.php:886
+msgid "The shortcode always renders regardless of whether the global transparency toggle is on or off. Placing the shortcode is an explicit editorial decision."
+msgstr ""
+
+#. translators: %d is the HTTP response code
+#: includes/ai-tools/class-euaiactready-ai-tools-registry.php:80
+#, php-format
+msgid "Registry fetch returned HTTP %d."
+msgstr ""
+
+#: includes/ai-tools/class-euaiactready-ai-tools-registry.php:90
+msgid "Registry response is not valid JSON."
+msgstr ""
+
+#: includes/ai-tools/class-euaiactready-ai-tools-registry.php:99
+msgid "Registry JSON does not contain a tools array."
+msgstr ""
+
+#. translators: AI literacy checklist item
+#: includes/class-euaiactready-ai-literacy.php:35
+msgid "Staff and contributors are aware of which AI tools are used on this site"
+msgstr ""
+
+#. translators: AI literacy checklist item
+#: includes/class-euaiactready-ai-literacy.php:40
+msgid "An internal AI usage policy has been documented"
+msgstr ""
+
+#. translators: AI literacy checklist item
+#: includes/class-euaiactready-ai-literacy.php:45
+msgid "Team members who use AI tools have completed relevant AI literacy training"
+msgstr ""
+
+#. translators: AI literacy checklist item
+#: includes/class-euaiactready-ai-literacy.php:50
+msgid "A schedule is in place to review and update AI tool usage and policies"
+msgstr ""
+
+#. translators: AI literacy checklist item
+#: includes/class-euaiactready-ai-literacy.php:55
+msgid "Site visitors are informed about AI-generated content and AI systems used"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:34
+msgid "Does your site use AI chatbots or virtual assistants that interact with visitors?"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:35
+msgid "Examples: Tidio, Intercom, Drift, Tawk.to, custom chat widgets"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:37
+msgid "Enable Chatbot Transparency and configure your chatbot platform in Settings."
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:42
+msgid "Does your site publish content generated or substantially assisted by AI tools?"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:43
+msgid "Examples: blog posts written with ChatGPT, product descriptions from Jasper, AI-assisted copy"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:45
+msgid "Enable Content Transparency and mark AI-generated posts with the disclosure meta box."
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:50
+msgid "Does your site use AI-generated images, illustrations, or media?"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:51
+msgid "Examples: images from DALL-E, Midjourney, Stable Diffusion, Adobe Firefly"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:53
+msgid "Enable Media Transparency and scan or manually mark AI-generated images."
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:58
+msgid "Does your site use AI for personalisation, recommendations, or audience targeting?"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:59
+msgid "Examples: product recommendations, content personalisation, behavioural targeting"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:61
+msgid "Declare personalisation AI tools in the AI Systems registry and enable the disclosure notice."
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:66
+msgid "Does your site use AI translation tools to serve content in multiple languages?"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:67
+msgid "Examples: DeepL, Google Translate, Weglot AI, WPML AI"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:69
+msgid "Declare translation AI tools in the AI Systems registry and consider adding a notice."
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:74
+msgid "Does your site generate or host synthetic audio, video, or deepfake-style content?"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:75
+msgid "Examples: AI voiceovers, AI-generated video, cloned voices, digital avatars"
+msgstr ""
+
+#: includes/class-euaiactready-assessment.php:77
+msgid "Label synthetic audio/video content clearly. Add an explicit disclosure to affected pages."
+msgstr ""
+
+#: includes/class-euaiactready-post-meta-box.php:84
+#: includes/class-euaiactready-post-meta-box.php:282
+msgid "No AI used"
+msgstr ""
+
+#: includes/class-euaiactready-post-meta-box.php:85
+#: includes/class-euaiactready-post-meta-box.php:267
+msgid "AI-assisted content"
+msgstr ""
+
+#: includes/class-euaiactready-post-meta-box.php:86
+#: includes/class-euaiactready-post-meta-box.php:272
+msgid "AI-generated content"
+msgstr ""
+
+#: includes/class-euaiactready-post-meta-box.php:87
+msgid "AI-generated, human reviewed (exempt from labeling under Article 50(4))"
+msgstr ""
+
+#: includes/class-euaiactready-post-meta-box.php:143
+msgid "Select the AI disclosure level for this content."
+msgstr ""
+
+#: includes/class-euaiactready-post-meta-box.php:268
+msgid "AI-assisted"
+msgstr ""
+
+#: includes/class-euaiactready-post-meta-box.php:277
+msgid "AI-generated, human reviewed"
+msgstr ""
+
+#: includes/class-euaiactready-post-meta-box.php:278
+msgid "AI (reviewed)"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:114
+msgid "Good"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:115
+msgid "Needs attention"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:116
+msgid "Action required"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:151
+msgid "You have AI systems registered but the disclosure notice is turned off - your visitors cannot see them"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:153
+msgid "AI Systems disclosure notice is disabled - enable it and mark at least one tool to show to visitors"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:155
+msgid "AI Systems notice is enabled but no tools are set to show to visitors"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:157
+msgid "AI Systems disclosure notice is enabled and at least one tool is disclosed to visitors"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:165
+#: includes/class-euaiactready-readiness.php:257
+msgid "Go to AI Systems"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:199
+msgid "Content transparency is enabled and at least one post is marked as AI-generated"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:202
+#: includes/class-euaiactready-readiness.php:220
+#: includes/class-euaiactready-readiness.php:239
+msgid "Go to Settings"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:217
+msgid "Media transparency is enabled (AI-generated images are flagged)"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:236
+msgid "Chatbot transparency is enabled and a chatbot platform is configured"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:254
+msgid "At least one AI tool has been detected or declared on this site"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:272
+msgid "Article 4 obligations not yet started - complete the assessment and AI literacy checklist"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:274
+msgid "Compliance assessment not yet completed - complete all questions in the Assessment wizard"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:276
+msgid "AI literacy checklist not yet complete - review the Article 4 obligations checklist"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:278
+msgid "Article 4 obligations addressed - assessment complete and AI literacy checklist done"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:290
+msgid "Go to Assessment"
+msgstr ""
+
+#: includes/class-euaiactready-readiness.php:290
+msgid "Go to AI Literacy"
+msgstr ""
