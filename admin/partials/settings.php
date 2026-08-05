@@ -26,6 +26,12 @@ if ( isset( $_POST['save_settings'] ) && check_admin_referer( 'euaiactready_sett
 	if ( isset( $euaiactready_post_data['notice_style'] ) ) {
 		update_option( 'euaiactready_notice_style', sanitize_text_field( $euaiactready_post_data['notice_style'] ) );
 	}
+	if ( isset( $euaiactready_post_data['notice_position'] ) ) {
+		$euaiactready_position = sanitize_key( $euaiactready_post_data['notice_position'] );
+		if ( in_array( $euaiactready_position, EUAIACTREADY_Content_Transparency::euaiactready_get_notice_positions_keys(), true ) ) {
+			update_option( 'euaiactready_notice_position', $euaiactready_position );
+		}
+	}
 	if ( isset( $euaiactready_post_data['notice_message'] ) ) {
 		update_option( 'euaiactready_notice_message', sanitize_textarea_field( $euaiactready_post_data['notice_message'] ) );
 	}
@@ -82,7 +88,11 @@ if ( isset( $_POST['save_settings'] ) && check_admin_referer( 'euaiactready_sett
 			isset( $euaiactready_allowed[ $euaiactready_size ] ) ? $euaiactready_size : 'normal'
 		);
 	}
-	if ( defined( 'BRICKS_VERSION' ) && isset( $euaiactready_post_data['bricks_bg_label_position'] ) ) {
+	// Not gated on Bricks: any theme can produce background labels through the
+	// euaiactready_label_media filter, so every site needs to be able to place them.
+	// A select is always submitted when the field renders, so isset() is enough - unlike
+	// the checkbox above, where a missing value would read as "off".
+	if ( isset( $euaiactready_post_data['bricks_bg_label_position'] ) ) {
 		$euaiactready_bg_position = sanitize_key( $euaiactready_post_data['bricks_bg_label_position'] );
 		$euaiactready_allowed     = EUAIACTREADY_Media_Transparency::euaiactready_get_label_positions();
 
@@ -117,6 +127,7 @@ if ( ! is_array( $euaiactready_enabled_post_types ) ) {
 
 $euaiactready_transparency_enabled = get_option( 'euaiactready_transparency_enabled', true );
 $euaiactready_notice_style         = get_option( 'euaiactready_notice_style', EUAIACTREADY_DEFAULT_NOTICE_STYLE );
+$euaiactready_notice_position      = sanitize_key( get_option( 'euaiactready_notice_position', EUAIACTREADY_DEFAULT_NOTICE_POSITION ) );
 $euaiactready_notice_message       = sanitize_text_field( get_option( 'euaiactready_notice_message', '' ) );
 $euaiactready_show_in_excerpts     = get_option( 'euaiactready_show_in_excerpts', true );
 
@@ -225,6 +236,20 @@ $euaiactready_tab_definitions = array(
 						<option value="modal" <?php selected( $euaiactready_notice_style, 'modal' ); ?>><?php esc_html_e( 'Modal (Click to View)', 'eu-ai-act-ready' ); ?></option>
 						</select>
 						<p class="description"><?php esc_html_e( 'Choose how transparency notices are displayed.', 'eu-ai-act-ready' ); ?></p>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="notice_position"><?php esc_html_e( 'Notice Position', 'eu-ai-act-ready' ); ?></label>
+					</th>
+					<td>
+						<select id="notice_position" name="notice_position">
+						<?php foreach ( EUAIACTREADY_Content_Transparency::euaiactready_get_notice_positions() as $euaiactready_position_key => $euaiactready_position_label ) : ?>
+							<option value="<?php echo esc_attr( $euaiactready_position_key ); ?>" <?php selected( $euaiactready_notice_position, $euaiactready_position_key ); ?>><?php echo esc_html( $euaiactready_position_label ); ?></option>
+						<?php endforeach; ?>
+						</select>
+						<p class="description"><?php esc_html_e( 'Choose whether the notice appears above the content, below it, or in both places.', 'eu-ai-act-ready' ); ?></p>
 					</td>
 				</tr>
 
@@ -466,7 +491,6 @@ $euaiactready_tab_definitions = array(
 					</td>
 				</tr>
 
-				<?php if ( defined( 'BRICKS_VERSION' ) ) : ?>
 				<tr>
 					<th scope="row">
 						<label for="bricks_bg_label_position"><?php esc_html_e( 'Badge Placement (Background Images)', 'eu-ai-act-ready' ); ?></label>
@@ -480,7 +504,6 @@ $euaiactready_tab_definitions = array(
 						<p class="description"><?php esc_html_e( 'Where the badge sits on an element with an AI-generated background image.', 'eu-ai-act-ready' ); ?></p>
 					</td>
 				</tr>
-				<?php endif; ?>
 
 				<tr>
 					<th scope="row">

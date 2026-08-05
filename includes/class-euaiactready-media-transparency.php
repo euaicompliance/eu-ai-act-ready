@@ -77,6 +77,9 @@ class EUAIACTREADY_Media_Transparency {
 		// Add image labels to the post's featured image.
 		add_filter( 'post_thumbnail_html', array( $this, 'euaiactready_add_featured_image_label' ), 999 );
 
+		// Opt-in entry point for themes that render images as CSS backgrounds.
+		add_filter( 'euaiactready_label_media', array( $this, 'euaiactready_label_media_fragment' ) );
+
 		// Add media library column.
 		add_filter( 'manage_media_columns', array( $this, 'euaiactready_add_media_column' ) );
 		add_action( 'manage_media_custom_column', array( $this, 'euaiactready_display_media_column' ), 10, 2 );
@@ -1149,6 +1152,54 @@ class EUAIACTREADY_Media_Transparency {
 		}
 
 		return $this->euaiactready_get_markup_engine()->add_labels_to_content( $html );
+	}
+
+	/**
+	 * Label AI images in a markup fragment a theme renders itself.
+	 *
+	 * Both automatic paths need an <img> tag to attach a label to: 'the_content' for
+	 * in-content images and 'post_thumbnail_html' for the featured image. A theme that
+	 * renders an image as a CSS background instead - a common pattern for hero and
+	 * header areas - produces no <img>, so neither path ever sees it and the image
+	 * stays unlabelled.
+	 *
+	 * The Bricks integration already solves this for its own output. This exposes the
+	 * same capability to any theme, which only has to pass its fragment through:
+	 *
+	 *     echo apply_filters( 'euaiactready_label_media', $header_html );
+	 *
+	 * Note that a theme needs no function_exists() guard for this. With the plugin
+	 * inactive the filter is simply unregistered and apply_filters() returns the
+	 * fragment unchanged.
+	 *
+	 * Both inline `style="background-image: url(...)"` and regular <img> tags in the
+	 * fragment are handled, so it is safe to pass a whole header block.
+	 *
+	 * Opt-in by nature, since the theme has to call it. Gated only on the global media
+	 * transparency switch; euaiactready_media_label_featured_images deliberately does
+	 * not apply, because a background image is not necessarily a featured image.
+	 *
+	 * @param string $html Markup fragment rendered by the theme.
+	 * @return string The fragment, with labels added to any AI images found in it.
+	 */
+	public function euaiactready_label_media_fragment( $html ) {
+		if ( ! is_string( $html ) || '' === $html ) {
+			return $html;
+		}
+
+		if ( ! get_option( 'euaiactready_media_transparency', true ) ) {
+			return $html;
+		}
+
+		$engine = $this->euaiactready_get_markup_engine();
+
+		// add_labels_to_content() rather than add_labels(): the latter only matches <img>
+		// tags carrying the internal data-euaiact-id marker, which WordPress-built image
+		// markup gets and a theme's own <img src="..."> does not. Resolving by wp-image
+		// class, data-id or src is what a hand-written tag needs. Safe here because a
+		// fragment passes through this filter once, which is the condition that method
+		// documents.
+		return $engine->add_background_labels( $engine->add_labels_to_content( $html ) );
 	}
 
 	/**

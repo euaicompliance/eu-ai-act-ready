@@ -76,10 +76,101 @@ class EUAIACTREADY_Content_Transparency {
 		$notice_style   = get_option( 'euaiactready_notice_style', EUAIACTREADY_DEFAULT_NOTICE_STYLE );
 		$custom_message = sanitize_text_field( get_option( 'euaiactready_notice_message', '' ) );
 
+		$position = $this->euaiactready_get_notice_position( $disclosure, $post );
+
+		$leading  = '';
+		$trailing = '';
+
+		if ( 'after' !== $position ) {
+			$leading = $this->euaiactready_render_placed_notice( $notice_style, $custom_message, $disclosure, $post, 'before' );
+		}
+
+		if ( 'before' !== $position ) {
+			$trailing = $this->euaiactready_render_placed_notice( $notice_style, $custom_message, $disclosure, $post, 'after' );
+		}
+
+		// Notice markup is already properly escaped.
+		return $leading . $content . $trailing;
+	}
+
+	/**
+	 * Render a single notice for one placement around the content.
+	 *
+	 * Called twice when the position is 'both'. The modal style keeps its dialog
+	 * markup single-output internally, so only the trigger is repeated.
+	 *
+	 * @param string  $notice_style   Resolved notice style.
+	 * @param string  $custom_message Custom message from settings (may be empty).
+	 * @param string  $disclosure     Disclosure level.
+	 * @param WP_Post $post           Post the notice belongs to.
+	 * @param string  $placement      Either 'before' or 'after'.
+	 * @return string Notice markup (already escaped), or an empty string.
+	 */
+	private function euaiactready_render_placed_notice( $notice_style, $custom_message, $disclosure, $post, $placement ) {
 		$notice_html = $this->euaiactready_generate_notice_html( $notice_style, $custom_message, $disclosure );
 
-		// Return notice HTML (already properly escaped) prepended to content.
-		return $notice_html . $content;
+		/**
+		 * Filter the transparency notice markup before it is placed around the content.
+		 *
+		 * Allows themes to replace the notice markup entirely, for example to match a
+		 * theme's own design system, without having to override the plugin stylesheet.
+		 * Return an empty string to suppress the notice for this placement.
+		 *
+		 * @param string  $notice_html  Notice markup (already escaped).
+		 * @param string  $notice_style Resolved notice style.
+		 * @param string  $disclosure   Disclosure level: 'assisted', 'generated', or 'generated_reviewed'.
+		 * @param WP_Post $post         Post the notice belongs to.
+		 * @param string  $placement    Placement being rendered: 'before' or 'after'.
+		 */
+		return (string) apply_filters( 'euaiactready_notice_html', $notice_html, $notice_style, $disclosure, $post, $placement );
+	}
+
+	/**
+	 * Resolve where the transparency notice is placed relative to the content.
+	 *
+	 * @param string  $disclosure Disclosure level.
+	 * @param WP_Post $post       Post the notice belongs to.
+	 * @return string One of 'before', 'after', or 'both'.
+	 */
+	private function euaiactready_get_notice_position( $disclosure, $post ) {
+		$position = sanitize_key( get_option( 'euaiactready_notice_position', EUAIACTREADY_DEFAULT_NOTICE_POSITION ) );
+
+		/**
+		 * Filter the transparency notice position.
+		 *
+		 * @param string  $position   One of 'before', 'after', or 'both'.
+		 * @param string  $disclosure Disclosure level: 'assisted', 'generated', or 'generated_reviewed'.
+		 * @param WP_Post $post       Post the notice belongs to.
+		 */
+		$position = apply_filters( 'euaiactready_notice_position', $position, $disclosure, $post );
+
+		if ( ! in_array( $position, self::euaiactready_get_notice_positions_keys(), true ) ) {
+			$position = EUAIACTREADY_DEFAULT_NOTICE_POSITION;
+		}
+
+		return $position;
+	}
+
+	/**
+	 * Available notice positions with their translated labels.
+	 *
+	 * @return array<string,string> Position key => label.
+	 */
+	public static function euaiactready_get_notice_positions() {
+		return array(
+			'before' => __( 'Above the content', 'eu-ai-act-ready' ),
+			'after'  => __( 'Below the content', 'eu-ai-act-ready' ),
+			'both'   => __( 'Above and below the content', 'eu-ai-act-ready' ),
+		);
+	}
+
+	/**
+	 * Valid notice position keys.
+	 *
+	 * @return string[]
+	 */
+	public static function euaiactready_get_notice_positions_keys() {
+		return array_keys( self::euaiactready_get_notice_positions() );
 	}
 
 	/**

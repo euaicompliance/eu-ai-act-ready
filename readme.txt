@@ -4,11 +4,11 @@ Tags: eu ai act, article 50, ai transparency, ai compliance, ai disclosure
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.1.1
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-EU AI Act compliance for WordPress. Disclose AI content and chatbots. Track readiness with built-in score, self-assessment wizard, and export reports.
+EU AI Act compliance for WordPress. Disclose AI content, images and chatbots. Track readiness with built-in score, self-assessment wizard, and export reports.
 
 == Description ==
 
@@ -62,10 +62,10 @@ Final responsibility for assessing and meeting legal obligations remains with th
 * **EU AI Act Timeline** - Dashboard section showing enforcement dates with countdowns so you always know what is coming and when
 * **AI Content Admin Page** - Dedicated admin page listing all AI-marked content items (posts, pages, and custom post types) with their disclosure level, with one-click unmark and bulk actions
 * **Media & Image Analysis** - Flags potentially AI-generated images using heuristic metadata signals and filename patterns
-* **AI Image Labels** - Visitor-facing labels on AI-flagged images with configurable tooltip and size; works with Gutenberg, Elementor, Classic Editor, and Bricks Builder
+* **AI Image Labels** - Visitor-facing labels on AI-flagged images with configurable tooltip and size; works with Gutenberg, Elementor, Classic Editor, and Bricks Builder, plus an opt-in filter any theme can use to label images it renders itself, including CSS background images in hero and header areas
 * **Bulk Scanning Tools** - Scan multiple media items simultaneously from the admin dashboard
 * **Manual Override Controls** - Mark or unmark content and media as AI-generated at any time
-* **Customizable Disclosure Messages** - Configure wording, style, and placement of transparency notices; each disclosure level shows its own default message or a shared custom message
+* **Customizable Disclosure Messages** - Configure wording, style, and placement of transparency notices - show the notice above the content, below it, or in both places; each disclosure level shows its own default message or a shared custom message
 * **Lightweight & Performance-Friendly** - Detection runs asynchronously or on demand without slowing down your site
 
 = Minimum Requirements =
@@ -98,6 +98,11 @@ Final responsibility for assessing and meeting legal obligations remains with th
 
 == Frequently Asked Questions ==
 
+= Is EU AI Act Ready free? =
+Yes. Everything described on this page is included: the readiness score, self-assessment wizard, AI Systems registry, AI content and image disclosure, chatbot transparency notices, RSS disclosure, the Article 4 AI literacy checklist, and the exportable compliance report. There is no trial period, no account to create, no license key to enter, and no feature that stops working after a set number of posts or images. The plugin is licensed under GPLv2 or later.
+
+The AI tools registry is fetched from eu-ai-act-ready.com at no cost and requires no registration or API key. If it cannot be reached, the plugin keeps using the tool list it last downloaded, and you can declare AI tools manually at any time.
+
 = How does the plugin detect AI-generated media? =
 The plugin flags potentially AI-generated images using multiple heuristic signals, including attachment metadata, filenames, EXIF information, and common technical patterns. Images can also be manually marked or unmarked at any time.
 
@@ -105,7 +110,14 @@ The plugin flags potentially AI-generated images using multiple heuristic signal
 No. AI-generated text disclosure must be applied manually by the site owner to ensure accuracy and editorial control. The plugin does not analyze or infer AI usage in text content.
 
 = Can I customize the disclosure messages? =
-Yes. You can fully customize the wording, placement, and style of disclosure notices from **EU AI Act Ready --> Settings**.
+Yes. You can fully customize the wording, placement, and style of disclosure notices from **EU AI Act Ready --> Settings**. Under **Content Transparency** you can also choose whether the notice appears above the content, below it, or in both places.
+
+= My theme renders images as CSS backgrounds and they are not labelled. Can I fix that? =
+Yes. Automatic labelling needs an `<img>` tag to attach the label to, so an image rendered as a CSS background - a common pattern for hero and header areas - is never seen. Pass the markup your template renders through the `euaiactready_label_media` filter and both background images and plain `<img>` tags in it will be labelled:
+
+`echo apply_filters( 'euaiactready_label_media', $header_html );`
+
+No `function_exists()` guard is needed: if the plugin is inactive the filter is simply unregistered and the markup is returned unchanged. Where the badge sits on a background image is controlled by **Settings --> Media/Image Labels --> Badge Placement (Background Images)**.
 
 = Does this plugin slow down my site? =
 No. Detection processes run asynchronously or on demand. Front-end output is lightweight and loads only when disclosures are enabled.
@@ -153,6 +165,13 @@ All plugin settings and AI content markers remain stored in the database. Reacti
 
 
 == Changelog ==
+
+= 2.2.0 =
+* Added: Notice Position setting - place the content transparency notice above the content, below it, or in both places (Settings --> Content Transparency). Existing sites keep the previous "above the content" behaviour. (props @archandha)
+* Added: `euaiactready_notice_position` and `euaiactready_notice_html` filters so themes can override notice placement and markup without patching the plugin. (props @archandha)
+* Added: `euaiactready_label_media` filter - any theme can now have AI images labelled in markup it renders itself, by passing the fragment through the filter. Handles both plain `<img>` tags and images rendered as CSS backgrounds in hero and header areas, which previously could only be labelled in Bricks Builder output. (props @archandha)
+* Improved: The "Badge Placement (Background Images)" setting is now shown on every site, not only when Bricks Builder is active, so background labels can be repositioned anywhere they appear. (props @archandha)
+* Added: German translations for the new Notice Position setting. (props @archandha)
 
 = 2.1.1 =
 * Fixed: Added Author URI
