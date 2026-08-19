@@ -2,13 +2,13 @@
 Contributors: aicompliance
 Tags: eu ai act, article 50, ai transparency, ai compliance, ai disclosure
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-EU AI Act compliance for WordPress. Disclose AI content, images and chatbots. Track readiness with built-in score, self-assessment wizard, and export reports.
+EU AI Act compliance for WordPress. Disclose and label AI content, images and chatbots. Readiness score, self-assessment wizard and export reports.
 
 == Description ==
 
@@ -165,6 +165,9 @@ All plugin settings and AI content markers remain stored in the database. Reacti
 
 
 == Changelog ==
+
+= 2.2.1 =
+* Compatibility: Tested up to WordPress 7.1
 
 = 2.2.0 =
 * Added: Notice Position setting - place the content transparency notice above the content, below it, or in both places (Settings --> Content Transparency). Existing sites keep the previous "above the content" behaviour. (props @archandha)

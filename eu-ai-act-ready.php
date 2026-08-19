@@ -3,15 +3,15 @@
  * Plugin Name: EU AI Act Ready
  * Plugin URI: https://eu-ai-act-ready.com/
  * Description: Disclose AI-generated content, media, and chatbots with transparent visitor notices, supporting transparency under Article 50 of the EU AI Act.
- * Version: 2.2.0
+ * Version: 2.2.1
  * Author: EU AI Act Ready
  * Author URI: https://eu-ai-act-ready.com/
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires at least: 6.0
  * Requires PHP: 7.4
- * Tested up to: 7.0
- * Stable tag: 2.2.0
+ * Tested up to: 7.1
+ * Stable tag: 2.2.1
  * Text Domain: eu-ai-act-ready
  * Domain Path: /languages
  *
@@ -25,7 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 // Define plugin constants.
 define( 'EUAIACTREADY_PLUGIN_SLUG', 'eu-ai-act-ready' );
-define( 'EUAIACTREADY_VERSION', '2.2.0' );
+define( 'EUAIACTREADY_VERSION', '2.2.1' );
 define( 'EUAIACTREADY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'EUAIACTREADY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'EUAIACTREADY_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
