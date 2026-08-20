@@ -390,7 +390,7 @@ class EUAIACTREADY_Content_Transparency {
 			return array();
 		}
 
-		$detected = $euaiactready_ai_tools_instance->get_detector()->get_detected();
+		$detected = $euaiactready_ai_tools_instance->euaiactready_get_disclosable_tools();
 		$names    = array();
 		foreach ( $detected as $tool ) {
 			if ( ! empty( $tool['name'] ) ) {
