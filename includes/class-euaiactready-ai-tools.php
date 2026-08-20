@@ -317,6 +317,24 @@ class Euaiactready_AI_Tools {
 	}
 
 	/**
+	 * Return the tools that may be disclosed on the front end.
+	 *
+	 * Applies the same two gates as the notice itself: the AI Systems notice has to
+	 * be enabled, and each tool has to be toggled visible. Anything that discloses
+	 * tool names to visitors - the notice, the schema.org markup, the RSS
+	 * disclosure - should go through here, so one setting governs them all.
+	 *
+	 * @return array
+	 */
+	public function euaiactready_get_disclosable_tools() {
+		if ( ! get_option( self::OPTION_ENABLED, true ) ) {
+			return array();
+		}
+
+		return $this->euaiactready_get_visible_tools();
+	}
+
+	/**
 	 * Return detected tools that are toggled visible.
 	 *
 	 * @return array
