@@ -358,18 +358,6 @@ class EUAIACTREADY_Content_Transparency {
 			'keywords'    => implode( ', ', $keywords ),
 		);
 
-		if ( ! empty( $tool_names ) ) {
-			$schema['creator'] = array_map(
-				static function ( $tool_name ) {
-					return array(
-						'@type' => 'SoftwareApplication',
-						'name'  => $tool_name,
-					);
-				},
-				$tool_names
-			);
-		}
-
 		$json = wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT );
 		if ( false === $json ) {
 			return;
@@ -390,7 +378,7 @@ class EUAIACTREADY_Content_Transparency {
 			return array();
 		}
 
-		$detected = $euaiactready_ai_tools_instance->get_detector()->get_detected();
+		$detected = $euaiactready_ai_tools_instance->euaiactready_get_disclosable_tools();
 		$names    = array();
 		foreach ( $detected as $tool ) {
 			if ( ! empty( $tool['name'] ) ) {
