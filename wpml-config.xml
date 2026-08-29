@@ -1,0 +1,28 @@
+<wpml-config>
+    <!--
+        The AI disclosure state lives in post meta. Without this declaration WPML
+        leaves custom fields out of translations, so a translated post carries no
+        disclosure at all while its original is marked - the translation of an
+        AI-generated text silently loses its Article 50 label.
+
+        "copy" rather than "copy-once": the state has to follow the original for
+        the life of the post. Re-marking the source, or correcting a wrong level,
+        has to reach the translations too.
+
+        Writing these keys is enough to keep the plugin's own content_state table
+        in sync as well, because EUAIACTREADY_Data_Store hooks added_post_meta and
+        updated_post_meta for exactly these keys.
+    -->
+    <custom-fields>
+        <!-- Posts, pages and custom post types. -->
+        <custom-field action="copy">_euaiactready_ai_content</custom-field>
+        <custom-field action="copy">_euaiactready_ai_content_marked_date</custom-field>
+
+        <!-- Attachments, for sites using WPML Media Translation. A duplicated
+             attachment points at the same file, so it carries the same state. -->
+        <custom-field action="copy">_euaiactready_ai_generated</custom-field>
+        <custom-field action="copy">_euaiactready_ai_marked_method</custom-field>
+        <custom-field action="copy">_euaiactready_ai_detection_source</custom-field>
+        <custom-field action="copy">_euaiactready_ai_manually_unmarked</custom-field>
+    </custom-fields>
+</wpml-config>

@@ -40,7 +40,8 @@ jobs:
           rm -rf package-*
           rm -rf webpack.*
           rm -rf *.ps1
-          rm -rf *.xml
+          # Only the linter config, not *.xml - wpml-config.xml has to ship.
+          rm -f phpcs.xml
 
       - name: Create plugin zip
         id: create_zip
