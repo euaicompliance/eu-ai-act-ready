@@ -4,7 +4,7 @@ Tags: eu ai act, article 50, ai transparency, ai compliance, ai disclosure
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -165,6 +165,9 @@ All plugin settings and AI content markers remain stored in the database. Reacti
 
 
 == Changelog ==
+
+= 2.2.3 =
+* Fixed: AI disclosure state (content, media, AI Systems) now carries over into WPML translations instead of being left unmarked. (props @archandha)
 
 = 2.2.2 =
 * Fixed: Removed invalid SoftwareApplication "creator" nodes from the Article schema markup. (props @archandha)
