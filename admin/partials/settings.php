@@ -58,7 +58,7 @@ if ( isset( $_POST['save_settings'] ) && check_admin_referer( 'euaiactready_sett
 	if ( defined( 'BRICKS_VERSION' ) ) {
 		update_option( 'euaiactready_bricks_background_labels', ! empty( $euaiactready_post_data['bricks_background_labels'] ) ? 1 : 0 );
 	}
-	// Same reasoning as Bricks above: only written while the checkbox exists.
+
 	if ( defined( 'ELEMENTOR_VERSION' ) ) {
 		update_option( 'euaiactready_elementor_background_labels', ! empty( $euaiactready_post_data['elementor_background_labels'] ) ? 1 : 0 );
 	}
