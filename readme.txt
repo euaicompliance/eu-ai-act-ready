@@ -4,7 +4,7 @@ Tags: eu ai act, article 50, ai transparency, ai compliance, ai disclosure
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.2.3
+Stable tag: 2.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,7 +62,7 @@ Final responsibility for assessing and meeting legal obligations remains with th
 * **EU AI Act Timeline** - Dashboard section showing enforcement dates with countdowns so you always know what is coming and when
 * **AI Content Admin Page** - Dedicated admin page listing all AI-marked content items (posts, pages, and custom post types) with their disclosure level, with one-click unmark and bulk actions
 * **Media & Image Analysis** - Flags potentially AI-generated images using heuristic metadata signals and filename patterns
-* **AI Image Labels** - Visitor-facing labels on AI-flagged images with configurable tooltip and size; works with Gutenberg, Elementor, Classic Editor, and Bricks Builder, plus an opt-in filter any theme can use to label images it renders itself, including CSS background images in hero and header areas
+* **AI Image Labels** - Visitor-facing labels on AI-flagged images with configurable tooltip and size; works with Gutenberg, Elementor (including background images and sliders), Classic Editor, and Bricks Builder, plus an opt-in filter any theme can use to label images it renders itself, including CSS background images in hero and header areas
 * **Bulk Scanning Tools** - Scan multiple media items simultaneously from the admin dashboard
 * **Manual Override Controls** - Mark or unmark content and media as AI-generated at any time
 * **Customizable Disclosure Messages** - Configure wording, style, and placement of transparency notices - show the notice above the content, below it, or in both places; each disclosure level shows its own default message or a shared custom message
@@ -165,6 +165,10 @@ All plugin settings and AI content markers remain stored in the database. Reacti
 
 
 == Changelog ==
+
+= 2.2.4 =
+* Added: AI labels for Elementor background images.
+* Fixed: Labelled images no longer override height and fit set by Elementor or themes.
 
 = 2.2.3 =
 * Fixed: AI disclosure state (content, media, AI Systems) now carries over into WPML translations instead of being left unmarked. (props @archandha)

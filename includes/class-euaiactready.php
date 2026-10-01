@@ -66,6 +66,7 @@ class EUAIACTREADY {
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-media-markup.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-media-transparency.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-bricks-media.php';
+		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-elementor-media.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/class-euaiactready-post-meta-box.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/ai-tools/class-euaiactready-ai-tools-registry.php';
 		require_once EUAIACTREADY_PLUGIN_DIR . 'includes/ai-tools/class-euaiactready-ai-tools-detector.php';
@@ -132,11 +133,17 @@ class EUAIACTREADY {
 		// Bricks renders its element tree instead of running content through 'the_content'.
 		// Deferred to 'after_setup_theme' because plugins load before the theme defines
 		// BRICKS_VERSION.
+		// Elementor shares the hook: its background images live in a
+		// generated stylesheet, so they need their own pass to be seen at all.
 		add_action(
 			'after_setup_theme',
 			static function () use ( $media_transparency ) {
 				if ( defined( 'BRICKS_VERSION' ) ) {
 					new EUAIACTREADY_Bricks_Media( $media_transparency );
+				}
+
+				if ( defined( 'ELEMENTOR_VERSION' ) ) {
+					new EUAIACTREADY_Elementor_Media( $media_transparency );
 				}
 			}
 		);
