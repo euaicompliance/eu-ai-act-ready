@@ -58,6 +58,10 @@ if ( isset( $_POST['save_settings'] ) && check_admin_referer( 'euaiactready_sett
 	if ( defined( 'BRICKS_VERSION' ) ) {
 		update_option( 'euaiactready_bricks_background_labels', ! empty( $euaiactready_post_data['bricks_background_labels'] ) ? 1 : 0 );
 	}
+
+	if ( defined( 'ELEMENTOR_VERSION' ) ) {
+		update_option( 'euaiactready_elementor_background_labels', ! empty( $euaiactready_post_data['elementor_background_labels'] ) ? 1 : 0 );
+	}
 	if ( isset( $euaiactready_post_data['media_label_style'] ) ) {
 		update_option( 'euaiactready_media_label_style', sanitize_text_field( $euaiactready_post_data['media_label_style'] ) );
 	}
@@ -141,6 +145,7 @@ $euaiactready_chatbot_notice_message = sanitize_text_field( get_option( 'euaiact
 $euaiactready_media_transparency          = get_option( 'euaiactready_media_transparency', true );
 $euaiactready_media_label_featured_images = get_option( 'euaiactready_media_label_featured_images', true );
 $euaiactready_bricks_background_labels    = get_option( 'euaiactready_bricks_background_labels', true );
+$euaiactready_elementor_background_labels = get_option( 'euaiactready_elementor_background_labels', true );
 $euaiactready_media_label_position        = get_option( 'euaiactready_media_label_position', '' );
 $euaiactready_bricks_bg_label_position    = get_option( 'euaiactready_bricks_bg_label_position', 'top-right' );
 $euaiactready_media_label_style           = get_option( 'euaiactready_media_label_style', EUAIACTREADY_DEFAULT_MEDIA_LABEL_STYLE );
@@ -426,6 +431,18 @@ $euaiactready_tab_definitions = array(
 					<td>
 					<input type="checkbox" id="bricks_background_labels" name="bricks_background_labels" value="1" <?php checked( $euaiactready_bricks_background_labels, true ); ?>>
 						<p class="description"><?php esc_html_e( 'Also label AI-generated images used as CSS background images in Bricks Builder. The badge is placed inside the element, which makes that element a positioning context.', 'eu-ai-act-ready' ); ?></p>
+					</td>
+				</tr>
+				<?php endif; ?>
+
+				<?php if ( defined( 'ELEMENTOR_VERSION' ) ) : ?>
+				<tr>
+					<th scope="row">
+						<label for="elementor_background_labels"><?php esc_html_e( 'Label Background Images (Elementor)', 'eu-ai-act-ready' ); ?></label>
+					</th>
+					<td>
+					<input type="checkbox" id="elementor_background_labels" name="elementor_background_labels" value="1" <?php checked( $euaiactready_elementor_background_labels, true ); ?>>
+						<p class="description"><?php esc_html_e( 'Also label AI-generated images used as backgrounds in Elementor, such as container backgrounds and the images in a Slides widget. The badge is placed inside the element, which makes that element a positioning context.', 'eu-ai-act-ready' ); ?></p>
 					</td>
 				</tr>
 				<?php endif; ?>
