@@ -44,15 +44,10 @@
 /*
  * Keeps a labelled image inside its container on themes that do not constrain images
  * themselves.
- *
- * Deliberately not applied to builder-placed images: a builder sizes those itself, and
- * because these declarations are !important they would win over it. A hero using
- * height:100% with object-fit:cover would snap back to its natural aspect ratio and
- * overflow everything below it.
  */
-.ai-media-container:not(.ai-media-bricks) img {
-    max-width: 100% !important;
-    height: auto !important;
+:where(.ai-media-container:not(.ai-media-bricks)) img {
+    max-width: 100%;
+    height: auto;
 }
 
 /* ========================================
