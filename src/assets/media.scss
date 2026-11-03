@@ -24,6 +24,24 @@
    1. MEDIA CONTAINER BASE
    ======================================== */
 
+/*
+ * The container is a box that was not in the markup when the theme was written, so it
+ * has to stay layout-neutral - the same requirement the Bricks section below spells out,
+ * applied to every other placement.
+ *
+ * inline-block, for two reasons. It is shrink-to-fit, so the container ends where the
+ * image ends and the badge stays on it; a container wider than the image would drag the
+ * badge off, and a label beside an image is worse than a slightly narrow image. And it
+ * is inline-level, which is what an <img> is - so a centring context the theme already
+ * had, `text-align: center` around a content image, keeps working.
+ *
+ * What it cannot do is let a theme size the image for it. `img { width: 100% }` resolves
+ * that percentage against the shrink-to-fit container, which sized itself from the
+ * image's own width - so the image stays at its intrinsic width instead of filling the
+ * column. No wrapper can satisfy both; a theme that sizes images fluidly says so:
+ *
+ *     .ai-media-container { display: block; width: 100%; }
+ */
 .ai-media-container {
     position: relative;
     display: inline-block;
@@ -202,8 +220,18 @@
     margin: 5px 0 $spacing-xl $spacing-xl;
 }
 
+/*
+ * `display: block` here escapes the inline-block above so the auto margins apply - but a
+ * block box with auto width fills its parent, and that is not something `margin: auto`
+ * can centre. The container stretched across the whole column: the image stayed at the
+ * left edge, no longer centred, and the badge went with the container's right edge,
+ * measured 525px away from a 600px image in a 1140px column.
+ *
+ * `width: fit-content` restores the shrink-to-fit that the auto margins need.
+ */
 .aligncenter .ai-media-container {
     display: block;
+    width: fit-content;
     margin-left: auto;
     margin-right: auto;
 }
