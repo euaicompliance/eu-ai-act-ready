@@ -4,7 +4,7 @@ Tags: eu ai act, article 50, ai transparency, ai compliance, ai disclosure
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.2.4
+Stable tag: 2.2.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -165,6 +165,10 @@ All plugin settings and AI content markers remain stored in the database. Reacti
 
 
 == Changelog ==
+
+= 2.2.5 =
+* Fixed: Centred images stay centred and their AI label stays on the image instead of drifting to the edge of the column.
+* Fixed: The label container no longer changes how themes lay out images.
 
 = 2.2.4 =
 * Added: AI labels for Elementor background images.
